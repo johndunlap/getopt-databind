@@ -48,7 +48,7 @@ public class Main {
         private Long longValue;
         @GetOptNamed(shortName = 'I', longName = "integer-value", required = true, description = "A integer value", category = "Type tests")
         private Integer integerValue;
-        @GetOptNamed(shortName = 's', longName = "short-value", required = true, description = "A long value", category = "Type tests")
+        @GetOptNamed(shortName = 's', longName = "short-value", required = true, description = "A short value", category = "Type tests")
         private Short shortValue;
         @GetOptNamed(shortName = 'b', longName = "byte-value", required = true, description = "A byte value", category = "Type tests")
         private Byte byteValue;
@@ -99,10 +99,10 @@ This is the opening description
   -H  --help           Displays this help message
 
 Type tests:
-  -L  --long-value     A long value
-  -I  --integer-value  A integer value
-  -s  --short-value    A long value
-  -b  --byte-value     A byte value
+  -L  --long-value     A long value (required)
+  -I  --integer-value  A integer value (required)
+  -s  --short-value    A long value (required)
+  -b  --byte-value     A byte value (required)
   -D  --double-value   A double value
   -F  --float-value    A float value
   -S  --string-value   A string value
