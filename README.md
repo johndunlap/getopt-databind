@@ -4,7 +4,7 @@ Inspired by GNU GetOpt, getopt-databind considers command line arguments to be a
 ## Features
 * Named parameters which can have both a single-letter flag with a single hyphen or a multi-letter with two hyphens.
 * Multiple boolean single letter flags can be combined into a multi-letter flag with a single hyphen. The last letter in this kind of flag does not need to have a boolean type.
-* Automatic type conversion for:
+* Automatic validation and type conversion for:
   * int
   * long
   * short
