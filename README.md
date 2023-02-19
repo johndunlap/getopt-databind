@@ -25,7 +25,6 @@ Inspired by GNU GetOpt, getopt-databind considers command line arguments to be a
   * Double
   * boolean
   * Boolean
-  * File -  Can be file or directory
 * Custom type conversion
 
 ## Example
