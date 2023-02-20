@@ -29,7 +29,7 @@ Inspired by GNU GetOpt, getopt-databind considers command line arguments to be a
 ## Example
 ```java
 import pro.johndunlap.getopt.annotation.GetOptHelp;
-import pro.getopt.annotation.GetOptIgnore;
+import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.exception.ParseException;
 
