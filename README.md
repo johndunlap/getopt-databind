@@ -127,3 +127,5 @@ The following is output when **--long-value 345 --string-value "This is a test"*
 ```text
 Config{integerValue=null, longValue=345, booleanValue=false, doubleValue=null, stringValue='This is a test, otherBoolean='false'}
 ```
+
+TODO: Add buy me a coffee link
