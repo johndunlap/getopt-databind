@@ -7,7 +7,7 @@ This is a Java library which provides a flexible and customizable way to bind co
 * No dependencies.
 * Permissive licensing
 
-## Getting Started
+## Getting started
 * TODO: Jitpack instructions
 * TODO: Simple demonstration
 * TODO: Reference example code
