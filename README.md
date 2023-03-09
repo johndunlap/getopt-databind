@@ -7,6 +7,11 @@ This is a Java library which provides a flexible and customizable way to bind co
 * No dependencies.
 * Permissive licensing
 
+## How can I use this library?
+TODO: Jitpack instructions
+TODO: Simple demonstration
+TODO: Reference example code
+
 ## Features
 * Automatically generated help messages
 * Named parameters
