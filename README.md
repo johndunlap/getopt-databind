@@ -1,5 +1,5 @@
 # getopt-databind
-Inspired by GNU GetOpt, getopt-databind considers command line arguments to be a data stream which can be bound to Java objects in a similar manner to JSON, XML, or YAML. Annotations and the Java type system are used to simplify the creation of sophisticated command line interfaces.
+Getopt-databind is a Java library that allows developers to easily bind command line arguments to Java objects in a way that is similar to how other data formats, such as JSON, XML, and YAML, can be bound to Java objects. With getopt-databind, developers can define a Java class that represents the structure of the command line arguments they expect to receive, and the library will automatically parse the arguments and bind them to the corresponding fields in the Java object. This makes it easy to handle complex command line interfaces and reduces the amount of boilerplate code required to handle command line arguments. Whether you're building a command line application, a tool for system administration, or any other type of application that needs to handle command line arguments, getopt-databind can help simplify your code and improve your productivity.
 
 ## Why should you use this library?
 * Sophisticated command line interfaces with minimal effort
