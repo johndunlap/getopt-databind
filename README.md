@@ -6,6 +6,7 @@ This is a Java library which provides a flexible and customizable way to bind co
 * 100% line and branch coverage in unit tests
 * No dependencies.
 * Permissive licensing
+* It's free
 
 ## Getting started
 * TODO: Jitpack instructions
