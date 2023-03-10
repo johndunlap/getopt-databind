@@ -129,4 +129,4 @@ The following is output when **--long-value 345 --string-value "This is a test"*
 Config{integerValue=null, longValue=345, booleanValue=false, doubleValue=null, stringValue='This is a test, otherBoolean='false'}
 ```
 
-TODO: Add buy me a coffee link
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="ixCgtN0uXb" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
