@@ -19,7 +19,7 @@ This is a Java library which provides a flexible and customizable way to bind co
    * Single-letter flag with a single hyphen
    * Multi-letter flag with two hyphens.
    * Multiple boolean single letter flags can be combined into a multi-letter flag with a single hyphen. The last letter in this kind of flag does not need to have a boolean type.
-   * Automatic conversion to and from hyphen-case for Java fields which are not annotated
+   * Automatic conversion to camel-case from hyphen-case to support binding to Java fields which are not annotated
 * Required parameters
 * Automatic validation and type conversion for:
   * int
