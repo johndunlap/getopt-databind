@@ -21,21 +21,7 @@ This is a Java library which provides a flexible and customizable way to bind co
    * Multiple boolean single letter flags can be combined into a multi-letter flag with a single hyphen. The last letter in this kind of flag does not need to have a boolean type.
    * Automatic conversion to camel-case from hyphen-case to support binding to Java fields which are not annotated
 * Required parameters
-* Automatic validation and type conversion for:
-  * int
-  * long
-  * short
-  * byte
-  * float
-  * double
-  * Integer
-  * Long
-  * Short
-  * Byte
-  * Float
-  * Double
-  * boolean
-  * Boolean
+* Automatic validation and type conversion for: int, long, short, byte, float, double, Integer, Long, Short, Byte, Float, Double, boolean, Boolean
 * Custom type conversion
 
 ## Example
