@@ -1,29 +1,27 @@
 # getopt-databind
-Inspired by GNU GetOpt, getopt-databind considers command line arguments to be a data stream which can be bound to Java objects in a similar manner to JSON, XML, or YAML. Annotations and the Java type system are used to simplify the creation of sophisticated command line interfaces.
+This is a Java library which provides a flexible and customizable way to bind command line arguments to Java objects, in a similar manner to how JSON, XML, and YAML can be bound to Java objects. You can easily define Java classes that represent the data structure of your command line arguments, and use annotations to specify how those arguments should be parsed and bound to the corresponding fields in your Java object. This allows you to write command line interfaces that are more intuitive and easier to use, while also reducing the amount of boilerplate code that is needed to parse and validate command line arguments.
+
+## Why should you use this library?
+* Sophisticated command line interfaces with minimal effort
+* 100% line and branch coverage in unit tests
+* No dependencies.
+* Permissive licensing
+* It's free
+
+## Getting started
+* TODO: Jitpack instructions
+* TODO: Simple demonstration
+* TODO: Reference example code
 
 ## Features
 * Automatically generated help messages
 * Named parameters
    * Single-letter flag with a single hyphen
-   * Multi-letter with two hyphens.
+   * Multi-letter flag with two hyphens.
    * Multiple boolean single letter flags can be combined into a multi-letter flag with a single hyphen. The last letter in this kind of flag does not need to have a boolean type.
-   * Automatic conversion to and from hyphen-case for Java fields which are not annotated
+   * Automatic conversion to camel-case from hyphen-case to support binding to Java fields which are not annotated
 * Required parameters
-* Automatic validation and type conversion for:
-  * int
-  * long
-  * short
-  * byte
-  * float
-  * double
-  * Integer
-  * Long
-  * Short
-  * Byte
-  * Float
-  * Double
-  * boolean
-  * Boolean
+* Automatic validation and type conversion for: int, long, short, byte, float, double, Integer, Long, Short, Byte, Float, Double, boolean, Boolean
 * Custom type conversion
 
 ## Example
@@ -117,3 +115,5 @@ The following is output when **--long-value 345 --string-value "This is a test"*
 ```text
 Config{integerValue=null, longValue=345, booleanValue=false, doubleValue=null, stringValue='This is a test, otherBoolean='false'}
 ```
+
+<a href="https://www.buymeacoffee.com/ixCgtN0uXb" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
