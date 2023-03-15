@@ -27,9 +27,9 @@ package pro.johndunlap.getopt.config;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 
 public class DuplicateLongNameConfig {
-    @GetOptNamed(longName = "value")
+    @GetOptNamed(longCode = "value")
     private String firstValue;
-    @GetOptNamed(longName = "value")
+    @GetOptNamed(longCode = "value")
     private String secondValue;
 
     public DuplicateLongNameConfig() {

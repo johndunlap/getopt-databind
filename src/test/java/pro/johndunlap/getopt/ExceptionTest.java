@@ -45,12 +45,12 @@ public class ExceptionTest {
         throw new MissingDefaultConstructorException("Message", new Exception(), Integer.class);
     }
 
-    @Test(expected = NumericParseException.class)
-    public void testNumericParseExceptionConstructorFieldValueMessage() throws NumericParseException {
+    @Test(expected = ParseException.class)
+    public void testNumericParseExceptionConstructorFieldValueMessage() throws ParseException {
         Field field = NamedConfig.class.getDeclaredFields()[0];
         String value = "123";
         String message = "Message";
-        NumericParseException npe = new NumericParseException(field, value, message);
+        ParseException npe = new ParseException(field, value, message);
         assertEquals(field, npe.getField());
         assertEquals(value, npe.getValue());
         assertEquals(message, npe.getMessage());

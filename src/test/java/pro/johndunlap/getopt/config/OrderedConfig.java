@@ -31,22 +31,24 @@ import java.util.List;
 
 @GetOptHelp(openingText = "This is the opening description", closingText = "This is the closing description")
 public class OrderedConfig {
-    @GetOptOrdered(order = 1, required = true)
-    private String longValue;
-    @GetOptOrdered(order = 2)
+    @GetOptOrdered(order = 1, required = true, collectionType = String.class)
+    private String something;
+    @GetOptOrdered(order = 2, collectionType = String.class)
     private List<String> list;
-    @GetOptOrdered(order = 0)
+    @GetOptOrdered(order = 0, collectionType = String.class)
     private String stringValue;
+    @GetOptOrdered(order = 3, collectionType = String.class)
+    private String[] array;
 
     public OrderedConfig() {
     }
 
-    public String getLongValue() {
-        return longValue;
+    public String getSomething() {
+        return something;
     }
 
-    public OrderedConfig setLongValue(String longValue) {
-        this.longValue = longValue;
+    public OrderedConfig setSomething(String something) {
+        this.something = something;
         return this;
     }
 
@@ -68,10 +70,19 @@ public class OrderedConfig {
         return this;
     }
 
+    public String[] getArray() {
+        return array;
+    }
+
+    public OrderedConfig setArray(String[] array) {
+        this.array = array;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "OrderedConfig{" +
-                "longValue='" + longValue + '\'' +
+                "longValue='" + something + '\'' +
                 ", list=" + list +
                 ", stringValue='" + stringValue + '\'' +
                 '}';

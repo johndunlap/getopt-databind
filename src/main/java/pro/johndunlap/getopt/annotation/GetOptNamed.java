@@ -35,10 +35,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface GetOptNamed {
-    char shortName() default ' ';
-    String longName() default "";
+    char shortCode() default ' ';
+    String longCode() default "";
     boolean required() default false;
     String category() default "";
     String description() default "";
+    Class<?> collectionType() default Object.class;
     Class<? extends ValueParser<?>> parser() default DefaultValueParser.class;
 }

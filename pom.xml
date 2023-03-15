@@ -7,17 +7,24 @@
     <artifactId>getopt-databind</artifactId>
     <version>0.5.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Getopt Databind</name>
+    <name>getopt-databind</name>
     <description>
-        Inspired by GNU GetOpt, getopt-databind considers command line 
-        arguments to be a data stream which can be bound to Java objects in a
-        similar manner to JSON, XML, and YAML.
+        This is a Java library which provides a flexible and customizable way to bind command line arguments to Java
+        objects, in a similar manner to how JSON, XML, and YAML can be bound to Java objects. You can easily define
+        Java classes that represent the data structure of your command line arguments, and use annotations to specify
+        how those arguments should be parsed and bound to the corresponding fields in your Java object. This allows you
+        to write command line interfaces that are more intuitive and easier to use, while also reducing the amount of
+        boilerplate code that is needed to parse and validate command line arguments.
     </description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Plugin versions -->
+        <jacoco.version>0.8.8</jacoco.version>
+        <surefire.version>3.0.0-M9</surefire.version>
     </properties>
 
     <dependencies>
@@ -34,7 +41,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M7</version>
+                <version>${surefire.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.surefire</groupId>
@@ -42,6 +49,48 @@
                         <version>3.0.0-M7</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <!-- Uncomment this when we are ready for shoot for 100% test coverage -->
+                    <!--
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>PACKAGE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>1</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    -->
+                </executions>
             </plugin>
         </plugins>
     </build>

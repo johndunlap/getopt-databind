@@ -28,29 +28,34 @@ import pro.johndunlap.getopt.annotation.GetOptHelp;
 import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 
+import java.util.List;
+
 @GetOptHelp(openingText = "This is the opening description", closingText = "This is the closing description")
 public class NamedConfig {
-    @GetOptNamed(shortName = 'L', longName = "long-value", required = true, description = "A long value", category = "Type tests")
+    @GetOptNamed(shortCode = 'L', longCode = "long-value", required = true, description = "A long value", category = "Type tests")
     private Long longValue;
-    @GetOptNamed(shortName = 'I', longName = "integer-value", required = true, description = "A integer value", category = "Type tests")
+    @GetOptNamed(shortCode = 'I', longCode = "integer-value", required = true, description = "A integer value", category = "Type tests")
     private Integer integerValue;
-    @GetOptNamed(shortName = 's', longName = "short-value", required = true, description = "A long value", category = "Type tests")
+    @GetOptNamed(shortCode = 's', longCode = "short-value", required = true, description = "A long value", category = "Type tests")
     private Short shortValue;
-    @GetOptNamed(shortName = 'b', longName = "byte-value", required = true, description = "A byte value", category = "Type tests")
+    @GetOptNamed(shortCode = 'b', longCode = "byte-value", required = true, description = "A byte value", category = "Type tests")
     private Byte byteValue;
-    @GetOptNamed(shortName = 'D', longName = "double-value", description = "A double value", category = "Type tests")
+    @GetOptNamed(shortCode = 'D', longCode = "double-value", description = "A double value", category = "Type tests")
     private Double doubleValue;
-    @GetOptNamed(shortName = 'F', longName = "float-value", description = "A float value", category = "Type tests")
+    @GetOptNamed(shortCode = 'F', longCode = "float-value", description = "A float value", category = "Type tests")
     private Float floatValue;
-    @GetOptNamed(shortName = 'S', longName = "string-value", description = "A string value", category = "Type tests")
+    @GetOptNamed(shortCode = 'S', longCode = "string-value", description = "A string value", category = "Type tests")
     private String stringValue;
-    @GetOptNamed(shortName = 'B', longName = "boolean-value", description = "A boolean value")
+    @GetOptNamed(shortCode = 'B', longCode = "boolean-value", description = "A boolean value")
     private boolean booleanValue = false;
-    @GetOptNamed(shortName = 'C', longName = "char-value", description = "A single character")
+    @GetOptNamed(shortCode = 'C', longCode = "char-value", description = "A single character")
     private Character charValue;
 
-    @GetOptNamed(longName = "help", shortName = 'H', description = "Displays this help message")
+    @GetOptNamed(longCode = "help", shortCode = 'H', description = "Displays this help message")
     private Boolean help;
+
+    @GetOptNamed(longCode = "string-list", shortCode = 'l', description = "A list of strings", category = "Type tests", collectionType = String.class)
+    private List<String> stringList;
 
     @GetOptIgnore
     private Boolean ignoredBoolean;
@@ -158,6 +163,15 @@ public class NamedConfig {
 
     public NamedConfig setIgnoredBoolean(Boolean ignoredBoolean) {
         this.ignoredBoolean = ignoredBoolean;
+        return this;
+    }
+
+    public List<String> getStringList() {
+        return stringList;
+    }
+
+    public NamedConfig setStringList(List<String> stringList) {
+        this.stringList = stringList;
         return this;
     }
 

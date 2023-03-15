@@ -24,6 +24,9 @@
  */
 package pro.johndunlap.getopt.annotation;
 
+import pro.johndunlap.getopt.DefaultValueParser;
+import pro.johndunlap.getopt.ValueParser;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,4 +37,12 @@ import java.lang.annotation.Target;
 public @interface GetOptOrdered {
     int order();
     boolean required() default false;
+
+    // TODO: Respect these in the help message and add them to the tests
+    String category() default "";
+    String description() default "";
+    Class<?> collectionType() default Object.class;
+
+    // TODO: Create a test which uses this
+    Class<? extends ValueParser<?>> parser() default DefaultValueParser.class;
 }

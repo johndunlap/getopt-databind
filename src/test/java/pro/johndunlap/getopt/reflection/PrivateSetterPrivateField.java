@@ -22,21 +22,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package pro.johndunlap.getopt;
+package pro.johndunlap.getopt.reflection;
 
-import org.junit.Test;
-import pro.johndunlap.getopt.config.OrderedConfig;
-import pro.johndunlap.getopt.exception.ParseException;
+public class PrivateSetterPrivateField {
+    private String privateField;
+    private boolean setterCalled = false;
 
-import static org.junit.Assert.assertEquals;
+    public String getPrivateField() {
+        return privateField;
+    }
 
-public class OrderedConfigTest {
-    @Test
-    public void testOrderedConfigWithRequiredValue() throws ParseException {
-        OrderedConfig orderedConfig = GetOpt.bind(OrderedConfig.class, new String[]{"zero", "one", "two", "three"});
-        assertEquals("zero", orderedConfig.getStringValue());
-        assertEquals("one", orderedConfig.getSomething());
-        assertEquals("two", orderedConfig.getList().get(0));
-        assertEquals("three", orderedConfig.getArray()[0]);
+    private PrivateSetterPrivateField setPrivateField(String privateField) {
+        this.privateField = privateField;
+        setterCalled = true;
+        return this;
+    }
+
+    public boolean wasSetterCalled() {
+        return setterCalled;
+    }
+
+    public PrivateSetterPrivateField setSetterCalled(boolean setterCalled) {
+        this.setterCalled = setterCalled;
+        return this;
     }
 }

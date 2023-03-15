@@ -24,7 +24,23 @@
  */
 package pro.johndunlap.getopt.exception;
 
+import java.lang.reflect.Field;
+
 public  class ParseException extends Exception {
+    private Field field;
+    private String value;
+
+    public ParseException(Field field, String value, String message) {
+        super(message);
+        this.field = field;
+        this.value = value;
+    }
+
+    public ParseException(String value, String message) {
+        super(message);
+        this.value = value;
+    }
+
     public ParseException(String message) {
         super(message);
     }
@@ -35,5 +51,13 @@ public  class ParseException extends Exception {
 
     public ParseException(Throwable cause) {
         super(cause);
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

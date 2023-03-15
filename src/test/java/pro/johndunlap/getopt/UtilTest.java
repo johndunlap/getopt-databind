@@ -25,8 +25,13 @@
 package pro.johndunlap.getopt;
 
 import org.junit.Test;
+import pro.johndunlap.getopt.config.NamedConfig;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class UtilTest {
 

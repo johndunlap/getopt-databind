@@ -22,26 +22,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package pro.johndunlap.getopt.exception;
+package pro.johndunlap.getopt.reflection;
 
-import java.lang.reflect.Field;
+public class PublicGetterPrivateField {
+    private String privateField;
+    private boolean getterCalled = false;
 
-public class NumericParseException extends ParseException {
-    private final Field field;
-    private final String value;
-
-    public NumericParseException(Field field, String value, String message) {
-        super(message);
-
-        this.field = field;
-        this.value = value;
+    public PublicGetterPrivateField(String privateField) {
+        setPrivateField(privateField);
     }
 
-    public Field getField() {
-        return field;
+    public String getPrivateField() {
+        getterCalled = true;
+        return privateField;
     }
 
-    public String getValue() {
-        return value;
+    public PublicGetterPrivateField setPrivateField(String privateField) {
+        this.privateField = privateField;
+        return this;
+    }
+
+    public boolean wasGetterCalled() {
+        return getterCalled;
+    }
+
+    public PublicGetterPrivateField setGetterCalled(boolean getterCalled) {
+        this.getterCalled = getterCalled;
+        return this;
     }
 }

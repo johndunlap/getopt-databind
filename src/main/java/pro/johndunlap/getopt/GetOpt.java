@@ -34,11 +34,6 @@ import java.util.*;
 
 import static pro.johndunlap.getopt.Parser.NEUTRAL;
 
-// TODO: Throw an exception when OrderedOption annotations are used on multiple types
-// TODO: Support OrderedOption in the help message
-// TODO: Support OrderedOption on collections
-// TODO: Throw exception when required options are missing
-// TODO: Allow binding to File/Directory attributes with automatic errors when the specified file doesn't exist
 public class GetOpt {
 
     public GetOpt() {

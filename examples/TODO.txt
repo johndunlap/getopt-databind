@@ -1,0 +1,2 @@
+Each folder in this directory should be a self contained maven project demonstrating how to use getopt-databind to
+achieve a specific goal.

@@ -27,9 +27,9 @@ package pro.johndunlap.getopt.config;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 
 public class DuplicateShortNameConfig {
-    @GetOptNamed(shortName = 'V')
+    @GetOptNamed(shortCode = 'V')
     private String firstValue;
-    @GetOptNamed(shortName = 'V')
+    @GetOptNamed(shortCode = 'V')
     private String secondValue;
 
     public DuplicateShortNameConfig() {

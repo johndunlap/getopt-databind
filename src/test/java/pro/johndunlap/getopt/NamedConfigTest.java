@@ -25,7 +25,6 @@
 package pro.johndunlap.getopt;
 
 import pro.johndunlap.getopt.config.NamedConfig;
-import pro.johndunlap.getopt.exception.NumericParseException;
 import pro.johndunlap.getopt.exception.ParseException;
 import org.junit.Test;
 
@@ -284,43 +283,44 @@ public class NamedConfigTest {
                 "  -D  --double-value   A double value\n" +
                 "  -F  --float-value    A float value\n" +
                 "  -S  --string-value   A string value\n" +
+                "  -l  --string-list    A list of strings\n" +
                 "This is the closing description";
 
         String actual = GetOpt.help(NamedConfig.class);
         assertEquals(expectedOutput, actual);
     }
 
-    @Test(expected = NumericParseException.class)
+    @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithLongField() throws ParseException {
         String[] args = {"--long-value", "abc"};
         GetOpt.bind(NamedConfig.class, args);
     }
 
-    @Test(expected = NumericParseException.class)
+    @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithIntegerField() throws ParseException {
         String[] args = {"--integer-value", "abc"};
         GetOpt.bind(NamedConfig.class, args);
     }
 
-    @Test(expected = NumericParseException.class)
+    @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithShortField() throws ParseException {
         String[] args = {"--short-value", "abc"};
         GetOpt.bind(NamedConfig.class, args);
     }
 
-    @Test(expected = NumericParseException.class)
+    @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithByteField() throws ParseException {
         String[] args = {"--byte-value", "abc"};
         GetOpt.bind(NamedConfig.class, args);
     }
 
-    @Test(expected = NumericParseException.class)
+    @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithDoubleField() throws ParseException {
         String[] args = {"--double-value", "abc"};
         GetOpt.bind(NamedConfig.class, args);
     }
 
-    @Test(expected = NumericParseException.class)
+    @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithFloatField() throws ParseException {
         String[] args = {"--float-value", "abc"};
         GetOpt.bind(NamedConfig.class, args);
@@ -334,5 +334,16 @@ public class NamedConfigTest {
         assertFalse(config.getBooleanValue());
         assertFalse(config.getHelp());
         assertNull(config.getIgnoredBoolean());
+    }
+
+    @Test
+    public void testAddNamedOptionToList() throws ParseException {
+        String[] args = {"-l", "one", "-l", "two", "-l", "three"};
+        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        assertNotNull(config);
+        assertEquals(3, config.getStringList().size());
+        assertEquals("one", config.getStringList().get(0));
+        assertEquals("two", config.getStringList().get(1));
+        assertEquals("three", config.getStringList().get(2));
     }
 }

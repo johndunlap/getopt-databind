@@ -30,7 +30,7 @@ import pro.johndunlap.getopt.misc.DateValueParser;
 import java.util.Date;
 
 public class DateConfig {
-    @GetOptNamed(longName = "date-value", shortName = 'D', parser = DateValueParser.class)
+    @GetOptNamed(longCode = "date-value", shortCode = 'D', parser = DateValueParser.class)
     private Date dateValue;
 
     public DateConfig() {
