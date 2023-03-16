@@ -30,8 +30,8 @@ import pro.johndunlap.getopt.annotation.GetOptNamed;
 import java.lang.reflect.Field;
 
 public class OptionInfo {
-    private String longName = "";
-    private char shortName = ' ';
+    private String flag = "";
+    private char code = ' ';
     private String description = "";
     private String category = "";
     private boolean required = false;
@@ -44,7 +44,7 @@ public class OptionInfo {
         GetOptNamed named = field.getAnnotation(GetOptNamed.class);
 
         if (named == null) {
-            longName = Parser.camelCaseToHyphenCase(field.getName());
+            flag = Parser.camelCaseToHyphenCase(field.getName());
 
             if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
                 description = "Boolean flag which requires no argument";
@@ -68,20 +68,20 @@ public class OptionInfo {
             }
 
         } else {
-            longName = named.flag();
-            shortName = named.code();
+            flag = named.flag();
+            code = named.code();
             description = named.description();
             category = named.category();
             required = named.required();
         }
     }
 
-    public String getLongName() {
-        return longName;
+    public String getFlag() {
+        return flag;
     }
 
-    public char getShortName() {
-        return shortName;
+    public char getCode() {
+        return code;
     }
 
     public String getDescription() {

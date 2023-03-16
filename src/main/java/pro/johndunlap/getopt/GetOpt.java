@@ -102,7 +102,7 @@ public class GetOpt {
             list.add(optionInfo);
 
             // Keep track of the longest long name so that we can pad the help message correctly
-            int length = optionInfo.getLongName().length();
+            int length = optionInfo.getFlag().length();
             if (length > longestLongName) {
                 longestLongName = length;
             }
@@ -127,13 +127,13 @@ public class GetOpt {
             for (OptionInfo nameOption : namedOptionList) {
                 sb.append("\n  ");
 
-                if (nameOption.getShortName() != ' ') {
-                    sb.append('-').append(nameOption.getShortName());
+                if (nameOption.getCode() != ' ') {
+                    sb.append('-').append(nameOption.getCode());
                 } else {
                     sb.append(' ');
                 }
 
-                String longName = nameOption.getLongName();
+                String longName = nameOption.getFlag();
 
                 // Pad the end of the long name
                 if (longName.equals("")) {
