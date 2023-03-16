@@ -10,6 +10,7 @@ This is a Java library which provides a flexible and customizable way to bind co
 
 ## Getting started
 * TODO: Jitpack instructions
+* TODO: Github Packages instructions
 * TODO: Simple demonstration
 * TODO: Reference example code
 
