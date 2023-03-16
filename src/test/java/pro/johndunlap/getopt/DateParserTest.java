@@ -24,12 +24,13 @@
  */
 package pro.johndunlap.getopt;
 
-import pro.johndunlap.getopt.config.DateConfig;
+import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.exception.ParseException;
-import pro.johndunlap.getopt.misc.DateValueParser;
+import pro.johndunlap.getopt.exception.RethrownException;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -44,5 +45,43 @@ public class DateParserTest {
         String result = new SimpleDateFormat(DateValueParser.DATE_FORMAT).format(config.getDateValue());
 
         assertEquals("2022-12-11", result);
+    }
+
+    private static class DateConfig {
+        @GetOptNamed(longCode = "date-value", shortCode = 'D', parser = DateValueParser.class)
+        private Date dateValue;
+
+        public DateConfig() {
+        }
+
+        public Date getDateValue() {
+            return dateValue;
+        }
+
+        public DateConfig setDateValue(Date dateValue) {
+            this.dateValue = dateValue;
+            return this;
+        }
+    }
+
+    private static class DateValueParser implements ValueParser<Date> {
+        public static final String DATE_FORMAT = "yyyy-MM-dd";
+
+        public DateValueParser() {
+        }
+
+        @Override
+        public Class<Date> getType() {
+            return Date.class;
+        }
+
+        @Override
+        public Date parse(String value) throws ParseException {
+            try {
+                return new SimpleDateFormat(DATE_FORMAT).parse(value);
+            } catch (java.text.ParseException e) {
+                throw new RethrownException(e);
+            }
+        }
     }
 }

@@ -25,18 +25,82 @@
 package pro.johndunlap.getopt;
 
 import org.junit.Test;
-import pro.johndunlap.getopt.config.OrderedConfig;
+import pro.johndunlap.getopt.annotation.GetOptHelp;
+import pro.johndunlap.getopt.annotation.GetOptOrdered;
 import pro.johndunlap.getopt.exception.ParseException;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class OrderedConfigTest {
     @Test
-    public void testOrderedConfigWithRequiredValue() throws ParseException {
+    public void testOrderedConfigWithFourElements() throws ParseException {
         OrderedConfig orderedConfig = GetOpt.bind(OrderedConfig.class, new String[]{"zero", "one", "two", "three"});
         assertEquals("zero", orderedConfig.getStringValue());
         assertEquals("one", orderedConfig.getSomething());
         assertEquals("two", orderedConfig.getList().get(0));
         assertEquals("three", orderedConfig.getArray()[0]);
+        assertEquals(1, orderedConfig.getArray().length);
+    }
+
+    @GetOptHelp(openingText = "This is the opening description", closingText = "This is the closing description")
+    private static class OrderedConfig {
+        @GetOptOrdered(order = 1, required = true, collectionType = String.class)
+        private String something;
+        @GetOptOrdered(order = 2, collectionType = String.class)
+        private List<String> list;
+        @GetOptOrdered(order = 0, collectionType = String.class)
+        private String stringValue;
+        @GetOptOrdered(order = 3, collectionType = String.class)
+        private String[] array;
+
+        public OrderedConfig() {
+        }
+
+        public String getSomething() {
+            return something;
+        }
+
+        public OrderedConfig setSomething(String something) {
+            this.something = something;
+            return this;
+        }
+
+        public List<String> getList() {
+            return list;
+        }
+
+        public OrderedConfig setList(List<String> list) {
+            this.list = list;
+            return this;
+        }
+
+        public String getStringValue() {
+            return stringValue;
+        }
+
+        public OrderedConfig setStringValue(String stringValue) {
+            this.stringValue = stringValue;
+            return this;
+        }
+
+        public String[] getArray() {
+            return array;
+        }
+
+        public OrderedConfig setArray(String[] array) {
+            this.array = array;
+            return this;
+        }
+
+        @Override
+        public String toString() {
+            return "OrderedConfig{" +
+                    "longValue='" + something + '\'' +
+                    ", list=" + list +
+                    ", stringValue='" + stringValue + '\'' +
+                    '}';
+        }
     }
 }

@@ -24,7 +24,6 @@
  */
 package pro.johndunlap.getopt;
 
-import pro.johndunlap.getopt.config.NoAnnotationConfig;
 import pro.johndunlap.getopt.exception.ParseException;
 import org.junit.Test;
 
@@ -67,5 +66,51 @@ public class NoAnnotationTest {
         String actual = GetOpt.help(NoAnnotationConfig.class);
         assertNotNull(actual);
         assertEquals(expected, actual);
+    }
+
+    private static class NoAnnotationConfig {
+        private Integer integerValue;
+        private String stringValue;
+        private String somethingElse;
+        private Boolean onOrOff;
+
+        public NoAnnotationConfig() {
+        }
+
+        public Integer getIntegerValue() {
+            return integerValue;
+        }
+
+        public NoAnnotationConfig setIntegerValue(Integer integerValue) {
+            this.integerValue = integerValue;
+            return this;
+        }
+
+        public String getStringValue() {
+            return stringValue;
+        }
+
+        public NoAnnotationConfig setStringValue(String stringValue) {
+            this.stringValue = stringValue;
+            return this;
+        }
+
+        public String getSomethingElse() {
+            return somethingElse;
+        }
+
+        public NoAnnotationConfig setSomethingElse(String somethingElse) {
+            this.somethingElse = somethingElse;
+            return this;
+        }
+
+        public Boolean getOnOrOff() {
+            return onOrOff;
+        }
+
+        public NoAnnotationConfig setOnOrOff(Boolean onOrOff) {
+            this.onOrOff = onOrOff;
+            return this;
+        }
     }
 }

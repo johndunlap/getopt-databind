@@ -24,9 +24,7 @@
  */
 package pro.johndunlap.getopt;
 
-import pro.johndunlap.getopt.config.DuplicateLongNameConfig;
-import pro.johndunlap.getopt.config.DuplicateShortNameConfig;
-import pro.johndunlap.getopt.config.NamedConfig;
+import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.exception.*;
 import org.junit.Test;
 
@@ -92,5 +90,76 @@ public class ExceptionTest {
     public void testDuplicateShortName() throws ParseException {
         String[] args = {"--value", "abc123"};
         DuplicateShortNameConfig config = GetOpt.bind(DuplicateShortNameConfig.class, args);
+    }
+
+    private static class DuplicateLongNameConfig {
+        @GetOptNamed(longCode = "value")
+        private String firstValue;
+        @GetOptNamed(longCode = "value")
+        private String secondValue;
+
+        public DuplicateLongNameConfig() {
+        }
+
+        public String getFirstValue() {
+            return firstValue;
+        }
+
+        public DuplicateLongNameConfig setFirstValue(String firstValue) {
+            this.firstValue = firstValue;
+            return this;
+        }
+
+        public String getSecondValue() {
+            return secondValue;
+        }
+
+        public DuplicateLongNameConfig setSecondValue(String secondValue) {
+            this.secondValue = secondValue;
+            return this;
+        }
+    }
+
+    private static class DuplicateShortNameConfig {
+        @GetOptNamed(shortCode = 'V')
+        private String firstValue;
+        @GetOptNamed(shortCode = 'V')
+        private String secondValue;
+
+        public DuplicateShortNameConfig() {
+        }
+
+        public String getFirstValue() {
+            return firstValue;
+        }
+
+        public DuplicateShortNameConfig setFirstValue(String firstValue) {
+            this.firstValue = firstValue;
+            return this;
+        }
+
+        public String getSecondValue() {
+            return secondValue;
+        }
+
+        public DuplicateShortNameConfig setSecondValue(String secondValue) {
+            this.secondValue = secondValue;
+            return this;
+        }
+    }
+
+    private static class NamedConfig {
+        private static String message;
+
+        public NamedConfig() {
+        }
+
+        public static String getMessage() {
+            return message;
+        }
+
+        public static void setMessage(String message) {
+            NamedConfig.message = message;
+        }
     }
 }
