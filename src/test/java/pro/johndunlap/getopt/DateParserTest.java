@@ -48,7 +48,7 @@ public class DateParserTest {
     }
 
     private static class DateConfig {
-        @GetOptNamed(longCode = "date-value", shortCode = 'D', parser = DateValueParser.class)
+        @GetOptNamed(flag = "date-value", code = 'D', parser = DateValueParser.class)
         private Date dateValue;
 
         public DateConfig() {

@@ -46,26 +46,26 @@ public class Main {
 
   @GetOptHelp(openingText = "This is the opening description", closingText = "This is the closing description")
   public static class Config {
-    @GetOptNamed(shortCode = 'L', longCode = "long-value", required = true, description = "A long value", category = "Type tests")
+    @GetOptNamed(code = 'L', flag = "long-value", required = true, description = "A long value", category = "Type tests")
     private Long longValue;
-    @GetOptNamed(shortCode = 'I', longCode = "integer-value", required = true, description = "A integer value", category = "Type tests")
+    @GetOptNamed(code = 'I', flag = "integer-value", required = true, description = "A integer value", category = "Type tests")
     private Integer integerValue;
-    @GetOptNamed(shortCode = 's', longCode = "short-value", required = true, description = "A short value", category = "Type tests")
+    @GetOptNamed(code = 's', flag = "short-value", required = true, description = "A short value", category = "Type tests")
     private Short shortValue;
-    @GetOptNamed(shortCode = 'b', longCode = "byte-value", required = true, description = "A byte value", category = "Type tests")
+    @GetOptNamed(code = 'b', flag = "byte-value", required = true, description = "A byte value", category = "Type tests")
     private Byte byteValue;
-    @GetOptNamed(shortCode = 'D', longCode = "double-value", description = "A double value", category = "Type tests")
+    @GetOptNamed(code = 'D', flag = "double-value", description = "A double value", category = "Type tests")
     private Double doubleValue;
-    @GetOptNamed(shortCode = 'F', longCode = "float-value", description = "A float value", category = "Type tests")
+    @GetOptNamed(code = 'F', flag = "float-value", description = "A float value", category = "Type tests")
     private Float floatValue;
-    @GetOptNamed(shortCode = 'S', longCode = "string-value", description = "A string value", category = "Type tests")
+    @GetOptNamed(code = 'S', flag = "string-value", description = "A string value", category = "Type tests")
     private String stringValue;
-    @GetOptNamed(shortCode = 'B', longCode = "boolean-value", description = "A boolean value")
+    @GetOptNamed(code = 'B', flag = "boolean-value", description = "A boolean value")
     private boolean booleanValue = false;
-    @GetOptNamed(shortCode = 'C', longCode = "char-value", description = "A single character")
+    @GetOptNamed(code = 'C', flag = "char-value", description = "A single character")
     private Character charValue;
 
-    @GetOptNamed(longCode = "help", shortCode = 'H', description = "Displays this help message")
+    @GetOptNamed(flag = "help", code = 'H', description = "Displays this help message")
     private Boolean help;
 
     @GetOptIgnore

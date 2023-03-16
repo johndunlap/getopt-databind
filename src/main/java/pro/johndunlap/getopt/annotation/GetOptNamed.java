@@ -35,8 +35,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface GetOptNamed {
-    char shortCode() default ' ';
-    String longCode() default "";
+    char code() default ' ';
+    String flag() default "";
     boolean required() default false;
     String category() default "";
     String description() default "";

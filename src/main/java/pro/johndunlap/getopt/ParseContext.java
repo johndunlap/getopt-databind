@@ -24,7 +24,6 @@
  */
 package pro.johndunlap.getopt;
 
-import javafx.css.ParsedValue;
 import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
@@ -83,18 +82,18 @@ public class ParseContext<T> {
                 }
 
                 if (namedOption != null) {
-                    if (!namedOption.longCode().equals("")) {
-                        if (!fields.containsKey(namedOption.longCode())) {
-                            fields.put(namedOption.longCode(), field);
+                    if (!namedOption.flag().equals("")) {
+                        if (!fields.containsKey(namedOption.flag())) {
+                            fields.put(namedOption.flag(), field);
                         } else {
-                            throw new DuplicateOptionException("Duplicate option name: " + namedOption.longCode(), field);
+                            throw new DuplicateOptionException("Duplicate option name: " + namedOption.flag(), field);
                         }
 
-                    } if (namedOption.shortCode() != ' ') {
-                        if (!fields.containsKey(namedOption.shortCode() + "")) {
-                            fields.put(namedOption.shortCode() + "", field);
+                    } if (namedOption.code() != ' ') {
+                        if (!fields.containsKey(namedOption.code() + "")) {
+                            fields.put(namedOption.code() + "", field);
                         } else {
-                            throw new DuplicateOptionException("Duplicate option name: " + namedOption.shortCode(), field);
+                            throw new DuplicateOptionException("Duplicate option name: " + namedOption.code(), field);
                         }
                     }
                 } else {

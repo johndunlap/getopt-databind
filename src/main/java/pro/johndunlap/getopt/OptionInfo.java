@@ -68,8 +68,8 @@ public class OptionInfo {
             }
 
         } else {
-            longName = named.longCode();
-            shortName = named.shortCode();
+            longName = named.flag();
+            shortName = named.code();
             description = named.description();
             category = named.category();
             required = named.required();

@@ -93,9 +93,9 @@ public class ExceptionTest {
     }
 
     private static class DuplicateLongNameConfig {
-        @GetOptNamed(longCode = "value")
+        @GetOptNamed(flag = "value")
         private String firstValue;
-        @GetOptNamed(longCode = "value")
+        @GetOptNamed(flag = "value")
         private String secondValue;
 
         public DuplicateLongNameConfig() {
@@ -121,9 +121,9 @@ public class ExceptionTest {
     }
 
     private static class DuplicateShortNameConfig {
-        @GetOptNamed(shortCode = 'V')
+        @GetOptNamed(code = 'V')
         private String firstValue;
-        @GetOptNamed(shortCode = 'V')
+        @GetOptNamed(code = 'V')
         private String secondValue;
 
         public DuplicateShortNameConfig() {
