@@ -25,23 +25,33 @@ package pro.johndunlap.getopt;
  * THE SOFTWARE.
  * #L%
  */
-
-import pro.johndunlap.getopt.annotation.GetOptNamed;
-import pro.johndunlap.getopt.exception.*;
-import org.junit.Test;
-
-import java.lang.reflect.Field;
-
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Field;
+import org.junit.Test;
+import pro.johndunlap.getopt.annotation.GetOptNamed;
+import pro.johndunlap.getopt.exception.DuplicateOptionException;
+import pro.johndunlap.getopt.exception.InaccessibleFieldException;
+import pro.johndunlap.getopt.exception.MissingDefaultConstructorException;
+import pro.johndunlap.getopt.exception.ParseException;
+import pro.johndunlap.getopt.exception.RethrownException;
+import pro.johndunlap.getopt.exception.UnsupportedTypeConversionException;
+
+/**
+ * Tests for exceptions.
+ *
+ * @author John Dunlap
+ */
 public class ExceptionTest {
     @Test(expected = InaccessibleFieldException.class)
-    public void testInaccessibleFieldExceptionConstructorMessageThrowableClassType() throws InaccessibleFieldException {
+    public void testInaccessibleFieldExceptionConstructorMessageThrowableClassType()
+            throws InaccessibleFieldException {
         throw new InaccessibleFieldException("Message", new Exception(), Integer.class);
     }
 
     @Test(expected = MissingDefaultConstructorException.class)
-    public void testMissingDefaultConstructorExceptionConstructorMessageThrowableClassType() throws MissingDefaultConstructorException {
+    public void testMissingDefaultConstructorExceptionConstructorMessageThrowableClassType()
+            throws MissingDefaultConstructorException {
         throw new MissingDefaultConstructorException("Message", new Exception(), Integer.class);
     }
 
@@ -58,12 +68,14 @@ public class ExceptionTest {
     }
 
     @Test(expected = RethrownException.class)
-    public void testRethrownRuntimeExceptionConstructorThrowable() throws RethrownException {
+    public void testRethrownRuntimeExceptionConstructorThrowable()
+            throws RethrownException {
         throw new RethrownException(new Exception());
     }
 
     @Test(expected = UnsupportedTypeConversionException.class)
-    public void testUnsupportedTypeConversionExceptionConstructorMessage() throws UnsupportedTypeConversionException {
+    public void testUnsupportedTypeConversionExceptionConstructorMessage()
+            throws UnsupportedTypeConversionException {
         throw new UnsupportedTypeConversionException("Message");
     }
 

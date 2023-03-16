@@ -26,18 +26,38 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
+import static java.lang.String.format;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
 import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
-import pro.johndunlap.getopt.exception.*;
+import pro.johndunlap.getopt.exception.DuplicateOptionException;
+import pro.johndunlap.getopt.exception.InaccessibleFieldException;
+import pro.johndunlap.getopt.exception.MissingDefaultConstructorException;
+import pro.johndunlap.getopt.exception.ParseException;
+import pro.johndunlap.getopt.exception.RethrownException;
+import pro.johndunlap.getopt.exception.UnsupportedTypeConversionException;
 
-import java.lang.reflect.*;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
-
-import static java.lang.String.format;
-
+/**
+ * Maintains the state of the parsing process.
+ *
+ * @param <T> The type of the object being populated with parsed arguments
+ */
 public class ParseContext<T> {
     private final Map<String, Field> fields = new HashMap<>();
     private final List<Field> orderedFields = new ArrayList<>();
@@ -46,6 +66,13 @@ public class ParseContext<T> {
     private String currentName;
     private int currentOrderedIndex = 0;
 
+    /**
+     * Create a new ParseContext for the given class type and string arguments.
+     *
+     * @param classType The class type which will be instantiated and populated with the given arguments
+     * @param args The string arguments to parse
+     * @throws MissingDefaultConstructorException If the class type does not have a public default constructor
+     */
     public ParseContext(Class<T> classType, String[] args) throws ParseException {
         this.queue = new Stack<>();
 
@@ -58,7 +85,8 @@ public class ParseContext<T> {
         try {
             this.instance = classType.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
-            throw new MissingDefaultConstructorException(format("Class %s must have a public default constructor", classType.getCanonicalName()), e, classType);
+            String message = format("Class %s must have a public default constructor", classType.getCanonicalName());
+            throw new MissingDefaultConstructorException(message, e, classType);
         }
 
         // Associate flag names with class fields
@@ -91,7 +119,9 @@ public class ParseContext<T> {
                             throw new DuplicateOptionException("Duplicate option name: " + namedOption.flag(), field);
                         }
 
-                    } if (namedOption.code() != ' ') {
+                    }
+
+                    if (namedOption.code() != ' ') {
                         if (!fields.containsKey(namedOption.code() + "")) {
                             fields.put(namedOption.code() + "", field);
                         } else {
@@ -105,7 +135,9 @@ public class ParseContext<T> {
 
                     if (!fields.containsKey(longName)) {
                         fields.put(longName, field);
-                    } if (!fields.containsKey(shortName)) {
+                    }
+
+                    if (!fields.containsKey(shortName)) {
                         fields.put(shortName, field);
                     }
                 }
@@ -133,6 +165,12 @@ public class ParseContext<T> {
         return queue;
     }
 
+    /**
+     * Sets the value of the current ordered property in the parse context to the given string value.
+     *
+     * @param stringValue The string value to parse and set
+     * @throws ParseException If the value cannot be parsed
+     */
     public void setOrderedValue(String stringValue) throws ParseException {
         int orderedIndex = currentOrderedIndex;
         try {
@@ -167,19 +205,21 @@ public class ParseContext<T> {
                 Object parsedValue = parse(stringValue, fieldType, valueParser);
                 ReflectionUtil.setFieldValue(field, instance, parsedValue);
             }
-        } catch (RuntimeException|IllegalAccessException e) {
-            e.printStackTrace();
-            throw new InaccessibleFieldException(format("Failed to set value %s for position %s", stringValue, orderedIndex), e, instance.getClass());
+        } catch (RuntimeException | IllegalAccessException e) {
+            String message = format("Failed to set value %s for position %s", stringValue, orderedIndex);
+            throw new InaccessibleFieldException(message, e, instance.getClass());
         }
     }
 
     /**
      * This is broken out into its own function because the annotations required for silencing
      * the warnings cannot be used at the statement level.
+     *
      * @param collection The collection which will be added to
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    protected Object addToCollection(Field field, Object collection, Class<?> collectionType, Class<?> elementType, Object parsedValue) {
+    protected Object addToCollection(Field field, Object collection, Class<?> collectionType, Class<?> elementType,
+                                     Object parsedValue) {
         // Attempt to initialize the collection if it is null
         if (collection == null) {
             if (Collection.class.isAssignableFrom(collectionType)) {
@@ -217,6 +257,12 @@ public class ParseContext<T> {
         return collection;
     }
 
+    /**
+     * Sets the value of the current named property in the parse context to the given value.
+     *
+     * @param value The value to set
+     * @throws ParseException If the value cannot be parsed
+     */
     public void setNamedValue(String value) throws ParseException {
         try {
             Field field = fields.get(currentName);
@@ -242,7 +288,8 @@ public class ParseContext<T> {
                 // It is not possible to add an element to a collection without this annotation because we need to know
                 // what type the collection contains
                 if (named == null) {
-                    throw new NullPointerException(GetOptNamed.class.getName() + " is missing. This should never happen");
+                    String message = GetOptNamed.class.getName() + " is missing. This should never happen";
+                    throw new NullPointerException(message);
                 }
 
                 Object parsedValue = parse(value, named.collectionType(), valueParser);
@@ -255,12 +302,14 @@ public class ParseContext<T> {
             } else {
                 ReflectionUtil.setFieldValue(field, instance, parse(value, field.getType(), valueParser));
             }
-        } catch (RuntimeException|IllegalAccessException e) {
-            throw new InaccessibleFieldException(format("Failed to set value %s for flag %s", value, currentName), e, instance.getClass());
+        } catch (RuntimeException | IllegalAccessException e) {
+            String message = format("Failed to set value %s for flag %s", value, currentName);
+            throw new InaccessibleFieldException(message, e, instance.getClass());
         }
     }
 
-    private Object parse(String value, Class<?> fieldType, Class<? extends ValueParser<?>> valueParser) throws ParseException {
+    private Object parse(String value, Class<?> fieldType, Class<? extends ValueParser<?>> valueParser)
+            throws ParseException {
         Object parsed = null;
 
         try {
@@ -284,9 +333,7 @@ public class ParseContext<T> {
                 parsed = new BigInteger(value);
             } else if (fieldType.equals(BigDecimal.class)) {
                 parsed = new BigDecimal(value);
-            }
-
-            else if (fieldType.equals(Character.class) || fieldType.equals(char.class)) {
+            } else if (fieldType.equals(Character.class) || fieldType.equals(char.class)) {
                 // Throw an exception if the wrong number of characters are passed
                 if (value == null || value.length() != 1) {
                     throw new ParseException(value, format("Value %s must contain exactly one character", value));
@@ -325,6 +372,11 @@ public class ParseContext<T> {
         return type.equals(Boolean.class) || type.equals(boolean.class);
     }
 
+    /**
+     * Returns true if the current flag is a boolean flag.
+     *
+     * @return true if the current flag is a boolean flag
+     */
     public boolean isBoolean() {
         Field field = fields.get(currentName);
 

@@ -26,25 +26,64 @@ package pro.johndunlap.getopt.annotation;
  * #L%
  */
 
-import pro.johndunlap.getopt.DefaultValueParser;
-import pro.johndunlap.getopt.ValueParser;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import pro.johndunlap.getopt.DefaultValueParser;
+import pro.johndunlap.getopt.ValueParser;
 
+/**
+ * Annotation used to mark a field as an ordered argument. Ordered arguments are arguments which are not specified with
+ * a code/flag. They are simply specified in the order in which they appear in the command line.
+ *
+ * @author John Dunlap
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface GetOptOrdered {
+    /**
+     * The index into the array of ordered arguments(not specified with a code/flag). This index is used to determine
+     * which orderd values are applied to which fields.
+     *
+     * @return The index into the array of ordered arguments.
+     */
     int order();
+
+    /**
+     * True if the option requires a value. If true and if a value is not available, an exception will be thrown.
+     *
+     * @return True if the option requires a value.
+     */
     boolean required() default false;
 
-    // TODO: Respect these in the help message and add them to the tests
+    /**
+     * The category in which the option should appear in the help message. This is used in the help message.
+     *
+     * @return The category of the option.
+     */
     String category() default "";
+
+    /**
+     * The description of the option. This is used in the help message.
+     *
+     * @return The description of the option.
+     */
     String description() default "";
+
+    /**
+     * This is only necessary if the field is a collection. In that case, this is the type of the objects which the
+     * collection will contain. This is necessary because of Java type erasure. Generics are not available at runtime.
+     *
+     * @return The type of the objects which the collection will contain.
+     */
     Class<?> collectionType() default Object.class;
 
-    // TODO: Create a test which uses this
+
+    /**
+     * The parser to use for this option. This is only necessary when the field type is not supported.
+     *
+     * @return The parser to use for this option.
+     */
     Class<? extends ValueParser<?>> parser() default DefaultValueParser.class;
 }

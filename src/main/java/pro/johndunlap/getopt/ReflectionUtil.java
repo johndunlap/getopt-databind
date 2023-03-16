@@ -26,7 +26,7 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import pro.johndunlap.getopt.exception.ParseException;
+import static java.lang.String.format;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -35,9 +35,13 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import pro.johndunlap.getopt.exception.ParseException;
 
-import static java.lang.String.format;
-
+/**
+ * A utility class which contains reflective methods for working with Java objects.
+ *
+ * @author John Dunlap
+ */
 public class ReflectionUtil {
 
     private ReflectionUtil() {
@@ -62,7 +66,7 @@ public class ReflectionUtil {
         try {
             // Try public getter method first
             return getterMethod.invoke(instance);
-        } catch (NullPointerException| InvocationTargetException |IllegalAccessException e1) {
+        } catch (NullPointerException | InvocationTargetException | IllegalAccessException e1) {
             try {
                 // Next, try public field
                 return field.get(instance);
@@ -71,7 +75,7 @@ public class ReflectionUtil {
                     // Next try private getter method
                     getterMethod.setAccessible(true);
                     return getterMethod.invoke(instance);
-                } catch (NullPointerException|InvocationTargetException|IllegalAccessException e3) {
+                } catch (NullPointerException | InvocationTargetException | IllegalAccessException e3) {
                     // Finally, try private field
                     field.setAccessible(true);
                     return field.get(instance);
@@ -81,35 +85,35 @@ public class ReflectionUtil {
     }
 
     /**
-     * This method attempts to set the value of a field without violating its declared access modifiers. However, if it
-     * is unable to do so, it will override the access modifiers and try again. If available, setter methods will be
-     * used. Direct field access will only be used as a last resort. However, if there is a public field with a private
-     * setter (unlikely), then public field will be used. If both the field and the setter are private, the setter will
-     * be used.
+     * This method attempts to set the value of a field without violating its declared access
+     * modifiers. However, if it is unable to do so, it will override the access modifiers and
+     * try again. If available, setter methods will be used. Direct field access will only be
+     * used as a last resort. However, if there is a public field with a private setter
+     * (unlikely), then public field will be used. If both the field and the setter are
+     * private,the setter will be used.
      *
      * @param field The field to which the value should be set
      * @param instance The instance to which the value should be set
      * @param value The value to set
      * @throws IllegalAccessException Thrown if the field or method is inaccessible
      */
-    public static void setFieldValue(Field field, Object instance, Object value) throws IllegalAccessException {
+    public static void setFieldValue(Field field, Object instance, Object value)
+            throws IllegalAccessException {
         Method setterMethod = findSetterMethod(field);
 
         try {
             // First, try public setter method
             setterMethod.invoke(instance, value);
-        } catch (NullPointerException|IllegalAccessException|InvocationTargetException e1) {
+        } catch (NullPointerException | IllegalAccessException | InvocationTargetException e1) {
             try {
                 // Next, try public field
                 field.set(instance, value);
-            }
-
-            catch (IllegalAccessException e2) {
+            } catch (IllegalAccessException e2) {
                 try {
                     // Next, try private setter method
                     setterMethod.setAccessible(true);
                     setterMethod.invoke(instance, value);
-                } catch (NullPointerException|IllegalAccessException|InvocationTargetException e3) {
+                } catch (NullPointerException | IllegalAccessException | InvocationTargetException e3) {
                     // Finally, try private field
                     field.setAccessible(true);
                     field.set(instance, value);
@@ -118,8 +122,16 @@ public class ReflectionUtil {
         }
     }
 
+    /**
+     * Attempts to find a setter method for the given field. If one is not found, null is returned.
+     *
+     * @param field The field for which to find a setter method
+     * @return The setter method, or null if one is not found
+     */
     public static Method findSetterMethod(Field field) {
-        String setterName = "set" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
+        String setterName = "set" + field.getName().substring(0, 1).toUpperCase()
+                + field.getName().substring(1);
+
         Method setterMethod;
 
         // Attempt to find a setter method for the given field
@@ -134,8 +146,16 @@ public class ReflectionUtil {
         return setterMethod;
     }
 
+    /**
+     * Attempts to find a getter method for the given field. If one is not found, null is returned.
+     *
+     * @param field The field for which to find a getter method
+     * @return The getter method, or null if one is not found
+     */
     public static Method findGetterMethod(Field field) {
-        String getterName = "get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
+        String getterName = "get" + field.getName().substring(0, 1).toUpperCase()
+                + field.getName().substring(1);
+
         Method getterMethod;
 
         // Attempt to find a setter method for the given field
@@ -149,6 +169,13 @@ public class ReflectionUtil {
         return getterMethod;
     }
 
+    /**
+     * Attempts to find a no-arg constructor for the given class. If one is not found, null is
+     * returned.
+     *
+     * @param clazz The class for which to find a no-arg constructor
+     * @return The no-arg constructor, or null if one is not found
+     */
     public static Constructor<?> getNoArgConstructor(Class<?> clazz) {
         Constructor<?>[] constructors = clazz.getConstructors();
         Constructor<?> noArgConstructor = null;
@@ -176,6 +203,15 @@ public class ReflectionUtil {
         throw new RuntimeException("IMPLEMENT ME");
     }
 
+    /**
+     * Parses a string value into an object of the given type.
+     *
+     * @param fieldType The type of the object to be returned
+     * @param value The string value to be parsed
+     * @return The parsed value
+     * @param <T> The type of the object to be returned
+     * @throws ParseException Thrown if the value cannot be parsed into the given type
+     */
     @SuppressWarnings("unchecked")
     public static <T> T parse(Class<T> fieldType, String value) throws ParseException {
         if (fieldType == null) {
@@ -203,7 +239,10 @@ public class ReflectionUtil {
         } else if (isCharacter(fieldType)) {
             // Throw an exception if the wrong number of characters are passed
             if (value == null || value.length() != 1) {
-                throw new ParseException(value, format("Value \"%s\" must be exactly one character in length", value));
+                throw new ParseException(
+                        value,
+                        format("Value \"%s\" must be exactly one character in length", value)
+                );
             }
 
             return (T) Character.valueOf(value.charAt(0));
@@ -218,6 +257,12 @@ public class ReflectionUtil {
         throw new ParseException("Unable to parse value " + value + " into type " + fieldType);
     }
 
+    /**
+     * Returns true if the given type is a byte type (Boolean or boolean).
+     *
+     * @param type The type to check
+     * @return True if the given type is a boolean type
+     */
     public static boolean isBoolean(Class<?> type) {
         if (type == null) {
             return false;
@@ -226,6 +271,12 @@ public class ReflectionUtil {
         return type.equals(Boolean.class) || type.equals(boolean.class);
     }
 
+    /**
+     * Returns true if the given type is a byte type (Integer or int).
+     *
+     * @param type The type to check
+     * @return True if the given type is a byte type
+     */
     public static boolean isInteger(Class<?> type) {
         if (type == null) {
             return false;
@@ -234,6 +285,12 @@ public class ReflectionUtil {
         return type.equals(Integer.class) || type.equals(int.class);
     }
 
+    /**
+     * Returns true if the given type is a byte type (Short or short).
+     *
+     * @param type The type to check
+     * @return True if the given type is a short type
+     */
     public static boolean isShort(Class<?> type) {
         if (type == null) {
             return false;
@@ -242,6 +299,12 @@ public class ReflectionUtil {
         return type.equals(Short.class) || type.equals(short.class);
     }
 
+    /**
+     * Returns true if the given type is a byte type (Long or long).
+     *
+     * @param type The type to check
+     * @return True if the given type is a long type
+     */
     public static boolean isLong(Class<?> type) {
         if (type == null) {
             return false;
@@ -250,6 +313,12 @@ public class ReflectionUtil {
         return type.equals(Long.class) || type.equals(long.class);
     }
 
+    /**
+     * Returns true if the given type is a float type (Float or float).
+     *
+     * @param type The type to check
+     * @return True if the given type is a float type
+     */
     public static boolean isFloat(Class<?> type) {
         if (type == null) {
             return false;
@@ -258,6 +327,12 @@ public class ReflectionUtil {
         return type.equals(Float.class) || type.equals(float.class);
     }
 
+    /**
+     * Returns true if the given type is a double type (Double or double).
+     *
+     * @param type The type to check
+     * @return True if the given type is a double type
+     */
     public static boolean isDouble(Class<?> type) {
         if (type == null) {
             return false;
@@ -266,6 +341,12 @@ public class ReflectionUtil {
         return type.equals(Double.class) || type.equals(double.class);
     }
 
+    /**
+     * Returns true if the given type is a byte type (Byte or byte).
+     *
+     * @param type The type to check
+     * @return True if the given type is a byte type
+     */
     public static boolean isByte(Class<?> type) {
         if (type == null) {
             return false;
@@ -274,6 +355,12 @@ public class ReflectionUtil {
         return type.equals(Byte.class) || type.equals(byte.class);
     }
 
+    /**
+     * Returns true if the given type is a character type (Character or char).
+     *
+     * @param type The type to check
+     * @return True if the given type is a character type
+     */
     public static boolean isCharacter(Class<?> type) {
         if (type == null) {
             return false;

@@ -12,10 +12,10 @@ package pro.johndunlap.getopt;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,16 +26,24 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import org.junit.Test;
 import pro.johndunlap.getopt.annotation.GetOptHelp;
 import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.exception.ParseException;
-import org.junit.Test;
 
-import java.util.List;
-
-import static org.junit.Assert.*;
-
+/**
+ * Tests for {@link NamedConfig}.
+ *
+ * @author John Dunlap
+ */
 public class NamedConfigTest {
     @Test
     public void testBindMethodWithNoArguments() throws ParseException {
@@ -129,7 +137,7 @@ public class NamedConfigTest {
         String[] args = {"--float-value", "3.12345"};
         NamedConfig config = GetOpt.bind(NamedConfig.class, args);
         assertNotNull(config);
-        assertEquals(Float.valueOf((float)3.12345), config.getFloatValue());
+        assertEquals(Float.valueOf((float) 3.12345), config.getFloatValue());
     }
 
     @Test
@@ -137,7 +145,7 @@ public class NamedConfigTest {
         String[] args = {"-F", "3.12345"};
         NamedConfig config = GetOpt.bind(NamedConfig.class, args);
         assertNotNull(config);
-        assertEquals(Float.valueOf((float)3.12345), config.getFloatValue());
+        assertEquals(Float.valueOf((float) 3.12345), config.getFloatValue());
     }
 
     @Test
@@ -236,12 +244,12 @@ public class NamedConfigTest {
     @Test
     public void testSuccessfullyParseNumericOptionsWithMaximumValues() throws ParseException {
         String[] args = {
-                "--long-value", "9223372036854775807",
-                "--integer-value", "2147483647",
-                "--short-value", "32767",
-                "--byte-value", "127",
-                "--double-value", "1.7976931348623157E308",
-                "--float-value", "3.4028235E38"
+            "--long-value", "9223372036854775807",
+            "--integer-value", "2147483647",
+            "--short-value", "32767",
+            "--byte-value", "127",
+            "--double-value", "1.7976931348623157E308",
+            "--float-value", "3.4028235E38"
         };
         NamedConfig config = GetOpt.bind(NamedConfig.class, args);
         assertNotNull(config);
@@ -276,21 +284,21 @@ public class NamedConfigTest {
 
     @Test
     public void testHelpMethod() {
-        String expectedOutput = "This is the opening description\n" +
-                "  -B  --boolean-value  A boolean value\n" +
-                "  -C  --char-value     A single character\n" +
-                "  -H  --help           Displays this help message\n" +
-                "\n" +
-                "Type tests:\n" +
-                "  -L  --long-value     A long value (required)\n" +
-                "  -I  --integer-value  A integer value (required)\n" +
-                "  -s  --short-value    A long value (required)\n" +
-                "  -b  --byte-value     A byte value (required)\n" +
-                "  -D  --double-value   A double value\n" +
-                "  -F  --float-value    A float value\n" +
-                "  -S  --string-value   A string value\n" +
-                "  -l  --string-list    A list of strings\n" +
-                "This is the closing description";
+        String expectedOutput = "This is the opening description\n"
+                + "  -B  --boolean-value  A boolean value\n"
+                + "  -C  --char-value     A single character\n"
+                + "  -H  --help           Displays this help message\n"
+                + "\n"
+                + "Type tests:\n"
+                + "  -L  --long-value     A long value (required)\n"
+                + "  -I  --integer-value  A integer value (required)\n"
+                + "  -s  --short-value    A long value (required)\n"
+                + "  -b  --byte-value     A byte value (required)\n"
+                + "  -D  --double-value   A double value\n"
+                + "  -F  --float-value    A float value\n"
+                + "  -S  --string-value   A string value\n"
+                + "  -l  --string-list    A list of strings\n"
+                + "This is the closing description";
 
         String actual = GetOpt.help(NamedConfig.class);
         assertEquals(expectedOutput, actual);
@@ -353,31 +361,91 @@ public class NamedConfigTest {
         assertEquals("three", config.getStringList().get(2));
     }
 
-    @GetOptHelp(openingText = "This is the opening description", closingText = "This is the closing description")
+    @GetOptHelp(
+            openingText = "This is the opening description",
+            closingText = "This is the closing description"
+    )
     private static class NamedConfig {
-        @GetOptNamed(code = 'L', flag = "long-value", required = true, description = "A long value", category = "Type tests")
+        @GetOptNamed(
+                code = 'L',
+                flag = "long-value",
+                required = true,
+                description = "A long value",
+                category = "Type tests"
+        )
         private Long longValue;
-        @GetOptNamed(code = 'I', flag = "integer-value", required = true, description = "A integer value", category = "Type tests")
+        @GetOptNamed(
+                code = 'I',
+                flag = "integer-value",
+                required = true,
+                description = "A integer value",
+                category = "Type tests"
+        )
         private Integer integerValue;
-        @GetOptNamed(code = 's', flag = "short-value", required = true, description = "A long value", category = "Type tests")
+        @GetOptNamed(
+                code = 's',
+                flag = "short-value",
+                required = true,
+                description = "A long value",
+                category = "Type tests"
+        )
         private Short shortValue;
-        @GetOptNamed(code = 'b', flag = "byte-value", required = true, description = "A byte value", category = "Type tests")
+        @GetOptNamed(
+                code = 'b',
+                flag = "byte-value",
+                required = true,
+                description = "A byte value",
+                category = "Type tests"
+        )
         private Byte byteValue;
-        @GetOptNamed(code = 'D', flag = "double-value", description = "A double value", category = "Type tests")
+        @GetOptNamed(
+                code = 'D',
+                flag = "double-value",
+                description = "A double value",
+                category = "Type tests"
+        )
         private Double doubleValue;
-        @GetOptNamed(code = 'F', flag = "float-value", description = "A float value", category = "Type tests")
+        @GetOptNamed(
+                code = 'F',
+                flag = "float-value",
+                description = "A float value",
+                category = "Type tests"
+        )
         private Float floatValue;
-        @GetOptNamed(code = 'S', flag = "string-value", description = "A string value", category = "Type tests")
+        @GetOptNamed(
+                code = 'S',
+                flag = "string-value",
+                description = "A string value",
+                category = "Type tests"
+        )
         private String stringValue;
-        @GetOptNamed(code = 'B', flag = "boolean-value", description = "A boolean value")
+        @GetOptNamed(
+                code = 'B',
+                flag = "boolean-value",
+                description = "A boolean value"
+        )
         private boolean booleanValue = false;
-        @GetOptNamed(code = 'C', flag = "char-value", description = "A single character")
+        @GetOptNamed(
+                code = 'C',
+                flag = "char-value",
+                description = "A single character"
+        )
         private Character charValue;
 
-        @GetOptNamed(flag = "help", code = 'H', description = "Displays this help message")
+        @GetOptNamed(
+                flag = "help",
+                code = 'H',
+                description = "Displays this help message"
+        )
         private Boolean help;
 
-        @GetOptNamed(flag = "string-list", code = 'l', description = "A list of strings", category = "Type tests", collectionType = String.class)
+        @GetOptNamed(
+                flag = "string-list",
+                code = 'l',
+                description = "A list of strings",
+                category = "Type tests",
+                collectionType = String.class
+        )
         private List<String> stringList;
 
         @GetOptIgnore
@@ -500,14 +568,14 @@ public class NamedConfigTest {
 
         @Override
         public String toString() {
-            return "NamedConfig{" +
-                    "integerValue=" + integerValue +
-                    ", longValue=" + longValue +
-                    ", booleanValue=" + help +
-                    ", doubleValue=" + doubleValue +
-                    ", stringValue='" + stringValue +
-                    ", otherBoolean='" + booleanValue + '\'' +
-                    '}';
+            return "NamedConfig{"
+                    + "integerValue=" + integerValue
+                    + ", longValue=" + longValue
+                    + ", booleanValue=" + help
+                    + ", doubleValue=" + doubleValue
+                    + ", stringValue='" + stringValue
+                    + ", otherBoolean='" + booleanValue + '\''
+                    + '}';
         }
     }
 }

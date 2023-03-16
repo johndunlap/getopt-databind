@@ -26,12 +26,17 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import pro.johndunlap.getopt.exception.ParseException;
-import pro.johndunlap.getopt.exception.RethrownException;
-
 import static java.lang.Character.isUpperCase;
 import static java.lang.Character.toLowerCase;
 
+import pro.johndunlap.getopt.exception.ParseException;
+import pro.johndunlap.getopt.exception.RethrownException;
+
+/**
+ * The parser is responsible for parsing the command line arguments.
+ *
+ * @author John Dunlap
+ */
 public enum Parser {
 
     NEUTRAL {
@@ -156,6 +161,12 @@ public enum Parser {
         return hyphenCase.toString();
     }
 
+    /**
+     * Convert a hyphen case string to camel case.
+     *
+     * @param hyphenCase A hyphen case string
+     * @return camel case string
+     */
     public static String hyphenCaseToCamelCase(String hyphenCase) {
         String[] parts = hyphenCase.split("-");
         StringBuilder sb = new StringBuilder(parts[0]);

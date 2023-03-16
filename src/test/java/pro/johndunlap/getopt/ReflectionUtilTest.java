@@ -26,17 +26,33 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import org.junit.Test;
-import pro.johndunlap.getopt.ReflectionUtil;
-import pro.johndunlap.getopt.exception.ParseException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static pro.johndunlap.getopt.ReflectionUtil.isBoolean;
+import static pro.johndunlap.getopt.ReflectionUtil.isByte;
+import static pro.johndunlap.getopt.ReflectionUtil.isCharacter;
+import static pro.johndunlap.getopt.ReflectionUtil.isDouble;
+import static pro.johndunlap.getopt.ReflectionUtil.isFloat;
+import static pro.johndunlap.getopt.ReflectionUtil.isInteger;
+import static pro.johndunlap.getopt.ReflectionUtil.isLong;
+import static pro.johndunlap.getopt.ReflectionUtil.isShort;
+import static pro.johndunlap.getopt.ReflectionUtil.parse;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Test;
+import pro.johndunlap.getopt.exception.ParseException;
 
-import static org.junit.Assert.*;
-import static pro.johndunlap.getopt.ReflectionUtil.*;
-
+/**
+ * Tests for reflective utility methods.
+ *
+ * @author John Dunlap
+ */
 public class ReflectionUtilTest {
 
     @Test
@@ -45,7 +61,8 @@ public class ReflectionUtilTest {
     }
 
     @Test
-    public void testGetNoArgConstructorMethodForArrayListClass() throws InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void testGetNoArgConstructorMethodForArrayListClass()
+            throws InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor<?> constructor = ReflectionUtil.getNoArgConstructor(ArrayList.class);
         assertNotNull(constructor);
         Object instance = constructor.newInstance();
@@ -54,7 +71,7 @@ public class ReflectionUtilTest {
     }
 
     @Test
-    public void testGetNoArgConstructorMethodForNonAbstractIntegerClassWhichDoesNotHaveNoArgsConstructor() {
+    public void testGetNoArgConstructorMethodForConcreteIntegerWhichHasNoArgsConstructor() {
         Constructor<?> constructor = ReflectionUtil.getNoArgConstructor(Integer.class);
         assertNull(constructor);
     }

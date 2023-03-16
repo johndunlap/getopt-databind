@@ -26,13 +26,21 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
-
+/**
+ * Tests that getting and setting values in Java objects via reflection works as expected.
+ *
+ * @author John Dunlap
+ */
 public class AccessorTest {
 
     @Test
@@ -52,7 +60,8 @@ public class AccessorTest {
     }
 
     @Test
-    public void testGetFieldWithPrivateGetterPrivateField() throws NoSuchFieldException, IllegalAccessException {
+    public void testGetFieldWithPrivateGetterPrivateField()
+            throws NoSuchFieldException, IllegalAccessException {
         PrivateGetterPrivateField instance = new PrivateGetterPrivateField("test");
         Field field = instance.getClass().getDeclaredField("privateField");
 
@@ -63,7 +72,8 @@ public class AccessorTest {
     }
 
     @Test
-    public void testGetFieldWithPrivateGetterPublicField() throws NoSuchFieldException, IllegalAccessException {
+    public void testGetFieldWithPrivateGetterPublicField()
+            throws NoSuchFieldException, IllegalAccessException {
         PrivateGetterPublicField instance = new PrivateGetterPublicField("test");
         Field field = instance.getClass().getDeclaredField("publicField");
 
@@ -74,7 +84,8 @@ public class AccessorTest {
     }
 
     @Test
-    public void testGetFieldWithPublicGetterPrivateField() throws NoSuchFieldException, IllegalAccessException {
+    public void testGetFieldWithPublicGetterPrivateField()
+            throws NoSuchFieldException, IllegalAccessException {
         PublicGetterPrivateField instance = new PublicGetterPrivateField("test");
         Field field = instance.getClass().getDeclaredField("privateField");
 
@@ -85,7 +96,8 @@ public class AccessorTest {
     }
 
     @Test
-    public void testGetFieldWithPublicGetterPublicField() throws NoSuchFieldException, IllegalAccessException {
+    public void testGetFieldWithPublicGetterPublicField()
+            throws NoSuchFieldException, IllegalAccessException {
         PublicGetterPublicField instance = new PublicGetterPublicField("test");
         Field field = instance.getClass().getDeclaredField("publicField");
 
@@ -96,7 +108,8 @@ public class AccessorTest {
     }
 
     @Test
-    public void testSetFieldWithPrivateSetterPrivateField() throws NoSuchFieldException, IllegalAccessException {
+    public void testSetFieldWithPrivateSetterPrivateField()
+            throws NoSuchFieldException, IllegalAccessException {
         PrivateSetterPrivateField instance = new PrivateSetterPrivateField();
         Field field = instance.getClass().getDeclaredField("privateField");
 
@@ -108,7 +121,8 @@ public class AccessorTest {
     }
 
     @Test
-    public void testSetFieldWithPrivateSetterPublicField() throws NoSuchFieldException, IllegalAccessException {
+    public void testSetFieldWithPrivateSetterPublicField()
+            throws NoSuchFieldException, IllegalAccessException {
         PrivateSetterPublicField instance = new PrivateSetterPublicField();
         Field field = instance.getClass().getDeclaredField("publicField");
 
@@ -120,7 +134,8 @@ public class AccessorTest {
     }
 
     @Test
-    public void testSetFieldWithPublicSetterPrivateField() throws NoSuchFieldException, IllegalAccessException {
+    public void testSetFieldWithPublicSetterPrivateField()
+            throws NoSuchFieldException, IllegalAccessException {
         PublicSetterPrivateField instance = new PublicSetterPrivateField();
         Field field = instance.getClass().getDeclaredField("privateField");
 
@@ -132,7 +147,8 @@ public class AccessorTest {
     }
 
     @Test
-    public void testSetFieldWithPublicSetterPublicField() throws NoSuchFieldException, IllegalAccessException {
+    public void testSetFieldWithPublicSetterPublicField()
+            throws NoSuchFieldException, IllegalAccessException {
         PublicSetterPublicField instance = new PublicSetterPublicField();
         Field field = instance.getClass().getDeclaredField("publicField");
 

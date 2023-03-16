@@ -39,6 +39,7 @@ public interface EntryPoint {
     /**
      * This method will be invoked with a hydrated object containing all arguments which were passed on the
      * command line. This method will not be invoked unless there are no validation errors.
+     *
      * @return The exit code. Zero should be returned on success and non-zero otherwise
      */
     int main();

@@ -26,11 +26,19 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import pro.johndunlap.getopt.exception.ParseException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import org.junit.Test;
+import pro.johndunlap.getopt.exception.ParseException;
 
-import static org.junit.Assert.*;
 
+/**
+ * Tests for binding against classes which have not been annotated.
+ *
+ * @author John Dunlap
+ */
 public class NoAnnotationTest {
     @Test
     public void testNoAnnotationBindLongNames() throws ParseException {
@@ -60,11 +68,11 @@ public class NoAnnotationTest {
 
     @Test
     public void testNoAnnotationHelp() {
-        String expected = "The following options are accepted: \n" +
-                "     --integer-value   Accepts a number\n" +
-                "     --string-value    Accepts a string value\n" +
-                "     --something-else  Accepts a string value\n" +
-                "     --on-or-off       Boolean flag which requires no argument";
+        String expected = "The following options are accepted: \n"
+                + "     --integer-value   Accepts a number\n"
+                + "     --string-value    Accepts a string value\n"
+                + "     --something-else  Accepts a string value\n"
+                + "     --on-or-off       Boolean flag which requires no argument";
         String actual = GetOpt.help(NoAnnotationConfig.class);
         assertNotNull(actual);
         assertEquals(expected, actual);

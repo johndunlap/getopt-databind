@@ -28,6 +28,11 @@ package pro.johndunlap.getopt.exception;
 
 import java.lang.reflect.Field;
 
+/**
+ * Thrown when a duplicate option is found.
+ *
+ * @author John Dunlap
+ */
 public class DuplicateOptionException extends ParseException {
     private final Field field;
 

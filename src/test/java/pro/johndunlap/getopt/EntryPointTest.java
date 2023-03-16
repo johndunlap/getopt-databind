@@ -26,43 +26,49 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import org.junit.Test;
-import pro.johndunlap.getopt.exception.ParseException;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+import pro.johndunlap.getopt.exception.ParseException;
+
+/**
+ * Tests for {@link EntryPoint}.
+ *
+ * @author John Dunlap
+ */
 public class EntryPointTest {
     @Test
     public void testEntryPointOnSimpleObject() throws ParseException {
-        SimpleConfig config = GetOpt.bind(SimpleConfig.class, new String[]{"-a", "abc123", "-b", "80"});
+        String[] args = new String[]{"--first", "abc123", "--second", "80"};
+        SimpleConfig config = GetOpt.bind(SimpleConfig.class, args);
         assertTrue(config.getInvoked());
     }
 
     private static class SimpleConfig implements EntryPoint {
-        private String a;
-        private int b;
+        private String first;
+        private int second;
 
         private Boolean invoked;
 
         public SimpleConfig() {
         }
 
-        public String getA() {
-            return a;
+        public String getFirst() {
+            return first;
         }
 
-        public SimpleConfig setA(String a) {
-            this.a = a;
+        public SimpleConfig setFirst(String first) {
+            this.first = first;
             return this;
         }
 
-        public int getB() {
-            return b;
+        public int getSecond() {
+            return second;
         }
 
-        public SimpleConfig setB(int b) {
-            this.b = b;
+        public SimpleConfig setSecond(int second) {
+            this.second = second;
             return this;
         }
 
@@ -77,8 +83,8 @@ public class EntryPointTest {
 
         @Override
         public int main() {
-            assertEquals("abc123", getA());
-            assertEquals(80, getB());
+            assertEquals("abc123", getFirst());
+            assertEquals(80, getSecond());
 
             invoked = true;
             return 0;

@@ -28,10 +28,22 @@ package pro.johndunlap.getopt.exception;
 
 import java.lang.reflect.Field;
 
-public  class ParseException extends Exception {
+/**
+ * Thrown when a value cannot be parsed.
+ *
+ * @author John Dunlap
+ */
+public class ParseException extends Exception {
     private Field field;
     private String value;
 
+    /**
+     * Constructs a new exception with the specified field, value, and message.
+     *
+     * @param field The field which could not be populated
+     * @param value The value that could not be parsed
+     * @param message The message to include in the exception
+     */
     public ParseException(Field field, String value, String message) {
         super(message);
         this.field = field;

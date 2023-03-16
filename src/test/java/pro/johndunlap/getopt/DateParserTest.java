@@ -26,17 +26,21 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import pro.johndunlap.getopt.annotation.GetOptNamed;
-import pro.johndunlap.getopt.exception.ParseException;
-import pro.johndunlap.getopt.exception.RethrownException;
-import org.junit.Test;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.junit.Test;
+import pro.johndunlap.getopt.annotation.GetOptNamed;
+import pro.johndunlap.getopt.exception.ParseException;
+import pro.johndunlap.getopt.exception.RethrownException;
+
+/**
+ * Tests for binding against string representations of dates.
+ *
+ * @author John Dunlap
+ */
 public class DateParserTest {
     @Test
     public void testDateParser() throws ParseException {
@@ -44,7 +48,8 @@ public class DateParserTest {
         DateConfig config = GetOpt.bind(DateConfig.class, args);
         assertNotNull(config);
 
-        String result = new SimpleDateFormat(DateValueParser.DATE_FORMAT).format(config.getDateValue());
+        String result = new SimpleDateFormat(DateValueParser.DATE_FORMAT)
+                .format(config.getDateValue());
 
         assertEquals("2022-12-11", result);
     }

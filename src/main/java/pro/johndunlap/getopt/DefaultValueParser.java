@@ -28,6 +28,11 @@ package pro.johndunlap.getopt;
 
 import pro.johndunlap.getopt.exception.ParseException;
 
+/**
+ * A default implementation of the ValueParser interface.
+ *
+ * @author John Dunlap
+ */
 public class DefaultValueParser implements ValueParser<String> {
     @Override
     public Class<String> getType() {

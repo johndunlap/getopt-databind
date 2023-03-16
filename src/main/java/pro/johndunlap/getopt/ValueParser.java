@@ -28,7 +28,14 @@ package pro.johndunlap.getopt;
 
 import pro.johndunlap.getopt.exception.ParseException;
 
+/**
+ * Implementations of this interface are used to parse string values into object instances which are not
+ * supported by default.
+ *
+ * @param <P> The type of object that string values should be parsed into
+ */
 public interface ValueParser<P> {
     Class<P> getType();
+
     P parse(String value) throws ParseException;
 }

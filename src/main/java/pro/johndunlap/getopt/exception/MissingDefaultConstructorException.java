@@ -26,6 +26,11 @@ package pro.johndunlap.getopt.exception;
  * #L%
  */
 
+/**
+ * Thrown when a class does not have a default constructor.
+ *
+ * @author John Dunlap
+ */
 public class MissingDefaultConstructorException extends ParseException {
     private Class<?> unusableClass;
 

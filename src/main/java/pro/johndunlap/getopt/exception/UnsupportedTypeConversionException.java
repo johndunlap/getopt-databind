@@ -26,6 +26,11 @@ package pro.johndunlap.getopt.exception;
  * #L%
  */
 
+/**
+ * Thrown when binding to a type is not supported.
+ *
+ * @author John Dunlap
+ */
 public class UnsupportedTypeConversionException extends ParseException {
     public UnsupportedTypeConversionException(String message) {
         super(message);

@@ -26,19 +26,24 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
 import org.junit.Test;
 import pro.johndunlap.getopt.annotation.GetOptHelp;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
 import pro.johndunlap.getopt.exception.ParseException;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
+/**
+ * Tests which verify the behavior of the {@link GetOptOrdered} annotation.
+ *
+ * @author John Dunlap
+ */
 public class OrderedConfigTest {
     @Test
     public void testOrderedConfigWithFourElements() throws ParseException {
-        OrderedConfig orderedConfig = GetOpt.bind(OrderedConfig.class, new String[]{"zero", "one", "two", "three"});
+        String[] args = new String[]{"zero", "one", "two", "three"};
+        OrderedConfig orderedConfig = GetOpt.bind(OrderedConfig.class, args);
         assertEquals("zero", orderedConfig.getStringValue());
         assertEquals("one", orderedConfig.getSomething());
         assertEquals("two", orderedConfig.getList().get(0));
@@ -46,15 +51,32 @@ public class OrderedConfigTest {
         assertEquals(1, orderedConfig.getArray().length);
     }
 
-    @GetOptHelp(openingText = "This is the opening description", closingText = "This is the closing description")
+    @GetOptHelp(
+            openingText = "This is the opening description",
+            closingText = "This is the closing description"
+    )
     private static class OrderedConfig {
-        @GetOptOrdered(order = 1, required = true, collectionType = String.class)
+        @GetOptOrdered(
+                order = 1,
+                required = true,
+                collectionType =
+                        String.class
+        )
         private String something;
-        @GetOptOrdered(order = 2, collectionType = String.class)
+        @GetOptOrdered(
+                order = 2,
+                collectionType = String.class
+        )
         private List<String> list;
-        @GetOptOrdered(order = 0, collectionType = String.class)
+        @GetOptOrdered(
+                order = 0,
+                collectionType = String.class
+        )
         private String stringValue;
-        @GetOptOrdered(order = 3, collectionType = String.class)
+        @GetOptOrdered(
+                order = 3,
+                collectionType = String.class
+        )
         private String[] array;
 
         public OrderedConfig() {
@@ -98,11 +120,11 @@ public class OrderedConfigTest {
 
         @Override
         public String toString() {
-            return "OrderedConfig{" +
-                    "longValue='" + something + '\'' +
-                    ", list=" + list +
-                    ", stringValue='" + stringValue + '\'' +
-                    '}';
+            return "OrderedConfig{"
+                    + "longValue='" + something + '\''
+                    + ", list=" + list
+                    + ", stringValue='" + stringValue + '\''
+                    + '}';
         }
     }
 }

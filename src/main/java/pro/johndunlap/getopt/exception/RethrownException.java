@@ -26,6 +26,11 @@ package pro.johndunlap.getopt.exception;
  * #L%
  */
 
+/**
+ * Used to rethrow other exceptions as parse exceptions.
+ *
+ * @author John Dunlap
+ */
 public class RethrownException extends ParseException {
     public RethrownException(Throwable cause) {
         super(cause);

@@ -31,9 +31,26 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * This annotation provides additional metadata for the help text beyond what would otherwise have
+ * been available with just the field level annotations.
+ *
+ * @author John Dunlap
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface GetOptHelp {
+    /**
+     * The text to display prior to the list of options.
+     *
+     * @return The text to display prior to the list of options.
+     */
     String openingText() default "";
+
+    /**
+     * The text to display after the list of options.
+     *
+     * @return The text to display after the list of options.
+     */
     String closingText() default "";
 }

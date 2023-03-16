@@ -26,10 +26,15 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Test;
+
+/**
+ * Tests for utility methods.
+ *
+ * @author John Dunlap
+ */
 public class UtilTest {
 
     @Test

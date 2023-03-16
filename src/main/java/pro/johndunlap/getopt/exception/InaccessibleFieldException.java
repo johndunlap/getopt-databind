@@ -26,6 +26,11 @@ package pro.johndunlap.getopt.exception;
  * #L%
  */
 
+/**
+ * Thrown when a field cannot be accessed.
+ *
+ * @author John Dunlap
+ */
 public class InaccessibleFieldException extends ParseException {
     Class<?> classType;
 

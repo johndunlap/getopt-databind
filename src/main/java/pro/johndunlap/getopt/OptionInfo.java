@@ -26,11 +26,15 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
+import java.lang.reflect.Field;
 import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 
-import java.lang.reflect.Field;
-
+/**
+ * A class which contains information about a single option.
+ *
+ * @author John Dunlap
+ */
 public class OptionInfo {
     private String flag = "";
     private char code = ' ';
@@ -38,6 +42,11 @@ public class OptionInfo {
     private String category = "";
     private boolean required = false;
 
+    /**
+     * Creates a new OptionInfo object from the given field.
+     *
+     * @param field The field to create the OptionInfo object from.
+     */
     public OptionInfo(Field field) {
         if (field.isAnnotationPresent(GetOptIgnore.class)) {
             throw new RuntimeException("Cannot process ignored field");
@@ -48,7 +57,8 @@ public class OptionInfo {
         if (named == null) {
             flag = Parser.camelCaseToHyphenCase(field.getName());
 
-            if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
+            if (field.getType().equals(Boolean.class)
+                    || field.getType().equals(boolean.class)) {
                 description = "Boolean flag which requires no argument";
             } else {
                 description = "Accepts a ";
@@ -56,13 +66,14 @@ public class OptionInfo {
                 if (field.getType().equals(String.class)) {
                     description += "string value";
                 } else if (
-                        field.getType().equals(Double.class) ||
-                                field.getType().equals(double.class) ||
-                                field.getType().equals(Float.class) ||
-                                field.getType().equals(float.class)
+                        field.getType().equals(Double.class)
+                                || field.getType().equals(double.class)
+                                || field.getType().equals(Float.class)
+                                || field.getType().equals(float.class)
                 ) {
                     description += "floating point number";
-                } else if (field.getType().equals(Character.class) || field.getType().equals(char.class)) {
+                } else if (field.getType().equals(Character.class)
+                        || field.getType().equals(char.class)) {
                     description += "single character";
                 } else {
                     description += "number";

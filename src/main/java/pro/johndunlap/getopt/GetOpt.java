@@ -26,21 +26,39 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
+import static pro.johndunlap.getopt.Parser.NEUTRAL;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import pro.johndunlap.getopt.annotation.GetOptHelp;
 import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
 import pro.johndunlap.getopt.exception.ParseException;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
-import static pro.johndunlap.getopt.Parser.NEUTRAL;
-
+/**
+ * The main entry point for the getopt-databind library.
+ *
+ * @author John Dunlap
+ */
 public class GetOpt {
 
     public GetOpt() {
     }
 
+    /**
+     * Binds the given arguments to the given class type.
+     *
+     * @param classType The class type to bind the arguments to
+     * @param args The arguments to bind to the class type
+     * @param <T> The type of the class to bind the arguments to
+     * @return An instance of the class type with the arguments bound to it
+     * @throws ParseException If the arguments could not be bound to the class type
+     */
     public static <T> T bind(Class<T> classType, String[] args) throws ParseException {
         ParseContext<T> context = new ParseContext<>(classType, args);
         Parser state = NEUTRAL;
@@ -61,6 +79,13 @@ public class GetOpt {
         return instance;
     }
 
+    /**
+     * Generates a help message for the given class type.
+     *
+     * @param classType The class type to generate a help message for
+     * @param <T> The type of the class for which a help message should be generated
+     * @return A help message for the given class type
+     */
     public static <T> String help(Class<T> classType) {
         GetOptHelp help = classType.getAnnotation(GetOptHelp.class);
         StringBuilder sb = new StringBuilder();
@@ -162,6 +187,7 @@ public class GetOpt {
 
     /**
      * This method is shared between the bind and help methods.
+     *
      * @param classType The class type from which metadata should be extracted
      * @param <T> The generic type of the class from which metadata is being extracted
      * @return A list of objects representing the fields which can be bound to
