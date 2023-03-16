@@ -8,14 +8,12 @@ package pro.johndunlap.getopt;
  * notices that the object implements it. This will work exceptionally well in multi-layered command line interfaces
  * which can have separate entry points for each of the types that they support. The correct entrypoint is automatically
  * invoked based on the arguments which were passed on the command line.
- * @param <T> the type of the object which will be passed to the main method.
  */
-public interface EntryPoint<T> {
+public interface EntryPoint {
     /**
      * This method will be invoked with a hydrated object containing all arguments which were passed on the
      * command line. This method will not be invoked unless there are no validation errors.
-     * @param args the hydrated object
      * @return The exit code. Zero should be returned on success and non-zero otherwise
      */
-    int main(T args);
+    int main();
 }

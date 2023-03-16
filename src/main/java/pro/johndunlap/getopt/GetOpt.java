@@ -48,7 +48,15 @@ public class GetOpt {
             state = state.execute(context);
         }
 
-        return context.getInstance();
+        T instance = context.getInstance();
+
+        // If the method
+        if (instance instanceof EntryPoint) {
+            int status = ((EntryPoint) instance).main();
+            // TODO: What do we do with the status code? If we exit here, it will break the tests
+        }
+
+        return instance;
     }
 
     public static <T> String help(Class<T> classType) {
