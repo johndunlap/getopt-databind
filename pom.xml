@@ -30,6 +30,7 @@
         <maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
         <license-maven-plugin.version>2.0.0</license-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <checkstyle.version>8.43</checkstyle.version>
     </properties>
 
@@ -123,7 +124,6 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <encoding>UTF-8</encoding>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <configLocation>checkstyle.xml</configLocation>
                     <failOnViolation>true</failOnViolation>
@@ -138,6 +138,19 @@
                         <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
