@@ -116,5 +116,6 @@ The following is output when **--long-value 345 --string-value "This is a test"*
 Config{integerValue=null, longValue=345, booleanValue=false, doubleValue=null, stringValue='This is a test, otherBoolean='false'}
 ```
 
-If I've helped you in some way, please consider supporting my work by buying me a coffee!
+
+If I've helped you in some way, please consider supporting my work by buying me a coffee!<br/>
 <a href="https://www.buymeacoffee.com/ixCgtN0uXb" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
