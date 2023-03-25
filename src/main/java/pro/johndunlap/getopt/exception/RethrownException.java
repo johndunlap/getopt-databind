@@ -35,4 +35,8 @@ public class RethrownException extends ParseException {
     public RethrownException(Throwable cause) {
         super(cause);
     }
+
+    public RethrownException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

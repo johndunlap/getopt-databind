@@ -31,10 +31,10 @@ package pro.johndunlap.getopt.exception;
  *
  * @author John Dunlap
  */
-public class MissingDefaultConstructorException extends ParseException {
+public class MissingNoArgConstructorException extends ParseException {
     private Class<?> unusableClass;
 
-    public MissingDefaultConstructorException(String message, Throwable cause, Class<?> unusableClass) {
+    public MissingNoArgConstructorException(String message, Throwable cause, Class<?> unusableClass) {
         super(message, cause);
         this.unusableClass = unusableClass;
     }

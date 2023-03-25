@@ -48,7 +48,7 @@ import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
 import pro.johndunlap.getopt.exception.DuplicateOptionException;
 import pro.johndunlap.getopt.exception.InaccessibleFieldException;
-import pro.johndunlap.getopt.exception.MissingDefaultConstructorException;
+import pro.johndunlap.getopt.exception.MissingNoArgConstructorException;
 import pro.johndunlap.getopt.exception.ParseException;
 import pro.johndunlap.getopt.exception.RethrownException;
 import pro.johndunlap.getopt.exception.UnsupportedTypeConversionException;
@@ -66,16 +66,20 @@ public class ParseContext<T> {
     private final T instance;
     private String currentName;
     private int currentOrderedIndex = 0;
+    private Map<Class<?>, ValueParser<?>> valueParsers;
 
     /**
      * Create a new ParseContext for the given class type and string arguments.
      *
      * @param classType The class type which will be instantiated and populated with the given arguments
      * @param args The string arguments to parse
-     * @throws MissingDefaultConstructorException If the class type does not have a public default constructor
+     * @param valueParsers The map of value parsers to use when parsing values
+     * @throws MissingNoArgConstructorException If the class type does not have a public default constructor
      */
-    public ParseContext(Class<T> classType, String[] args) throws ParseException {
+    public ParseContext(Class<T> classType, String[] args, Map<Class<?>, ValueParser<?>> valueParsers)
+            throws ParseException {
         this.queue = new Stack<>();
+        this.valueParsers = valueParsers;
 
         // Add the string args to the stack in reverse order
         for (int i = args.length - 1; i >= 0; i--) {
@@ -86,8 +90,8 @@ public class ParseContext<T> {
         try {
             this.instance = classType.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
-            String message = format("Class %s must have a public default constructor", classType.getCanonicalName());
-            throw new MissingDefaultConstructorException(message, e, classType);
+            String message = format("Class %s must have a public no-arg constructor", classType.getCanonicalName());
+            throw new MissingNoArgConstructorException(message, e, classType);
         }
 
         // Associate flag names with class fields
@@ -198,10 +202,21 @@ public class ParseContext<T> {
                 throw new NullPointerException(GetOptOrdered.class.getName() + " is missing. This should never happen");
             }
 
-            Class<? extends ValueParser<?>> valueParser = null;
+            ValueParser<?> valueParser = null;
 
-            if (!ordered.parser().equals(DefaultValueParser.class)) {
-                valueParser = ordered.parser();
+            if (valueParsers.containsKey(field.getType())) {
+                valueParser = valueParsers.get(field.getType());
+            } else if (!ordered.parser().equals(DefaultValueParser.class)) {
+                try {
+                    Class<? extends ValueParser<?>> parserClass = ordered.parser();
+                    valueParser = parserClass.getConstructor().newInstance();
+                } catch (Exception e) {
+                    String message = format(
+                            "Class %s must have a public no-arg constructor",
+                            ordered.parser().getCanonicalName()
+                    );
+                    throw new RethrownException(message, e);
+                }
             }
 
             Class<?> fieldType = field.getType();
@@ -289,13 +304,15 @@ public class ParseContext<T> {
 
             // TODO: Is there a way to do this without querying the annotation again?
             GetOptNamed named = field.getAnnotation(GetOptNamed.class);
-            Class<? extends ValueParser<?>> valueParser = null;
+            Class<?> fieldType = field.getType();
+            ValueParser<?> valueParser = null;
 
-            if (named != null && !named.parser().equals(DefaultValueParser.class)) {
-                valueParser = named.parser();
+            if (valueParsers.containsKey(fieldType)) {
+                valueParser = valueParsers.get(fieldType);
+            } else if (named != null && !named.parser().equals(DefaultValueParser.class)) {
+                valueParser = ReflectionUtil.instantiate(named.parser());
             }
 
-            Class<?> fieldType = field.getType();
             Object existingValue = ReflectionUtil.getFieldValue(field, instance);
 
             // Are we dealing with a collection?
@@ -323,7 +340,7 @@ public class ParseContext<T> {
         }
     }
 
-    private Object parse(String value, Class<?> fieldType, Class<? extends ValueParser<?>> valueParser)
+    private Object parse(String value, Class<?> fieldType, ValueParser<?> valueParser)
             throws ParseException {
         Object parsed = null;
 
@@ -363,7 +380,7 @@ public class ParseContext<T> {
                 }
             } else if (valueParser != null) {
                 try {
-                    parsed = valueParser.getConstructor().newInstance().parse(value);
+                    parsed = valueParser.parse(value);
                 } catch (Exception e) {
                     throw new RethrownException(e);
                 }

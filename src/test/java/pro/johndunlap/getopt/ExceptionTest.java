@@ -32,7 +32,7 @@ import org.junit.Test;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.exception.DuplicateOptionException;
 import pro.johndunlap.getopt.exception.InaccessibleFieldException;
-import pro.johndunlap.getopt.exception.MissingDefaultConstructorException;
+import pro.johndunlap.getopt.exception.MissingNoArgConstructorException;
 import pro.johndunlap.getopt.exception.ParseException;
 import pro.johndunlap.getopt.exception.RethrownException;
 import pro.johndunlap.getopt.exception.UnsupportedTypeConversionException;
@@ -49,10 +49,10 @@ public class ExceptionTest {
         throw new InaccessibleFieldException("Message", new Exception(), Integer.class);
     }
 
-    @Test(expected = MissingDefaultConstructorException.class)
+    @Test(expected = MissingNoArgConstructorException.class)
     public void testMissingDefaultConstructorExceptionConstructorMessageThrowableClassType()
-            throws MissingDefaultConstructorException {
-        throw new MissingDefaultConstructorException("Message", new Exception(), Integer.class);
+            throws MissingNoArgConstructorException {
+        throw new MissingNoArgConstructorException("Message", new Exception(), Integer.class);
     }
 
     @Test(expected = ParseException.class)

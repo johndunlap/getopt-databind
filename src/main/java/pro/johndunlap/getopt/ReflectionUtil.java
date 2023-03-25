@@ -35,6 +35,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import pro.johndunlap.getopt.exception.MissingNoArgConstructorException;
 import pro.johndunlap.getopt.exception.ParseException;
 
 /**
@@ -81,6 +82,32 @@ public class ReflectionUtil {
                     return field.get(instance);
                 }
             }
+        }
+    }
+
+    /**
+     * This method attempts to construct an instance of the given class without violating its declared access modifiers.
+     *
+     * @param type The type of object to instantiate
+     * @param <T> The type of object to instantiate
+     *
+     * @return The instantiated object
+     * @throws MissingNoArgConstructorException Thrown if the class does not have a no-arg constructor
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T instantiate(Class<?> type) throws MissingNoArgConstructorException {
+        try {
+            // Attempt to find a no-arg constructor
+            Constructor<?> constructor = type.getDeclaredConstructor();
+
+            // Attempt to instantiate the class even if the constructor is not public
+            constructor.setAccessible(true);
+
+            // Instantiate the new instance and return it
+            return (T) constructor.newInstance();
+        } catch (Exception e) {
+            String message = format("Unable to instantiate class %s", type.getName());
+            throw new MissingNoArgConstructorException(message, e, type);
         }
     }
 

@@ -31,6 +31,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
 import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.exception.ParseException;
@@ -43,9 +45,9 @@ import pro.johndunlap.getopt.exception.RethrownException;
  */
 public class DateParserTest {
     @Test
-    public void testDateParser() throws ParseException {
+    public void testAnnotatedDateParser() throws ParseException {
         String[] args = {"--date-value", "2022-12-11"};
-        DateConfig config = new GetOpt().bind(DateConfig.class, args);
+        DateConfigWithAnnotatedValueParser config = new GetOpt().bind(DateConfigWithAnnotatedValueParser.class, args);
         assertNotNull(config);
 
         String result = new SimpleDateFormat(DateValueParser.DATE_FORMAT)
@@ -54,18 +56,70 @@ public class DateParserTest {
         assertEquals("2022-12-11", result);
     }
 
-    private static class DateConfig {
+    @Test
+    public void testRegisteredDateParser() throws ParseException {
+        String[] args = {"--date-value", "2022-12-11"};
+        DateConfigWithAnnotatedValueParser config = new GetOpt()
+                .register(Date.class, new DateValueParser())
+                .bind(DateConfigWithAnnotatedValueParser.class, args);
+
+        assertNotNull(config);
+
+        String result = new SimpleDateFormat(DateValueParser.DATE_FORMAT)
+                .format(config.getDateValue());
+
+        assertEquals("2022-12-11", result);
+    }
+
+    @Test
+    public void testRegisteredDateParserCollection() throws ParseException {
+        String[] args = {"--date-value", "2022-12-11"};
+
+        Map<Class<?>, ValueParser<?>> valueParsers = new HashMap<>(1) {{
+                put(Date.class, new DateValueParser());
+            }};
+
+        DateConfigWithAnnotatedValueParser config = new GetOpt()
+            .register(valueParsers)
+            .bind(DateConfigWithAnnotatedValueParser.class, args);
+
+        assertNotNull(config);
+
+        String result = new SimpleDateFormat(DateValueParser.DATE_FORMAT)
+                .format(config.getDateValue());
+
+        assertEquals("2022-12-11", result);
+    }
+
+    private static class DateConfigWithAnnotatedValueParser {
         @GetOptNamed(flag = "date-value", code = 'D', parser = DateValueParser.class)
         private Date dateValue;
 
-        public DateConfig() {
+        public DateConfigWithAnnotatedValueParser() {
         }
 
         public Date getDateValue() {
             return dateValue;
         }
 
-        public DateConfig setDateValue(Date dateValue) {
+        public DateConfigWithAnnotatedValueParser setDateValue(Date dateValue) {
+            this.dateValue = dateValue;
+            return this;
+        }
+    }
+
+    private static class DateConfigWithoutAnnotatedValueParser {
+        @GetOptNamed(flag = "date-value", code = 'D')
+        private Date dateValue;
+
+        public DateConfigWithoutAnnotatedValueParser() {
+        }
+
+        public Date getDateValue() {
+            return dateValue;
+        }
+
+        public DateConfigWithoutAnnotatedValueParser setDateValue(Date dateValue) {
             this.dateValue = dateValue;
             return this;
         }

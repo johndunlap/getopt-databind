@@ -43,9 +43,11 @@ import static pro.johndunlap.getopt.ReflectionUtil.parse;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import pro.johndunlap.getopt.exception.MissingNoArgConstructorException;
 import pro.johndunlap.getopt.exception.ParseException;
 
 /**
@@ -176,5 +178,58 @@ public class ReflectionUtilTest {
         assertEquals(Boolean.FALSE, parse(Boolean.class, "false"));
         assertEquals(Boolean.TRUE, parse(boolean.class, "true"));
         assertEquals(Boolean.FALSE, parse(boolean.class, "false"));
+    }
+
+    @Test
+    public void testInstantiateDefaultConstructor() throws MissingNoArgConstructorException {
+        assertNotNull(ReflectionUtil.instantiate(DefaultConstructor.class));
+    }
+
+    @Test
+    public void testInstantiatePublicNoArgConstructor() throws MissingNoArgConstructorException {
+        assertNotNull(ReflectionUtil.instantiate(PublicNoArgConstructor.class));
+    }
+
+    @Test
+    public void testInstantiateProtectedNoArgConstructor() throws MissingNoArgConstructorException {
+        assertNotNull(ReflectionUtil.instantiate(ProtectedNoArgConstructor.class));
+    }
+
+    @Test
+    public void testInstantiatePrivateNoArgConstructor() throws MissingNoArgConstructorException {
+        assertNotNull(ReflectionUtil.instantiate(PrivateNoArgConstructor.class));
+    }
+
+    @Test(expected = MissingNoArgConstructorException.class)
+    public void testInstantiateMissingNoArgConstructor() throws MissingNoArgConstructorException {
+        ReflectionUtil.instantiate(MissingNoArgConstructor.class);
+    }
+
+    private static class DefaultConstructor {
+
+    }
+
+    private static class PublicNoArgConstructor {
+        public PublicNoArgConstructor() {
+
+        }
+    }
+
+    private static class ProtectedNoArgConstructor {
+        protected ProtectedNoArgConstructor() {
+
+        }
+    }
+
+    private static class PrivateNoArgConstructor {
+        private PrivateNoArgConstructor() {
+
+        }
+    }
+
+    private static class MissingNoArgConstructor {
+        public MissingNoArgConstructor(int i) {
+
+        }
     }
 }
