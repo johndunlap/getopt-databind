@@ -54,8 +54,8 @@ public class NoAnnotationTest {
         String[] args = {"-i", "8080", "-s", "abc123"};
         NoAnnotationConfig config = new GetOpt().bind(NoAnnotationConfig.class, args);
         assertNotNull(config);
-        assertEquals(8080, config.getIntegerValue().intValue());
-        assertEquals("abc123", config.getStringValue());
+        assertNull(config.getIntegerValue());
+        assertNull(config.getStringValue());
     }
 
     @Test

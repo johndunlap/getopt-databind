@@ -3,7 +3,6 @@ This is a Java library which provides a flexible and customizable way to bind co
 
 ## Why should you use this library?
 * Sophisticated command line interfaces with minimal effort
-* 100% line and branch coverage in unit tests
 * No dependencies.
 * Permissive licensing
 * It's free

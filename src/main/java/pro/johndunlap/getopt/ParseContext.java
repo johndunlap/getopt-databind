@@ -59,8 +59,9 @@ import pro.johndunlap.getopt.exception.UnsupportedTypeConversionException;
  * @param <T> The type of the object being populated with parsed arguments
  */
 public class ParseContext<T> {
-    private final Map<String, Field> fields = new HashMap<>();
+    private final Map<String, Field> namedFields = new HashMap<>();
     private final List<Field> orderedFields = new ArrayList<>();
+    private final List<Field> requiredFields = new ArrayList<>();
     private final Stack<String> queue;
     private final T instance;
     private String currentName;
@@ -91,54 +92,68 @@ public class ParseContext<T> {
 
         // Associate flag names with class fields
         for (Field field : classType.getDeclaredFields()) {
+            // Ignore fields marked with the @GetOptIgnore annotation
             if (field.getAnnotation(GetOptIgnore.class) != null) {
                 continue;
             }
 
-            if (field.getAnnotation(GetOptOrdered.class) != null) {
+            GetOptOrdered orderedAnnotation = field.getAnnotation(GetOptOrdered.class);
+
+            if (orderedAnnotation != null) {
                 orderedFields.add(field);
+
+                // Remember required fields
+                if (orderedAnnotation.required()) {
+                    requiredFields.add(field);
+                }
             } else {
                 GetOptNamed namedOption = field.getAnnotation(GetOptNamed.class);
 
                 // Initialize boolean fields to false by default
                 if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
-                    // TODO: Use a unified setter mechanism that attempts to use a setter method
-                    field.setAccessible(true);
                     try {
-                        field.set(instance, false);
+                        ReflectionUtil.setFieldValue(field, instance, false);
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
                 }
 
                 if (namedOption != null) {
+                    // Remember required fields
+                    if (namedOption.required()) {
+                        requiredFields.add(field);
+                    }
+
                     if (!namedOption.flag().equals("")) {
-                        if (!fields.containsKey(namedOption.flag())) {
-                            fields.put(namedOption.flag(), field);
+                        if (!namedFields.containsKey(namedOption.flag())) {
+                            namedFields.put(namedOption.flag(), field);
                         } else {
                             throw new DuplicateOptionException("Duplicate option name: " + namedOption.flag(), field);
                         }
+                    } else {
+                        // Attempt to infer usable flag from the field name. No attempt is made to infer a code because
+                        // conflicts are inevitable.
+                        String longName = Parser.camelCaseToHyphenCase(field.getName());
 
+                        if (!namedFields.containsKey(longName)) {
+                            namedFields.put(longName, field);
+                        }
                     }
 
                     if (namedOption.code() != ' ') {
-                        if (!fields.containsKey(namedOption.code() + "")) {
-                            fields.put(namedOption.code() + "", field);
+                        if (!namedFields.containsKey(namedOption.code() + "")) {
+                            namedFields.put(namedOption.code() + "", field);
                         } else {
                             throw new DuplicateOptionException("Duplicate option name: " + namedOption.code(), field);
                         }
                     }
                 } else {
-                    // Attempt to infer usable long and short names from the field name
+                    // Attempt to infer usable flag from the field name. No attempt is made to infer a code because
+                    // conflicts are inevitable.
                     String longName = Parser.camelCaseToHyphenCase(field.getName());
-                    String shortName = field.getName().charAt(0) + "";
 
-                    if (!fields.containsKey(longName)) {
-                        fields.put(longName, field);
-                    }
-
-                    if (!fields.containsKey(shortName)) {
-                        fields.put(shortName, field);
+                    if (!namedFields.containsKey(longName)) {
+                        namedFields.put(longName, field);
                     }
                 }
             }
@@ -265,7 +280,7 @@ public class ParseContext<T> {
      */
     public void setNamedValue(String value) throws ParseException {
         try {
-            Field field = fields.get(currentName);
+            Field field = namedFields.get(currentName);
 
             // Quietly return if the field cannot be found. This may be the result of the user passing the wrong flag
             if (field == null) {
@@ -378,12 +393,16 @@ public class ParseContext<T> {
      * @return true if the current flag is a boolean flag
      */
     public boolean isBoolean() {
-        Field field = fields.get(currentName);
+        Field field = namedFields.get(currentName);
 
         if (field == null) {
             return false;
         }
 
         return isBoolean(field.getType());
+    }
+
+    public List<Field> getRequiredFields() {
+        return requiredFields;
     }
 }

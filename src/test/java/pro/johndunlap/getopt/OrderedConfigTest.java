@@ -51,6 +51,12 @@ public class OrderedConfigTest {
         assertEquals(1, orderedConfig.getArray().length);
     }
 
+    @Test(expected = ParseException.class)
+    public void testRequiredOrderedMissingMissing() throws ParseException {
+        String[] args = new String[]{};
+        new GetOpt().bind(OrderedConfig.class, args);
+    }
+
     @GetOptHelp(
             openingText = "This is the opening description",
             closingText = "This is the closing description"

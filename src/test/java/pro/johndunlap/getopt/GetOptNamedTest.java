@@ -40,22 +40,23 @@ import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.exception.ParseException;
 
 /**
- * Tests for {@link NamedConfig}.
+ * Tests for the {@link GetOptNamed} annotation.
  *
  * @author John Dunlap
  */
-public class NamedConfigTest {
+public class GetOptNamedTest {
     @Test
     public void testBindMethodWithNoArguments() throws ParseException {
         String[] args = {};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        StringConfigNotRequired config = new GetOpt().bind(StringConfigNotRequired.class, args);
         assertNotNull(config);
+        assertNull(config.getStringValue());
     }
 
     @Test
     public void testBindMethodWithLongValueLongName() throws ParseException {
         String[] args = {"--long-value", "8080"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        LongConfigNotRequired config = new GetOpt().bind(LongConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080L, config.getLongValue().longValue());
     }
@@ -63,7 +64,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithLongValueShortName() throws ParseException {
         String[] args = {"-L", "8080"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        LongConfigNotRequired config = new GetOpt().bind(LongConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080L, config.getLongValue().longValue());
     }
@@ -71,7 +72,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithIntegerValueLongName() throws ParseException {
         String[] args = {"--integer-value", "8080"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        IntegerConfigNotRequired config = new GetOpt().bind(IntegerConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getIntegerValue().intValue());
     }
@@ -79,7 +80,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithIntegerValueShortName() throws ParseException {
         String[] args = {"-I", "8080"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        IntegerConfigNotRequired config = new GetOpt().bind(IntegerConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getIntegerValue().intValue());
     }
@@ -87,7 +88,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithShortValueLongName() throws ParseException {
         String[] args = {"--short-value", "8080"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        ShortConfigNotRequired config = new GetOpt().bind(ShortConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getShortValue().shortValue());
     }
@@ -95,7 +96,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithShortValueShortName() throws ParseException {
         String[] args = {"-s", "8080"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        ShortConfigNotRequired config = new GetOpt().bind(ShortConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getShortValue().shortValue());
     }
@@ -103,7 +104,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithByteValueLongName() throws ParseException {
         String[] args = {"--byte-value", "64"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        ByteConfigNotRequired config = new GetOpt().bind(ByteConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(64, config.getByteValue().byteValue());
     }
@@ -111,7 +112,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithByteValueShortName() throws ParseException {
         String[] args = {"-b", "64"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        ByteConfigNotRequired config = new GetOpt().bind(ByteConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(64, config.getByteValue().byteValue());
     }
@@ -119,7 +120,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithDoubleValueLongName() throws ParseException {
         String[] args = {"--double-value", "3.12345"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        DoubleConfigNotRequired config = new GetOpt().bind(DoubleConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Double.valueOf(3.12345), config.getDoubleValue());
     }
@@ -127,7 +128,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithDoubleValueShortName() throws ParseException {
         String[] args = {"-D", "3.12345"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        DoubleConfigNotRequired config = new GetOpt().bind(DoubleConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Double.valueOf(3.12345), config.getDoubleValue());
     }
@@ -135,7 +136,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithFloatValueLongName() throws ParseException {
         String[] args = {"--float-value", "3.12345"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        FloatConfigNotRequired config = new GetOpt().bind(FloatConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Float.valueOf((float) 3.12345), config.getFloatValue());
     }
@@ -143,7 +144,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithFloatValueShortName() throws ParseException {
         String[] args = {"-F", "3.12345"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        FloatConfigNotRequired config = new GetOpt().bind(FloatConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Float.valueOf((float) 3.12345), config.getFloatValue());
     }
@@ -151,7 +152,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithStringValueLongName() throws ParseException {
         String[] args = {"--string-value", "abc123"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        StringConfigNotRequired config = new GetOpt().bind(StringConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals("abc123", config.getStringValue());
     }
@@ -159,7 +160,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithStringValueShortName() throws ParseException {
         String[] args = {"-S", "abc123"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        StringConfigNotRequired config = new GetOpt().bind(StringConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals("abc123", config.getStringValue());
     }
@@ -167,7 +168,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithBooleanValueLongName() throws ParseException {
         String[] args = {"--boolean-value"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getBooleanValue());
     }
@@ -175,31 +176,31 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithBooleanValueShortName() throws ParseException {
         String[] args = {"-B"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getBooleanValue());
     }
 
     @Test
     public void testBindMethodWithCharacterValueLongName() throws ParseException {
-        String[] args = {"--char-value", "A"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        String[] args = {"--character-value", "A"};
+        CharacterConfigNotRequired config = new GetOpt().bind(CharacterConfigNotRequired.class, args);
         assertNotNull(config);
-        assertEquals(Character.valueOf('A'), config.getCharValue());
+        assertEquals(Character.valueOf('A'), config.getCharacterValue());
     }
 
     @Test
     public void testBindMethodWithCharacterValueShortName() throws ParseException {
         String[] args = {"-C", "A"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        CharacterConfigNotRequired config = new GetOpt().bind(CharacterConfigNotRequired.class, args);
         assertNotNull(config);
-        assertEquals(Character.valueOf('A'), config.getCharValue());
+        assertEquals(Character.valueOf('A'), config.getCharacterValue());
     }
 
     @Test
     public void testBindMethodWithLongHelpFlag() throws ParseException {
         String[] args = {"--help"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
     }
@@ -207,7 +208,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithShortHelpFlag() throws ParseException {
         String[] args = {"-H"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
     }
@@ -215,7 +216,7 @@ public class NamedConfigTest {
     @Test
     public void testMultipleShortNameBooleans() throws ParseException {
         String[] args = {"-HB"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -224,7 +225,7 @@ public class NamedConfigTest {
     @Test
     public void testMultipleBooleanShortNamesWithTrailingValue() throws ParseException {
         String[] args = {"-HBD", "3.14159265"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        TwoBooleanAndDouble config = new GetOpt().bind(TwoBooleanAndDouble.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -234,7 +235,7 @@ public class NamedConfigTest {
     @Test
     public void testMultipleBooleanShortNamesAtEndOfArray() throws ParseException {
         String[] args = {"--double-value", "3.14159265", "-HB"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        TwoBooleanAndDouble config = new GetOpt().bind(TwoBooleanAndDouble.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -251,7 +252,7 @@ public class NamedConfigTest {
             "--double-value", "1.7976931348623157E308",
             "--float-value", "3.4028235E38"
         };
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        HelpConfig config = new GetOpt().bind(HelpConfig.class, args);
         assertNotNull(config);
 
         assertEquals(Long.valueOf(Long.MAX_VALUE), config.getLongValue());
@@ -265,7 +266,7 @@ public class NamedConfigTest {
     @Test
     public void testParseMultipleCombinedShortNames() throws ParseException {
         String[] args = {"-HBs", "1234"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        TwoBooleanAndShort config = new GetOpt().bind(TwoBooleanAndShort.class, args);
         assertNotNull(config);
 
         assertEquals(Short.valueOf((short) 1234), config.getShortValue());
@@ -276,7 +277,7 @@ public class NamedConfigTest {
     @Test
     public void testBooleanDefaultFalse() throws ParseException {
         String[] args = {};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertFalse(config.getBooleanValue());
         assertFalse(config.getHelp());
@@ -300,50 +301,50 @@ public class NamedConfigTest {
                 + "  -l  --string-list    A list of strings\n"
                 + "This is the closing description";
 
-        String actual = new GetOpt().help(NamedConfig.class);
+        String actual = new GetOpt().help(HelpConfig.class);
         assertEquals(expectedOutput, actual);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithLongField() throws ParseException {
         String[] args = {"--long-value", "abc"};
-        new GetOpt().bind(NamedConfig.class, args);
+        new GetOpt().bind(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithIntegerField() throws ParseException {
         String[] args = {"--integer-value", "abc"};
-        new GetOpt().bind(NamedConfig.class, args);
+        new GetOpt().bind(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithShortField() throws ParseException {
         String[] args = {"--short-value", "abc"};
-        new GetOpt().bind(NamedConfig.class, args);
+        new GetOpt().bind(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithByteField() throws ParseException {
         String[] args = {"--byte-value", "abc"};
-        new GetOpt().bind(NamedConfig.class, args);
+        new GetOpt().bind(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithDoubleField() throws ParseException {
         String[] args = {"--double-value", "abc"};
-        new GetOpt().bind(NamedConfig.class, args);
+        new GetOpt().bind(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithFloatField() throws ParseException {
         String[] args = {"--float-value", "abc"};
-        new GetOpt().bind(NamedConfig.class, args);
+        new GetOpt().bind(HelpConfig.class, args);
     }
 
     @Test
     public void testVerifyIgnoreAnnotatedBooleanNotDefaultedToFalse() throws ParseException {
         String[] args = {};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertFalse(config.getBooleanValue());
         assertFalse(config.getHelp());
@@ -353,7 +354,7 @@ public class NamedConfigTest {
     @Test
     public void testAddNamedOptionToList() throws ParseException {
         String[] args = {"-l", "one", "-l", "two", "-l", "three"};
-        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
+        StringListNotRequired config = new GetOpt().bind(StringListNotRequired.class, args);
         assertNotNull(config);
         assertEquals(3, config.getStringList().size());
         assertEquals("one", config.getStringList().get(0));
@@ -365,7 +366,7 @@ public class NamedConfigTest {
             openingText = "This is the opening description",
             closingText = "This is the closing description"
     )
-    private static class NamedConfig {
+    private static class HelpConfig {
         @GetOptNamed(
                 code = 'L',
                 flag = "long-value",
@@ -451,14 +452,14 @@ public class NamedConfigTest {
         @GetOptIgnore
         private Boolean ignoredBoolean;
 
-        public NamedConfig() {
+        public HelpConfig() {
         }
 
         public boolean getBooleanValue() {
             return booleanValue;
         }
 
-        public NamedConfig setBooleanValue(boolean booleanValue) {
+        public HelpConfig setBooleanValue(boolean booleanValue) {
             this.booleanValue = booleanValue;
             return this;
         }
@@ -467,7 +468,7 @@ public class NamedConfigTest {
             return integerValue;
         }
 
-        public NamedConfig setIntegerValue(Integer integerValue) {
+        public HelpConfig setIntegerValue(Integer integerValue) {
             this.integerValue = integerValue;
             return this;
         }
@@ -476,7 +477,7 @@ public class NamedConfigTest {
             return help;
         }
 
-        public NamedConfig setHelp(Boolean help) {
+        public HelpConfig setHelp(Boolean help) {
             this.help = help;
             return this;
         }
@@ -485,7 +486,7 @@ public class NamedConfigTest {
             return doubleValue;
         }
 
-        public NamedConfig setDoubleValue(Double doubleValue) {
+        public HelpConfig setDoubleValue(Double doubleValue) {
             this.doubleValue = doubleValue;
             return this;
         }
@@ -494,7 +495,7 @@ public class NamedConfigTest {
             return stringValue;
         }
 
-        public NamedConfig setStringValue(String stringValue) {
+        public HelpConfig setStringValue(String stringValue) {
             this.stringValue = stringValue;
             return this;
         }
@@ -503,7 +504,7 @@ public class NamedConfigTest {
             return longValue;
         }
 
-        public NamedConfig setLongValue(Long longValue) {
+        public HelpConfig setLongValue(Long longValue) {
             this.longValue = longValue;
             return this;
         }
@@ -512,7 +513,7 @@ public class NamedConfigTest {
             return shortValue;
         }
 
-        public NamedConfig setShortValue(Short shortValue) {
+        public HelpConfig setShortValue(Short shortValue) {
             this.shortValue = shortValue;
             return this;
         }
@@ -521,7 +522,7 @@ public class NamedConfigTest {
             return floatValue;
         }
 
-        public NamedConfig setFloatValue(Float floatValue) {
+        public HelpConfig setFloatValue(Float floatValue) {
             this.floatValue = floatValue;
             return this;
         }
@@ -534,7 +535,7 @@ public class NamedConfigTest {
             return charValue;
         }
 
-        public NamedConfig setCharValue(Character charValue) {
+        public HelpConfig setCharValue(Character charValue) {
             this.charValue = charValue;
             return this;
         }
@@ -543,7 +544,7 @@ public class NamedConfigTest {
             return byteValue;
         }
 
-        public NamedConfig setByteValue(Byte byteValue) {
+        public HelpConfig setByteValue(Byte byteValue) {
             this.byteValue = byteValue;
             return this;
         }
@@ -552,7 +553,7 @@ public class NamedConfigTest {
             return ignoredBoolean;
         }
 
-        public NamedConfig setIgnoredBoolean(Boolean ignoredBoolean) {
+        public HelpConfig setIgnoredBoolean(Boolean ignoredBoolean) {
             this.ignoredBoolean = ignoredBoolean;
             return this;
         }
@@ -561,7 +562,7 @@ public class NamedConfigTest {
             return stringList;
         }
 
-        public NamedConfig setStringList(List<String> stringList) {
+        public HelpConfig setStringList(List<String> stringList) {
             this.stringList = stringList;
             return this;
         }
@@ -576,6 +577,198 @@ public class NamedConfigTest {
                     + ", stringValue='" + stringValue
                     + ", otherBoolean='" + booleanValue + '\''
                     + '}';
+        }
+    }
+
+    private static class StringConfigNotRequired {
+        @GetOptNamed(code = 'S')
+        private String stringValue;
+
+        public StringConfigNotRequired() {
+        }
+
+        public String getStringValue() {
+            return stringValue;
+        }
+    }
+
+    private static class IntegerConfigNotRequired {
+        @GetOptNamed(code = 'I')
+        private Integer integerValue;
+
+        public IntegerConfigNotRequired() {
+        }
+
+        public Integer getIntegerValue() {
+            return integerValue;
+        }
+    }
+
+    private static class LongConfigNotRequired {
+        @GetOptNamed(code = 'L')
+        private Long longValue;
+
+        public LongConfigNotRequired() {
+        }
+
+        public Long getLongValue() {
+            return longValue;
+        }
+    }
+
+    private static class ByteConfigNotRequired {
+        @GetOptNamed(code = 'b')
+        private Byte byteValue;
+
+        public ByteConfigNotRequired() {
+        }
+
+        public Byte getByteValue() {
+            return byteValue;
+        }
+    }
+
+    private static class CharacterConfigNotRequired {
+
+        @GetOptNamed(code = 'C')
+        private Character characterValue;
+
+        public CharacterConfigNotRequired() {
+        }
+
+        public Character getCharacterValue() {
+            return characterValue;
+        }
+    }
+
+    private static class BooleanConfigNotRequired {
+        @GetOptNamed(code = 'B')
+        private Boolean booleanValue;
+
+        @GetOptNamed(code = 'H')
+        private Boolean help;
+
+        @GetOptIgnore
+        private Boolean ignoredBoolean;
+
+        public BooleanConfigNotRequired() {
+        }
+
+        public Boolean getBooleanValue() {
+            return booleanValue;
+        }
+
+        public Boolean getHelp() {
+            return help;
+        }
+
+        public Boolean getIgnoredBoolean() {
+            return ignoredBoolean;
+        }
+    }
+
+    private static class TwoBooleanAndDouble {
+
+        @GetOptNamed(code = 'D')
+        private Double doubleValue;
+
+        @GetOptNamed(code = 'B')
+        private Boolean booleanValue;
+
+        @GetOptNamed(code = 'H')
+        private Boolean help;
+
+        public TwoBooleanAndDouble() {
+        }
+
+        public Boolean getBooleanValue() {
+            return booleanValue;
+        }
+
+        public Boolean getHelp() {
+            return help;
+        }
+
+        public Double getDoubleValue() {
+            return doubleValue;
+        }
+    }
+
+    private static class TwoBooleanAndShort {
+
+        @GetOptNamed(code = 's')
+        private Short shortValue;
+
+        @GetOptNamed(code = 'B')
+        private Boolean booleanValue;
+
+        @GetOptNamed(code = 'H')
+        private Boolean help;
+
+        public TwoBooleanAndShort() {
+        }
+
+        public Boolean getBooleanValue() {
+            return booleanValue;
+        }
+
+        public Boolean getHelp() {
+            return help;
+        }
+
+        public Short getShortValue() {
+            return shortValue;
+        }
+    }
+
+    private static class FloatConfigNotRequired {
+
+        @GetOptNamed(code = 'F')
+        private Float floatValue;
+
+        public FloatConfigNotRequired() {
+        }
+
+        public Float getFloatValue() {
+            return floatValue;
+        }
+    }
+
+    private static class DoubleConfigNotRequired {
+
+        @GetOptNamed(code = 'D')
+        private Double doubleValue;
+
+        public DoubleConfigNotRequired() {
+        }
+
+        public Double getDoubleValue() {
+            return doubleValue;
+        }
+    }
+
+    private static class ShortConfigNotRequired {
+
+        @GetOptNamed(code = 's')
+        private Short shortValue;
+
+        public ShortConfigNotRequired() {
+        }
+
+        public Short getShortValue() {
+            return shortValue;
+        }
+    }
+
+    private static class StringListNotRequired {
+        @GetOptNamed(code = 'l', collectionType = String.class)
+        private List<String> stringList;
+
+        public StringListNotRequired() {
+        }
+
+        public List<String> getStringList() {
+            return stringList;
         }
     }
 }

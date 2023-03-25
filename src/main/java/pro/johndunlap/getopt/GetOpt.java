@@ -28,6 +28,7 @@ package pro.johndunlap.getopt;
 
 import static pro.johndunlap.getopt.Parser.NEUTRAL;
 
+import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +48,9 @@ import pro.johndunlap.getopt.exception.ParseException;
  */
 public class GetOpt {
 
-    private int exitStatus = 0;
+    private PrintStream out = System.out;
+
+    private PrintStream err = System.err;
 
     public GetOpt() {
     }
@@ -72,17 +75,25 @@ public class GetOpt {
 
         T instance = context.getInstance();
 
+        // Verify that required fields are set
+        for (Field field : context.getRequiredFields()) {
+            try {
+                Object value = ReflectionUtil.getFieldValue(field, instance);
+
+                if (value == null) {
+                    throw new ParseException("Required field " + field.getName() + " is not set");
+                }
+            } catch (IllegalAccessException e) {
+                throw new ParseException("Could not access field " + field.getName(), e);
+            }
+        }
+
         // If the instance implements Runnable, run it after binding the arguments
         if (instance instanceof Runnable) {
-            // A custom exit status can be set by throwing an ExitException
             ((Runnable) instance).run();
         }
 
         return instance;
-    }
-
-    public int getExitStatus() {
-        return exitStatus;
     }
 
     /**
@@ -212,5 +223,16 @@ public class GetOpt {
         }
 
         return options;
+    }
+
+
+    public GetOpt setOut(PrintStream out) {
+        this.out = out;
+        return this;
+    }
+
+    public GetOpt setErr(PrintStream err) {
+        this.err = err;
+        return this;
     }
 }
