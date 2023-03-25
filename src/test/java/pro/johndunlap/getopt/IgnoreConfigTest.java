@@ -28,67 +28,54 @@ package pro.johndunlap.getopt;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
+import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.exception.ParseException;
 
 /**
- * Tests for configuration classes which implement {@link Runnable}.
+ * These tests verify that fields annotated with {@link GetOptIgnore} are not
+ * bound to command line arguments.
  *
  * @author John Dunlap
  */
-public class EntryPointTest {
+public class IgnoreConfigTest {
+
     @Test
-    public void testEntryPointOnSimpleObject() throws ParseException {
+    public void testIgnoredField() throws ParseException {
         String[] args = new String[]{"--first", "abc123", "--second", "80"};
-        SimpleConfig config = new GetOpt().bind(SimpleConfig.class, args);
+        IgnoreTest config = new GetOpt().bind(IgnoreTest.class, args);
         assertNotNull(config);
-        assertTrue(config.getInvoked());
+        assertEquals("abc123", config.getFirst());
+        assertNull(config.getSecond());
     }
 
-    private static class SimpleConfig implements Runnable {
+    private static class IgnoreTest {
         private String first;
-        private int second;
 
-        private Boolean invoked;
+        @GetOptIgnore
+        private String second;
 
-        public SimpleConfig() {
+        public IgnoreTest() {
         }
 
         public String getFirst() {
             return first;
         }
 
-        public SimpleConfig setFirst(String first) {
+        public IgnoreTest setFirst(String first) {
             this.first = first;
             return this;
         }
 
-        public int getSecond() {
+        public String getSecond() {
             return second;
         }
 
-        public SimpleConfig setSecond(int second) {
+        public IgnoreTest setSecond(String second) {
             this.second = second;
             return this;
-        }
-
-        public Boolean getInvoked() {
-            return invoked;
-        }
-
-        public SimpleConfig setInvoked(Boolean invoked) {
-            this.invoked = invoked;
-            return this;
-        }
-
-        @Override
-        public void run() {
-            assertEquals("abc123", getFirst());
-            assertEquals(80, getSecond());
-
-            invoked = true;
         }
     }
 }

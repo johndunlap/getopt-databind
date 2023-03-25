@@ -47,6 +47,8 @@ import pro.johndunlap.getopt.exception.ParseException;
  */
 public class GetOpt {
 
+    private int exitStatus = 0;
+
     public GetOpt() {
     }
 
@@ -59,7 +61,7 @@ public class GetOpt {
      * @return An instance of the class type with the arguments bound to it
      * @throws ParseException If the arguments could not be bound to the class type
      */
-    public static <T> T bind(Class<T> classType, String[] args) throws ParseException {
+    public <T> T bind(Class<T> classType, String[] args) throws ParseException {
         ParseContext<T> context = new ParseContext<>(classType, args);
         Parser state = NEUTRAL;
 
@@ -70,13 +72,17 @@ public class GetOpt {
 
         T instance = context.getInstance();
 
-        // If the method
-        if (instance instanceof EntryPoint) {
-            int status = ((EntryPoint) instance).main();
-            // TODO: What do we do with the status code? If we exit here, it will break the tests
+        // If the instance implements Runnable, run it after binding the arguments
+        if (instance instanceof Runnable) {
+            // A custom exit status can be set by throwing an ExitException
+            ((Runnable) instance).run();
         }
 
         return instance;
+    }
+
+    public int getExitStatus() {
+        return exitStatus;
     }
 
     /**
@@ -86,7 +92,7 @@ public class GetOpt {
      * @param <T> The type of the class for which a help message should be generated
      * @return A help message for the given class type
      */
-    public static <T> String help(Class<T> classType) {
+    public <T> String help(Class<T> classType) {
         GetOptHelp help = classType.getAnnotation(GetOptHelp.class);
         StringBuilder sb = new StringBuilder();
         String before = "";
@@ -192,7 +198,7 @@ public class GetOpt {
      * @param <T> The generic type of the class from which metadata is being extracted
      * @return A list of objects representing the fields which can be bound to
      */
-    protected static <T> List<OptionInfo> extract(Class<T> classType) {
+    protected <T> List<OptionInfo> extract(Class<T> classType) {
         List<OptionInfo> options = new ArrayList<>();
         Field[] fields = classType.getDeclaredFields();
 

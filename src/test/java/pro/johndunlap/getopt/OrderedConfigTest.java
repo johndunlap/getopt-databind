@@ -43,7 +43,7 @@ public class OrderedConfigTest {
     @Test
     public void testOrderedConfigWithFourElements() throws ParseException {
         String[] args = new String[]{"zero", "one", "two", "three"};
-        OrderedConfig orderedConfig = GetOpt.bind(OrderedConfig.class, args);
+        OrderedConfig orderedConfig = new GetOpt().bind(OrderedConfig.class, args);
         assertEquals("zero", orderedConfig.getStringValue());
         assertEquals("one", orderedConfig.getSomething());
         assertEquals("two", orderedConfig.getList().get(0));

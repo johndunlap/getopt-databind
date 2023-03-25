@@ -48,14 +48,14 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithNoArguments() throws ParseException {
         String[] args = {};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
     }
 
     @Test
     public void testBindMethodWithLongValueLongName() throws ParseException {
         String[] args = {"--long-value", "8080"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(8080L, config.getLongValue().longValue());
     }
@@ -63,7 +63,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithLongValueShortName() throws ParseException {
         String[] args = {"-L", "8080"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(8080L, config.getLongValue().longValue());
     }
@@ -71,7 +71,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithIntegerValueLongName() throws ParseException {
         String[] args = {"--integer-value", "8080"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getIntegerValue().intValue());
     }
@@ -79,7 +79,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithIntegerValueShortName() throws ParseException {
         String[] args = {"-I", "8080"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getIntegerValue().intValue());
     }
@@ -87,7 +87,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithShortValueLongName() throws ParseException {
         String[] args = {"--short-value", "8080"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getShortValue().shortValue());
     }
@@ -95,7 +95,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithShortValueShortName() throws ParseException {
         String[] args = {"-s", "8080"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getShortValue().shortValue());
     }
@@ -103,7 +103,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithByteValueLongName() throws ParseException {
         String[] args = {"--byte-value", "64"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(64, config.getByteValue().byteValue());
     }
@@ -111,7 +111,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithByteValueShortName() throws ParseException {
         String[] args = {"-b", "64"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(64, config.getByteValue().byteValue());
     }
@@ -119,7 +119,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithDoubleValueLongName() throws ParseException {
         String[] args = {"--double-value", "3.12345"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(Double.valueOf(3.12345), config.getDoubleValue());
     }
@@ -127,7 +127,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithDoubleValueShortName() throws ParseException {
         String[] args = {"-D", "3.12345"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(Double.valueOf(3.12345), config.getDoubleValue());
     }
@@ -135,7 +135,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithFloatValueLongName() throws ParseException {
         String[] args = {"--float-value", "3.12345"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(Float.valueOf((float) 3.12345), config.getFloatValue());
     }
@@ -143,7 +143,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithFloatValueShortName() throws ParseException {
         String[] args = {"-F", "3.12345"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(Float.valueOf((float) 3.12345), config.getFloatValue());
     }
@@ -151,7 +151,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithStringValueLongName() throws ParseException {
         String[] args = {"--string-value", "abc123"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals("abc123", config.getStringValue());
     }
@@ -159,7 +159,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithStringValueShortName() throws ParseException {
         String[] args = {"-S", "abc123"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals("abc123", config.getStringValue());
     }
@@ -167,7 +167,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithBooleanValueLongName() throws ParseException {
         String[] args = {"--boolean-value"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertTrue(config.getBooleanValue());
     }
@@ -175,7 +175,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithBooleanValueShortName() throws ParseException {
         String[] args = {"-B"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertTrue(config.getBooleanValue());
     }
@@ -183,7 +183,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithCharacterValueLongName() throws ParseException {
         String[] args = {"--char-value", "A"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(Character.valueOf('A'), config.getCharValue());
     }
@@ -191,7 +191,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithCharacterValueShortName() throws ParseException {
         String[] args = {"-C", "A"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(Character.valueOf('A'), config.getCharValue());
     }
@@ -199,7 +199,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithLongHelpFlag() throws ParseException {
         String[] args = {"--help"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
     }
@@ -207,7 +207,7 @@ public class NamedConfigTest {
     @Test
     public void testBindMethodWithShortHelpFlag() throws ParseException {
         String[] args = {"-H"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
     }
@@ -215,7 +215,7 @@ public class NamedConfigTest {
     @Test
     public void testMultipleShortNameBooleans() throws ParseException {
         String[] args = {"-HB"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -224,7 +224,7 @@ public class NamedConfigTest {
     @Test
     public void testMultipleBooleanShortNamesWithTrailingValue() throws ParseException {
         String[] args = {"-HBD", "3.14159265"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -234,7 +234,7 @@ public class NamedConfigTest {
     @Test
     public void testMultipleBooleanShortNamesAtEndOfArray() throws ParseException {
         String[] args = {"--double-value", "3.14159265", "-HB"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -251,7 +251,7 @@ public class NamedConfigTest {
             "--double-value", "1.7976931348623157E308",
             "--float-value", "3.4028235E38"
         };
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
 
         assertEquals(Long.valueOf(Long.MAX_VALUE), config.getLongValue());
@@ -265,7 +265,7 @@ public class NamedConfigTest {
     @Test
     public void testParseMultipleCombinedShortNames() throws ParseException {
         String[] args = {"-HBs", "1234"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
 
         assertEquals(Short.valueOf((short) 1234), config.getShortValue());
@@ -276,7 +276,7 @@ public class NamedConfigTest {
     @Test
     public void testBooleanDefaultFalse() throws ParseException {
         String[] args = {};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertFalse(config.getBooleanValue());
         assertFalse(config.getHelp());
@@ -300,50 +300,50 @@ public class NamedConfigTest {
                 + "  -l  --string-list    A list of strings\n"
                 + "This is the closing description";
 
-        String actual = GetOpt.help(NamedConfig.class);
+        String actual = new GetOpt().help(NamedConfig.class);
         assertEquals(expectedOutput, actual);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithLongField() throws ParseException {
         String[] args = {"--long-value", "abc"};
-        GetOpt.bind(NamedConfig.class, args);
+        new GetOpt().bind(NamedConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithIntegerField() throws ParseException {
         String[] args = {"--integer-value", "abc"};
-        GetOpt.bind(NamedConfig.class, args);
+        new GetOpt().bind(NamedConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithShortField() throws ParseException {
         String[] args = {"--short-value", "abc"};
-        GetOpt.bind(NamedConfig.class, args);
+        new GetOpt().bind(NamedConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithByteField() throws ParseException {
         String[] args = {"--byte-value", "abc"};
-        GetOpt.bind(NamedConfig.class, args);
+        new GetOpt().bind(NamedConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithDoubleField() throws ParseException {
         String[] args = {"--double-value", "abc"};
-        GetOpt.bind(NamedConfig.class, args);
+        new GetOpt().bind(NamedConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithFloatField() throws ParseException {
         String[] args = {"--float-value", "abc"};
-        GetOpt.bind(NamedConfig.class, args);
+        new GetOpt().bind(NamedConfig.class, args);
     }
 
     @Test
     public void testVerifyIgnoreAnnotatedBooleanNotDefaultedToFalse() throws ParseException {
         String[] args = {};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertFalse(config.getBooleanValue());
         assertFalse(config.getHelp());
@@ -353,7 +353,7 @@ public class NamedConfigTest {
     @Test
     public void testAddNamedOptionToList() throws ParseException {
         String[] args = {"-l", "one", "-l", "two", "-l", "three"};
-        NamedConfig config = GetOpt.bind(NamedConfig.class, args);
+        NamedConfig config = new GetOpt().bind(NamedConfig.class, args);
         assertNotNull(config);
         assertEquals(3, config.getStringList().size());
         assertEquals("one", config.getStringList().get(0));

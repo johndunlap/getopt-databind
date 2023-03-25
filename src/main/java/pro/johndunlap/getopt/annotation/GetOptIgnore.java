@@ -32,7 +32,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to ignore a field when parsing command line arguments.
+ * Annotation to ignore a field when parsing command line arguments. Values will not be
+ * injected into fields which are annotated with this annotation.
  *
  * @author John Dunlap
  */

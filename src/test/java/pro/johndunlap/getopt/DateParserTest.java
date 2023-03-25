@@ -45,7 +45,7 @@ public class DateParserTest {
     @Test
     public void testDateParser() throws ParseException {
         String[] args = {"--date-value", "2022-12-11"};
-        DateConfig config = GetOpt.bind(DateConfig.class, args);
+        DateConfig config = new GetOpt().bind(DateConfig.class, args);
         assertNotNull(config);
 
         String result = new SimpleDateFormat(DateValueParser.DATE_FORMAT)

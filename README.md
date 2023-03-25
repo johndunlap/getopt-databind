@@ -34,10 +34,10 @@ import pro.johndunlap.getopt.exception.ParseException;
 
 public class Main {
   public static void main(String[] args) throws ParseException {
-    Config config = GetOpt.bind(Config.class, args);
+    Config config = new GetOpt().bind(Config.class, args);
 
     if (config.getHelp()) {
-      System.out.println(GetOpt.help(Config.class));
+      System.out.println(new GetOpt().help(Config.class));
       System.exit(0);
     }
 
