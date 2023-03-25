@@ -8,8 +8,23 @@ This is a Java library which provides a flexible and customizable way to bind co
 * It's free
 
 ## Getting started
-* TODO: Jitpack instructions
-* TODO: Github Packages instructions
+### Jitpack
+```xml
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://www.jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.johndunlap</groupId>
+            <artifactId>getopt-databind</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+    </dependencies>
+```
 * TODO: Simple demonstration
 * TODO: Reference example code
 
