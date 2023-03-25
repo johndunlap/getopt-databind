@@ -21,7 +21,7 @@ This is a Java library which provides a flexible and customizable way to bind co
         <dependency>
             <groupId>com.github.johndunlap</groupId>
             <artifactId>getopt-databind</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0.RELEASE</version>
         </dependency>
     </dependencies>
 ```
