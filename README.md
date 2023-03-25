@@ -8,7 +8,7 @@ This is a Java library which provides a flexible and customizable way to bind co
 * It's free
 
 ## Getting started
-### Jitpack
+### Maven
 ```xml
     <repositories>
         <repository>
