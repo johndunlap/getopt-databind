@@ -43,7 +43,7 @@ public class NoAnnotationTest {
     @Test
     public void testNoAnnotationBindLongNames() throws ParseException {
         String[] args = {"--integer-value", "8080", "--string-value", "abc123"};
-        NoAnnotationConfig config = new GetOpt().bind(NoAnnotationConfig.class, args);
+        NoAnnotationConfig config = new GetOpt().read(NoAnnotationConfig.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getIntegerValue().intValue());
         assertEquals("abc123", config.getStringValue());
@@ -52,7 +52,7 @@ public class NoAnnotationTest {
     @Test
     public void testNoAnnotationBindLowerCaseShortNames() throws ParseException {
         String[] args = {"-i", "8080", "-s", "abc123"};
-        NoAnnotationConfig config = new GetOpt().bind(NoAnnotationConfig.class, args);
+        NoAnnotationConfig config = new GetOpt().read(NoAnnotationConfig.class, args);
         assertNotNull(config);
         assertNull(config.getIntegerValue());
         assertNull(config.getStringValue());
@@ -61,7 +61,7 @@ public class NoAnnotationTest {
     @Test
     public void testNoAnnotationBindWithWrongShortName() throws ParseException {
         String[] args = {"-S", "abc123"};
-        NoAnnotationConfig config = new GetOpt().bind(NoAnnotationConfig.class, args);
+        NoAnnotationConfig config = new GetOpt().read(NoAnnotationConfig.class, args);
         assertNotNull(config);
         assertNull(config.getStringValue());
     }

@@ -45,7 +45,7 @@ public class GetOptIgnoreTest {
     @Test
     public void testIgnoredField() throws ParseException {
         String[] args = new String[]{"--first", "abc123", "--second", "80"};
-        IgnoreTest config = new GetOpt().bind(IgnoreTest.class, args);
+        IgnoreTest config = new GetOpt().read(IgnoreTest.class, args);
         assertNotNull(config);
         assertEquals("abc123", config.getFirst());
         assertNull(config.getSecond());

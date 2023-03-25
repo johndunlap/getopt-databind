@@ -52,17 +52,17 @@ public class GetOpt {
 
     private PrintStream err = System.err;
 
-    private final Map<Class<?>, ValueParser<?>> valueParsers = new HashMap<>();
+    private final Map<Class<?>, ValueBinder<?>> valueParsers = new HashMap<>();
 
     public GetOpt() {
     }
 
-    public GetOpt register(Class<?> type, ValueParser<?> valueParser) {
-        valueParsers.put(type, valueParser);
+    public GetOpt register(Class<?> type, ValueBinder<?> valueBinder) {
+        valueParsers.put(type, valueBinder);
         return this;
     }
 
-    public GetOpt register(Map<Class<?>, ValueParser<?>> valueParsers) {
+    public GetOpt register(Map<Class<?>, ValueBinder<?>> valueParsers) {
         this.valueParsers.putAll(valueParsers);
         return this;
     }
@@ -76,7 +76,7 @@ public class GetOpt {
      * @return An instance of the class type with the arguments bound to it
      * @throws ParseException If the arguments could not be bound to the class type
      */
-    public <T> T bind(Class<T> classType, String[] args) throws ParseException {
+    public <T> T read(Class<T> classType, String[] args) throws ParseException {
         ParseContext<T> context = new ParseContext<>(classType, args, valueParsers);
 
         Parser state = NEUTRAL;

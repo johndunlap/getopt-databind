@@ -31,7 +31,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import pro.johndunlap.getopt.DefaultValueParser;
-import pro.johndunlap.getopt.ValueParser;
+import pro.johndunlap.getopt.ValueBinder;
 
 /**
  * This annotation is used to mark a field as a named option(code/flag).
@@ -90,5 +90,5 @@ public @interface GetOptNamed {
      *
      * @return The class of the ValueParser to use.
      */
-    Class<? extends ValueParser<?>> parser() default DefaultValueParser.class;
+    Class<? extends ValueBinder<?>> parser() default DefaultValueParser.class;
 }

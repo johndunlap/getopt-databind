@@ -34,8 +34,10 @@ import pro.johndunlap.getopt.exception.ParseException;
  *
  * @param <P> The type of object that string values should be parsed into
  */
-public interface ValueParser<P> {
+public interface ValueBinder<P> {
     Class<P> getType();
 
-    P parse(String value) throws ParseException;
+    P read(String value) throws ParseException;
+
+    String write(P value) throws ParseException;
 }

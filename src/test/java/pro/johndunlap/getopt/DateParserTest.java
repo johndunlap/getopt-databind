@@ -47,7 +47,7 @@ public class DateParserTest {
     @Test
     public void testAnnotatedDateParser() throws ParseException {
         String[] args = {"--date-value", "2022-12-11"};
-        DateConfigWithAnnotatedValueParser config = new GetOpt().bind(DateConfigWithAnnotatedValueParser.class, args);
+        DateConfigWithAnnotatedValueParser config = new GetOpt().read(DateConfigWithAnnotatedValueParser.class, args);
         assertNotNull(config);
 
         String result = new SimpleDateFormat(DateValueParser.DATE_FORMAT)
@@ -61,7 +61,7 @@ public class DateParserTest {
         String[] args = {"--date-value", "2022-12-11"};
         DateConfigWithAnnotatedValueParser config = new GetOpt()
                 .register(Date.class, new DateValueParser())
-                .bind(DateConfigWithAnnotatedValueParser.class, args);
+                .read(DateConfigWithAnnotatedValueParser.class, args);
 
         assertNotNull(config);
 
@@ -75,13 +75,13 @@ public class DateParserTest {
     public void testRegisteredDateParserCollection() throws ParseException {
         String[] args = {"--date-value", "2022-12-11"};
 
-        Map<Class<?>, ValueParser<?>> valueParsers = new HashMap<>(1) {{
+        Map<Class<?>, ValueBinder<?>> valueParsers = new HashMap<>(1) {{
                 put(Date.class, new DateValueParser());
             }};
 
         DateConfigWithAnnotatedValueParser config = new GetOpt()
             .register(valueParsers)
-            .bind(DateConfigWithAnnotatedValueParser.class, args);
+            .read(DateConfigWithAnnotatedValueParser.class, args);
 
         assertNotNull(config);
 
@@ -125,7 +125,7 @@ public class DateParserTest {
         }
     }
 
-    private static class DateValueParser implements ValueParser<Date> {
+    private static class DateValueParser implements ValueBinder<Date> {
         public static final String DATE_FORMAT = "yyyy-MM-dd";
 
         public DateValueParser() {
@@ -137,12 +137,17 @@ public class DateParserTest {
         }
 
         @Override
-        public Date parse(String value) throws ParseException {
+        public Date read(String value) throws ParseException {
             try {
                 return new SimpleDateFormat(DATE_FORMAT).parse(value);
             } catch (java.text.ParseException e) {
                 throw new RethrownException(e);
             }
+        }
+
+        @Override
+        public String write(Date value) throws ParseException {
+            return new SimpleDateFormat(DATE_FORMAT).format(value);
         }
     }
 }

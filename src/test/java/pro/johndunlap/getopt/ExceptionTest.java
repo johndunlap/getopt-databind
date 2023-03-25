@@ -97,13 +97,13 @@ public class ExceptionTest {
     @Test(expected = DuplicateOptionException.class)
     public void testDuplicateLongName() throws ParseException {
         String[] args = {"--value", "abc123"};
-        DuplicateLongNameConfig config = new GetOpt().bind(DuplicateLongNameConfig.class, args);
+        DuplicateLongNameConfig config = new GetOpt().read(DuplicateLongNameConfig.class, args);
     }
 
     @Test(expected = DuplicateOptionException.class)
     public void testDuplicateShortName() throws ParseException {
         String[] args = {"--value", "abc123"};
-        DuplicateShortNameConfig config = new GetOpt().bind(DuplicateShortNameConfig.class, args);
+        DuplicateShortNameConfig config = new GetOpt().read(DuplicateShortNameConfig.class, args);
     }
 
     private static class DuplicateLongNameConfig {

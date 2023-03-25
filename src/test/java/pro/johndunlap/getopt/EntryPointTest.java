@@ -42,7 +42,7 @@ public class EntryPointTest {
     @Test
     public void testEntryPointOnSimpleObject() throws ParseException {
         String[] args = new String[]{"--first", "abc123", "--second", "80"};
-        SimpleConfig config = new GetOpt().bind(SimpleConfig.class, args);
+        SimpleConfig config = new GetOpt().read(SimpleConfig.class, args);
         assertNotNull(config);
         assertTrue(config.getInvoked());
     }

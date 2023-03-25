@@ -66,7 +66,7 @@ public class ParseContext<T> {
     private final T instance;
     private String currentName;
     private int currentOrderedIndex = 0;
-    private Map<Class<?>, ValueParser<?>> valueParsers;
+    private Map<Class<?>, ValueBinder<?>> valueParsers;
 
     /**
      * Create a new ParseContext for the given class type and string arguments.
@@ -76,7 +76,7 @@ public class ParseContext<T> {
      * @param valueParsers The map of value parsers to use when parsing values
      * @throws MissingNoArgConstructorException If the class type does not have a public default constructor
      */
-    public ParseContext(Class<T> classType, String[] args, Map<Class<?>, ValueParser<?>> valueParsers)
+    public ParseContext(Class<T> classType, String[] args, Map<Class<?>, ValueBinder<?>> valueParsers)
             throws ParseException {
         this.queue = new Stack<>();
         this.valueParsers = valueParsers;
@@ -202,14 +202,14 @@ public class ParseContext<T> {
                 throw new NullPointerException(GetOptOrdered.class.getName() + " is missing. This should never happen");
             }
 
-            ValueParser<?> valueParser = null;
+            ValueBinder<?> valueBinder = null;
 
             if (valueParsers.containsKey(field.getType())) {
-                valueParser = valueParsers.get(field.getType());
+                valueBinder = valueParsers.get(field.getType());
             } else if (!ordered.parser().equals(DefaultValueParser.class)) {
                 try {
-                    Class<? extends ValueParser<?>> parserClass = ordered.parser();
-                    valueParser = parserClass.getConstructor().newInstance();
+                    Class<? extends ValueBinder<?>> parserClass = ordered.parser();
+                    valueBinder = parserClass.getConstructor().newInstance();
                 } catch (Exception e) {
                     String message = format(
                             "Class %s must have a public no-arg constructor",
@@ -224,7 +224,7 @@ public class ParseContext<T> {
 
             // Are we dealing with a collection?
             if (Collection.class.isAssignableFrom(fieldType) || fieldType.isArray()) {
-                Object parsedValue = parse(stringValue, ordered.collectionType(), valueParser);
+                Object parsedValue = parse(stringValue, ordered.collectionType(), valueBinder);
 
                 // Add a value to the collection
                 existingValue = addToCollection(field, existingValue, fieldType, ordered.collectionType(), parsedValue);
@@ -232,7 +232,7 @@ public class ParseContext<T> {
                 // Overwrite the collection in the instance
                 ReflectionUtil.setFieldValue(field, instance, existingValue);
             } else {
-                Object parsedValue = parse(stringValue, fieldType, valueParser);
+                Object parsedValue = parse(stringValue, fieldType, valueBinder);
                 ReflectionUtil.setFieldValue(field, instance, parsedValue);
             }
         } catch (RuntimeException | IllegalAccessException e) {
@@ -305,12 +305,12 @@ public class ParseContext<T> {
             // TODO: Is there a way to do this without querying the annotation again?
             GetOptNamed named = field.getAnnotation(GetOptNamed.class);
             Class<?> fieldType = field.getType();
-            ValueParser<?> valueParser = null;
+            ValueBinder<?> valueBinder = null;
 
             if (valueParsers.containsKey(fieldType)) {
-                valueParser = valueParsers.get(fieldType);
+                valueBinder = valueParsers.get(fieldType);
             } else if (named != null && !named.parser().equals(DefaultValueParser.class)) {
-                valueParser = ReflectionUtil.instantiate(named.parser());
+                valueBinder = ReflectionUtil.instantiate(named.parser());
             }
 
             Object existingValue = ReflectionUtil.getFieldValue(field, instance);
@@ -324,7 +324,7 @@ public class ParseContext<T> {
                     throw new NullPointerException(message);
                 }
 
-                Object parsedValue = parse(value, named.collectionType(), valueParser);
+                Object parsedValue = parse(value, named.collectionType(), valueBinder);
 
                 // Add a value to the collection
                 existingValue = addToCollection(field, existingValue, fieldType, named.collectionType(), parsedValue);
@@ -332,7 +332,7 @@ public class ParseContext<T> {
                 // Overwrite the collection in the instance
                 ReflectionUtil.setFieldValue(field, instance, existingValue);
             } else {
-                ReflectionUtil.setFieldValue(field, instance, parse(value, field.getType(), valueParser));
+                ReflectionUtil.setFieldValue(field, instance, parse(value, field.getType(), valueBinder));
             }
         } catch (RuntimeException | IllegalAccessException e) {
             String message = format("Failed to set value %s for flag %s", value, currentName);
@@ -340,7 +340,7 @@ public class ParseContext<T> {
         }
     }
 
-    private Object parse(String value, Class<?> fieldType, ValueParser<?> valueParser)
+    private Object parse(String value, Class<?> fieldType, ValueBinder<?> valueBinder)
             throws ParseException {
         Object parsed = null;
 
@@ -378,9 +378,9 @@ public class ParseContext<T> {
                 } else {
                     return Boolean.parseBoolean(value);
                 }
-            } else if (valueParser != null) {
+            } else if (valueBinder != null) {
                 try {
-                    parsed = valueParser.parse(value);
+                    parsed = valueBinder.read(value);
                 } catch (Exception e) {
                     throw new RethrownException(e);
                 }

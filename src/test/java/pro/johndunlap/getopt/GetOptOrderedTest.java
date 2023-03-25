@@ -43,7 +43,7 @@ public class GetOptOrderedTest {
     @Test
     public void testOrderedConfigWithFourElements() throws ParseException {
         String[] args = new String[]{"zero", "one", "two", "three"};
-        OrderedConfig orderedConfig = new GetOpt().bind(OrderedConfig.class, args);
+        OrderedConfig orderedConfig = new GetOpt().read(OrderedConfig.class, args);
         assertEquals("zero", orderedConfig.getStringValue());
         assertEquals("one", orderedConfig.getSomething());
         assertEquals("two", orderedConfig.getList().get(0));
@@ -54,7 +54,7 @@ public class GetOptOrderedTest {
     @Test(expected = ParseException.class)
     public void testRequiredOrderedMissingMissing() throws ParseException {
         String[] args = new String[]{};
-        new GetOpt().bind(OrderedConfig.class, args);
+        new GetOpt().read(OrderedConfig.class, args);
     }
 
     @GetOptHelp(

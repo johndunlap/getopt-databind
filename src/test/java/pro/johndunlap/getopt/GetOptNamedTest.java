@@ -48,7 +48,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithNoArguments() throws ParseException {
         String[] args = {};
-        StringConfigNotRequired config = new GetOpt().bind(StringConfigNotRequired.class, args);
+        StringConfigNotRequired config = new GetOpt().read(StringConfigNotRequired.class, args);
         assertNotNull(config);
         assertNull(config.getStringValue());
     }
@@ -56,7 +56,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithLongValueLongName() throws ParseException {
         String[] args = {"--long-value", "8080"};
-        LongConfigNotRequired config = new GetOpt().bind(LongConfigNotRequired.class, args);
+        LongConfigNotRequired config = new GetOpt().read(LongConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080L, config.getLongValue().longValue());
     }
@@ -64,7 +64,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithLongValueShortName() throws ParseException {
         String[] args = {"-L", "8080"};
-        LongConfigNotRequired config = new GetOpt().bind(LongConfigNotRequired.class, args);
+        LongConfigNotRequired config = new GetOpt().read(LongConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080L, config.getLongValue().longValue());
     }
@@ -72,7 +72,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithIntegerValueLongName() throws ParseException {
         String[] args = {"--integer-value", "8080"};
-        IntegerConfigNotRequired config = new GetOpt().bind(IntegerConfigNotRequired.class, args);
+        IntegerConfigNotRequired config = new GetOpt().read(IntegerConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getIntegerValue().intValue());
     }
@@ -80,7 +80,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithIntegerValueShortName() throws ParseException {
         String[] args = {"-I", "8080"};
-        IntegerConfigNotRequired config = new GetOpt().bind(IntegerConfigNotRequired.class, args);
+        IntegerConfigNotRequired config = new GetOpt().read(IntegerConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getIntegerValue().intValue());
     }
@@ -88,7 +88,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithShortValueLongName() throws ParseException {
         String[] args = {"--short-value", "8080"};
-        ShortConfigNotRequired config = new GetOpt().bind(ShortConfigNotRequired.class, args);
+        ShortConfigNotRequired config = new GetOpt().read(ShortConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getShortValue().shortValue());
     }
@@ -96,7 +96,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithShortValueShortName() throws ParseException {
         String[] args = {"-s", "8080"};
-        ShortConfigNotRequired config = new GetOpt().bind(ShortConfigNotRequired.class, args);
+        ShortConfigNotRequired config = new GetOpt().read(ShortConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(8080, config.getShortValue().shortValue());
     }
@@ -104,7 +104,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithByteValueLongName() throws ParseException {
         String[] args = {"--byte-value", "64"};
-        ByteConfigNotRequired config = new GetOpt().bind(ByteConfigNotRequired.class, args);
+        ByteConfigNotRequired config = new GetOpt().read(ByteConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(64, config.getByteValue().byteValue());
     }
@@ -112,7 +112,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithByteValueShortName() throws ParseException {
         String[] args = {"-b", "64"};
-        ByteConfigNotRequired config = new GetOpt().bind(ByteConfigNotRequired.class, args);
+        ByteConfigNotRequired config = new GetOpt().read(ByteConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(64, config.getByteValue().byteValue());
     }
@@ -120,7 +120,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithDoubleValueLongName() throws ParseException {
         String[] args = {"--double-value", "3.12345"};
-        DoubleConfigNotRequired config = new GetOpt().bind(DoubleConfigNotRequired.class, args);
+        DoubleConfigNotRequired config = new GetOpt().read(DoubleConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Double.valueOf(3.12345), config.getDoubleValue());
     }
@@ -128,7 +128,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithDoubleValueShortName() throws ParseException {
         String[] args = {"-D", "3.12345"};
-        DoubleConfigNotRequired config = new GetOpt().bind(DoubleConfigNotRequired.class, args);
+        DoubleConfigNotRequired config = new GetOpt().read(DoubleConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Double.valueOf(3.12345), config.getDoubleValue());
     }
@@ -136,7 +136,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithFloatValueLongName() throws ParseException {
         String[] args = {"--float-value", "3.12345"};
-        FloatConfigNotRequired config = new GetOpt().bind(FloatConfigNotRequired.class, args);
+        FloatConfigNotRequired config = new GetOpt().read(FloatConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Float.valueOf((float) 3.12345), config.getFloatValue());
     }
@@ -144,7 +144,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithFloatValueShortName() throws ParseException {
         String[] args = {"-F", "3.12345"};
-        FloatConfigNotRequired config = new GetOpt().bind(FloatConfigNotRequired.class, args);
+        FloatConfigNotRequired config = new GetOpt().read(FloatConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Float.valueOf((float) 3.12345), config.getFloatValue());
     }
@@ -152,7 +152,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithStringValueLongName() throws ParseException {
         String[] args = {"--string-value", "abc123"};
-        StringConfigNotRequired config = new GetOpt().bind(StringConfigNotRequired.class, args);
+        StringConfigNotRequired config = new GetOpt().read(StringConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals("abc123", config.getStringValue());
     }
@@ -160,7 +160,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithStringValueShortName() throws ParseException {
         String[] args = {"-S", "abc123"};
-        StringConfigNotRequired config = new GetOpt().bind(StringConfigNotRequired.class, args);
+        StringConfigNotRequired config = new GetOpt().read(StringConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals("abc123", config.getStringValue());
     }
@@ -168,7 +168,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithBooleanValueLongName() throws ParseException {
         String[] args = {"--boolean-value"};
-        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
+        BooleanConfigNotRequired config = new GetOpt().read(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getBooleanValue());
     }
@@ -176,7 +176,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithBooleanValueShortName() throws ParseException {
         String[] args = {"-B"};
-        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
+        BooleanConfigNotRequired config = new GetOpt().read(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getBooleanValue());
     }
@@ -184,7 +184,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithCharacterValueLongName() throws ParseException {
         String[] args = {"--character-value", "A"};
-        CharacterConfigNotRequired config = new GetOpt().bind(CharacterConfigNotRequired.class, args);
+        CharacterConfigNotRequired config = new GetOpt().read(CharacterConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Character.valueOf('A'), config.getCharacterValue());
     }
@@ -192,7 +192,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithCharacterValueShortName() throws ParseException {
         String[] args = {"-C", "A"};
-        CharacterConfigNotRequired config = new GetOpt().bind(CharacterConfigNotRequired.class, args);
+        CharacterConfigNotRequired config = new GetOpt().read(CharacterConfigNotRequired.class, args);
         assertNotNull(config);
         assertEquals(Character.valueOf('A'), config.getCharacterValue());
     }
@@ -200,7 +200,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithLongHelpFlag() throws ParseException {
         String[] args = {"--help"};
-        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
+        BooleanConfigNotRequired config = new GetOpt().read(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
     }
@@ -208,7 +208,7 @@ public class GetOptNamedTest {
     @Test
     public void testBindMethodWithShortHelpFlag() throws ParseException {
         String[] args = {"-H"};
-        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
+        BooleanConfigNotRequired config = new GetOpt().read(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
     }
@@ -216,7 +216,7 @@ public class GetOptNamedTest {
     @Test
     public void testMultipleShortNameBooleans() throws ParseException {
         String[] args = {"-HB"};
-        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
+        BooleanConfigNotRequired config = new GetOpt().read(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -225,7 +225,7 @@ public class GetOptNamedTest {
     @Test
     public void testMultipleBooleanShortNamesWithTrailingValue() throws ParseException {
         String[] args = {"-HBD", "3.14159265"};
-        TwoBooleanAndDouble config = new GetOpt().bind(TwoBooleanAndDouble.class, args);
+        TwoBooleanAndDouble config = new GetOpt().read(TwoBooleanAndDouble.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -235,7 +235,7 @@ public class GetOptNamedTest {
     @Test
     public void testMultipleBooleanShortNamesAtEndOfArray() throws ParseException {
         String[] args = {"--double-value", "3.14159265", "-HB"};
-        TwoBooleanAndDouble config = new GetOpt().bind(TwoBooleanAndDouble.class, args);
+        TwoBooleanAndDouble config = new GetOpt().read(TwoBooleanAndDouble.class, args);
         assertNotNull(config);
         assertTrue(config.getHelp());
         assertTrue(config.getBooleanValue());
@@ -252,7 +252,7 @@ public class GetOptNamedTest {
             "--double-value", "1.7976931348623157E308",
             "--float-value", "3.4028235E38"
         };
-        HelpConfig config = new GetOpt().bind(HelpConfig.class, args);
+        HelpConfig config = new GetOpt().read(HelpConfig.class, args);
         assertNotNull(config);
 
         assertEquals(Long.valueOf(Long.MAX_VALUE), config.getLongValue());
@@ -266,7 +266,7 @@ public class GetOptNamedTest {
     @Test
     public void testParseMultipleCombinedShortNames() throws ParseException {
         String[] args = {"-HBs", "1234"};
-        TwoBooleanAndShort config = new GetOpt().bind(TwoBooleanAndShort.class, args);
+        TwoBooleanAndShort config = new GetOpt().read(TwoBooleanAndShort.class, args);
         assertNotNull(config);
 
         assertEquals(Short.valueOf((short) 1234), config.getShortValue());
@@ -277,7 +277,7 @@ public class GetOptNamedTest {
     @Test
     public void testBooleanDefaultFalse() throws ParseException {
         String[] args = {};
-        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
+        BooleanConfigNotRequired config = new GetOpt().read(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertFalse(config.getBooleanValue());
         assertFalse(config.getHelp());
@@ -308,43 +308,43 @@ public class GetOptNamedTest {
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithLongField() throws ParseException {
         String[] args = {"--long-value", "abc"};
-        new GetOpt().bind(HelpConfig.class, args);
+        new GetOpt().read(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithIntegerField() throws ParseException {
         String[] args = {"--integer-value", "abc"};
-        new GetOpt().bind(HelpConfig.class, args);
+        new GetOpt().read(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithShortField() throws ParseException {
         String[] args = {"--short-value", "abc"};
-        new GetOpt().bind(HelpConfig.class, args);
+        new GetOpt().read(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithByteField() throws ParseException {
         String[] args = {"--byte-value", "abc"};
-        new GetOpt().bind(HelpConfig.class, args);
+        new GetOpt().read(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithDoubleField() throws ParseException {
         String[] args = {"--double-value", "abc"};
-        new GetOpt().bind(HelpConfig.class, args);
+        new GetOpt().read(HelpConfig.class, args);
     }
 
     @Test(expected = ParseException.class)
     public void testNumericParseExceptionWithFloatField() throws ParseException {
         String[] args = {"--float-value", "abc"};
-        new GetOpt().bind(HelpConfig.class, args);
+        new GetOpt().read(HelpConfig.class, args);
     }
 
     @Test
     public void testVerifyIgnoreAnnotatedBooleanNotDefaultedToFalse() throws ParseException {
         String[] args = {};
-        BooleanConfigNotRequired config = new GetOpt().bind(BooleanConfigNotRequired.class, args);
+        BooleanConfigNotRequired config = new GetOpt().read(BooleanConfigNotRequired.class, args);
         assertNotNull(config);
         assertFalse(config.getBooleanValue());
         assertFalse(config.getHelp());
@@ -354,7 +354,7 @@ public class GetOptNamedTest {
     @Test
     public void testAddNamedOptionToList() throws ParseException {
         String[] args = {"-l", "one", "-l", "two", "-l", "three"};
-        StringListNotRequired config = new GetOpt().bind(StringListNotRequired.class, args);
+        StringListNotRequired config = new GetOpt().read(StringListNotRequired.class, args);
         assertNotNull(config);
         assertEquals(3, config.getStringList().size());
         assertEquals("one", config.getStringList().get(0));
