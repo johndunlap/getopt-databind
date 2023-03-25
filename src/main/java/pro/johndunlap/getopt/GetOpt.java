@@ -248,4 +248,12 @@ public class GetOpt {
         this.err = err;
         return this;
     }
+
+    public PrintStream getOut() {
+        return out;
+    }
+
+    public PrintStream getErr() {
+        return err;
+    }
 }

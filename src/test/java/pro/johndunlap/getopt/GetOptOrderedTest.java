@@ -39,7 +39,7 @@ import pro.johndunlap.getopt.exception.ParseException;
  *
  * @author John Dunlap
  */
-public class OrderedConfigTest {
+public class GetOptOrderedTest {
     @Test
     public void testOrderedConfigWithFourElements() throws ParseException {
         String[] args = new String[]{"zero", "one", "two", "three"};

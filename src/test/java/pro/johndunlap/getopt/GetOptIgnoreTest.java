@@ -40,7 +40,7 @@ import pro.johndunlap.getopt.exception.ParseException;
  *
  * @author John Dunlap
  */
-public class IgnoreConfigTest {
+public class GetOptIgnoreTest {
 
     @Test
     public void testIgnoredField() throws ParseException {
