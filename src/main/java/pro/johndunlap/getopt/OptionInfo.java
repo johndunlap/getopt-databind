@@ -28,7 +28,7 @@ package pro.johndunlap.getopt;
 
 import java.lang.reflect.Field;
 import pro.johndunlap.getopt.annotation.GetOptIgnore;
-import pro.johndunlap.getopt.annotation.GetOptNamed;
+import pro.johndunlap.getopt.annotation.GetOptProperty;
 
 /**
  * A class which contains information about a single option.
@@ -52,40 +52,52 @@ public class OptionInfo {
             throw new RuntimeException("Cannot process ignored field");
         }
 
-        GetOptNamed named = field.getAnnotation(GetOptNamed.class);
+        GetOptProperty property = field.getAnnotation(GetOptProperty.class);
 
-        if (named == null) {
-            flag = Parser.camelCaseToHyphenCase(field.getName());
+        flag = Parser.camelCaseToHyphenCase(field.getName());
 
-            if (field.getType().equals(Boolean.class)
-                    || field.getType().equals(boolean.class)) {
-                description = "Boolean flag which requires no argument";
+        if (field.getType().equals(Boolean.class)
+                || field.getType().equals(boolean.class)) {
+            description = "Boolean flag which requires no argument";
+        } else {
+            description = "Accepts a ";
+
+            if (field.getType().equals(String.class)) {
+                description += "string value";
+            } else if (
+                    field.getType().equals(Double.class)
+                            || field.getType().equals(double.class)
+                            || field.getType().equals(Float.class)
+                            || field.getType().equals(float.class)
+            ) {
+                description += "floating point number";
+            } else if (field.getType().equals(Character.class)
+                    || field.getType().equals(char.class)) {
+                description += "single character";
             } else {
-                description = "Accepts a ";
+                description += "number";
+            }
+        }
 
-                if (field.getType().equals(String.class)) {
-                    description += "string value";
-                } else if (
-                        field.getType().equals(Double.class)
-                                || field.getType().equals(double.class)
-                                || field.getType().equals(Float.class)
-                                || field.getType().equals(float.class)
-                ) {
-                    description += "floating point number";
-                } else if (field.getType().equals(Character.class)
-                        || field.getType().equals(char.class)) {
-                    description += "single character";
-                } else {
-                    description += "number";
-                }
+        if (property != null) {
+
+            if (!property.flag().equals("")) {
+                flag = property.flag();
             }
 
-        } else {
-            flag = named.flag();
-            code = named.code();
-            description = named.description();
-            category = named.category();
-            required = named.required();
+            if (property.code() != ' ') {
+                code = property.code();
+            }
+
+            if (!property.description().equals("")) {
+                description = property.description();
+            }
+
+            if (!property.category().equals("")) {
+                category = property.category();
+            }
+
+            required = property.required();
         }
     }
 

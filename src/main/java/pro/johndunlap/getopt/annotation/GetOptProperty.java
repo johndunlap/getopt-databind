@@ -31,7 +31,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import pro.johndunlap.getopt.DefaultValueParser;
-import pro.johndunlap.getopt.ValueBinder;
+import pro.johndunlap.getopt.TypeConverter;
 
 /**
  * This annotation is used to mark a field as a named option(code/flag).
@@ -40,7 +40,7 @@ import pro.johndunlap.getopt.ValueBinder;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface GetOptNamed {
+public @interface GetOptProperty {
     /**
      * The single character code for the option. This is expected to be a single character. For example, 'o'.
      *
@@ -56,7 +56,41 @@ public @interface GetOptNamed {
     String flag() default "";
 
     /**
-     * True if the option requires a value. If true and if a value is not available, an exception will be thrown.
+     * The index into the array of ordered arguments(not specified with a code/flag). This index is used to determine
+     * which ordered values are applied to which fields. This has no affect if code or flag are specified.
+     *
+     * @return The index into the array of ordered arguments.
+     */
+    int order() default -1;
+
+    /**
+     * This is ignored for fields which are not collections. For collections, this is the minimum number of values that
+     * should be bound. If the number of values is less than this, an exception will be thrown. The default is 0.
+     *
+     * @return The minimum number of values that should be bound.
+     */
+    int min() default 0;
+
+    /**
+     * This is ignored for fields which are not collections. For collections, this is the maximum number of values that
+     * should be bound. If the number of values is greater than this, an exception will be thrown. The default is 1.
+     *
+     * @return The maximum number of values that should be bound.
+     */
+    int max() default 1;
+
+    /**
+     * If set to a non-zero value, this is the exit status which will be set if binding fails for this property. The
+     * default is 0. Setting this attribute to 0(the default) will have no effect as other properties may fail to
+     * bind even if this one succeeds.
+     *
+     * @return The exit status which will be set if binding fails for this property.
+     */
+    int exitStatus() default 0;
+
+    /**
+     * True if the option requires a value. If true and if a value is not available, an exception will be thrown. If
+     * used on a collection, this is the same as specifying a min of 1.
      *
      * @return True if the option requires a value.
      */
@@ -90,5 +124,5 @@ public @interface GetOptNamed {
      *
      * @return The class of the ValueParser to use.
      */
-    Class<? extends ValueBinder<?>> parser() default DefaultValueParser.class;
+    Class<? extends TypeConverter<?>> converter() default DefaultValueParser.class;
 }

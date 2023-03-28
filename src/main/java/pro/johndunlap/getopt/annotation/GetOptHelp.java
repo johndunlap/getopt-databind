@@ -53,4 +53,27 @@ public @interface GetOptHelp {
      * @return The text to display after the list of options.
      */
     String closingText() default "";
+
+    /**
+     * The tokens which should trigger the display of the help message. Defaults to "-h" and "--help".
+     *
+     * @return The tokens which should trigger the display of the help message.
+     */
+    String[] helpTokens() default {"-h", "--help"};
+
+    // TODO: Implement this.
+    /**
+     * True if the help message should be displayed when an error occurs and false otherwise. Defaults to false.
+     *
+     * @return True if the help message should be displayed when an error occurs and false otherwise.
+     */
+    boolean showHelpOnError() default false;
+
+    // TODO: Implement this.
+    /**
+     * The exit status which should be used when the help message is invoked. Defaults to 0.
+     *
+     * @return The exit status which should be used when the help message is invoked.
+     */
+    int helpExitStatus() default 0;
 }

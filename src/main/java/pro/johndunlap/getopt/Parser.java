@@ -89,6 +89,11 @@ public enum Parser {
             try {
                 String arg = context.getQueue().pop();
 
+                // Remember that help has been requested but allow binding to continue
+                if (context.isHelpToken(arg)) {
+                    context.setHelpRequested(true);
+                }
+
                 if (arg.charAt(0) == '-') {
                     if (arg.charAt(1) == '-') {
                         context.setCurrentName(arg.substring(2));

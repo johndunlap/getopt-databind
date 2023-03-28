@@ -33,7 +33,7 @@ import pro.johndunlap.getopt.exception.ParseException;
  *
  * @author John Dunlap
  */
-public class DefaultValueParser implements ValueBinder<String> {
+public class DefaultValueParser implements TypeConverter<String> {
     @Override
     public Class<String> getType() {
         return String.class;

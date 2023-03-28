@@ -26,29 +26,18 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import pro.johndunlap.getopt.exception.ParseException;
 
 /**
- * Tests for utility methods.
+ * Implementations of this interface are used to parse string values into object instances which are not
+ * supported by default.
  *
- * @author John Dunlap
+ * @param <P> The type of object that string values should be parsed into
  */
-public class UtilTest {
+public interface TypeConverter<P> {
+    Class<P> getType();
 
-    @Test
-    public void testCamelCaseToHyphenCaseMethod() {
-        assertEquals("thisIsATest", Parser.hyphenCaseToCamelCase("this-is-a-test"));
-    }
+    P read(String value) throws ParseException;
 
-    @Test
-    public void testHyphenCaseToCamelCaseMethod() {
-        assertEquals("this-is-a-test", Parser.camelCaseToHyphenCase("thisIsATest"));
-    }
-
-    @Test
-    public void testCamelCaseToHyphenCaseWithSingleWord() {
-        assertEquals("second", Parser.camelCaseToHyphenCase("second"));
-    }
+    String write(P value) throws ParseException;
 }

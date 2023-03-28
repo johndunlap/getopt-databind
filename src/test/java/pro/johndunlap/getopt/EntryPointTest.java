@@ -28,10 +28,11 @@ package pro.johndunlap.getopt;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import org.junit.Test;
-import pro.johndunlap.getopt.exception.ParseException;
+import pro.johndunlap.getopt.annotation.GetOptProperty;
 
 /**
  * Tests for configuration classes which implement {@link Runnable}.
@@ -40,14 +41,71 @@ import pro.johndunlap.getopt.exception.ParseException;
  */
 public class EntryPointTest {
     @Test
-    public void testEntryPointOnSimpleObject() throws ParseException {
+    public void testRunOnSimpleObjectWithValidArguments() {
         String[] args = new String[]{"--first", "abc123", "--second", "80"};
-        SimpleConfig config = new GetOpt().read(SimpleConfig.class, args);
+        SimpleConfig config = new GetOpt()
+                .setExitMechanism(status -> {
+                    if (status != 0) {
+                        throw new RuntimeException("Exit called with status " + status);
+                    }
+                })
+                .run(SimpleConfig.class, args);
         assertNotNull(config);
-        assertTrue(config.getInvoked());
+        assertEquals("abc123", config.getFirst());
+        assertEquals(80, config.getSecond());
+    }
+
+    @Test
+    public void testRunOnSimpleObjectWithInvalidArguments() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream err = new PrintStream(outputStream);
+        String[] args = new String[]{"--first", "80", "--second", "abc123"};
+
+        try {
+            new GetOpt()
+                    .setErr(err)
+                    .setExitMechanism(status -> {
+                        if (status != 0) {
+                            throw new RuntimeException("Exit called with status " + status);
+                        }
+                    })
+                    .run(SimpleConfig.class, args);
+        } catch (RuntimeException e) {
+            assertEquals(
+                    "Failed to parse string abc123 into an instance of class int\n",
+                    outputStream.toString()
+            );
+        }
+    }
+
+    @Test
+    public void testRunOnSimpleObjectWithHelpFlag() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(outputStream);
+        String[] args = new String[]{"--help"};
+
+        new GetOpt()
+                .setOut(out)
+                .setExitMechanism(status -> {
+                    if (status != 0) {
+                        throw new RuntimeException("Exit called with status " + status);
+                    }
+                })
+                .run(SimpleConfig.class, args);
+
+        String expected = "The following options are accepted: \n"
+                + "     --first    Accepts a string value (required)\n"
+                + "     --second   Accepts a number\n"
+                + "     --invoked  Boolean flag which requires no argument\n";
+
+        assertEquals(
+                expected,
+                outputStream.toString()
+        );
     }
 
     private static class SimpleConfig implements Runnable {
+        @GetOptProperty(required = true)
         private String first;
         private int second;
 

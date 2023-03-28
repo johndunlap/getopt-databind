@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
-import pro.johndunlap.getopt.annotation.GetOptNamed;
+import pro.johndunlap.getopt.annotation.GetOptProperty;
 import pro.johndunlap.getopt.exception.ParseException;
 import pro.johndunlap.getopt.exception.RethrownException;
 
@@ -75,12 +75,12 @@ public class DateParserTest {
     public void testRegisteredDateParserCollection() throws ParseException {
         String[] args = {"--date-value", "2022-12-11"};
 
-        Map<Class<?>, ValueBinder<?>> valueParsers = new HashMap<>(1) {{
+        Map<Class<?>, TypeConverter<?>> typeConverters = new HashMap<>(1) {{
                 put(Date.class, new DateValueParser());
             }};
 
         DateConfigWithAnnotatedValueParser config = new GetOpt()
-            .register(valueParsers)
+            .register(typeConverters)
             .read(DateConfigWithAnnotatedValueParser.class, args);
 
         assertNotNull(config);
@@ -92,7 +92,7 @@ public class DateParserTest {
     }
 
     private static class DateConfigWithAnnotatedValueParser {
-        @GetOptNamed(flag = "date-value", code = 'D', parser = DateValueParser.class)
+        @GetOptProperty(flag = "date-value", code = 'D', converter = DateValueParser.class)
         private Date dateValue;
 
         public DateConfigWithAnnotatedValueParser() {
@@ -109,7 +109,7 @@ public class DateParserTest {
     }
 
     private static class DateConfigWithoutAnnotatedValueParser {
-        @GetOptNamed(flag = "date-value", code = 'D')
+        @GetOptProperty(flag = "date-value", code = 'D')
         private Date dateValue;
 
         public DateConfigWithoutAnnotatedValueParser() {
@@ -125,7 +125,7 @@ public class DateParserTest {
         }
     }
 
-    private static class DateValueParser implements ValueBinder<Date> {
+    private static class DateValueParser implements TypeConverter<Date> {
         public static final String DATE_FORMAT = "yyyy-MM-dd";
 
         public DateValueParser() {

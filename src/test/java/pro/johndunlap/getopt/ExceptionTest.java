@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Field;
 import org.junit.Test;
-import pro.johndunlap.getopt.annotation.GetOptNamed;
+import pro.johndunlap.getopt.annotation.GetOptProperty;
 import pro.johndunlap.getopt.exception.DuplicateOptionException;
 import pro.johndunlap.getopt.exception.InaccessibleFieldException;
 import pro.johndunlap.getopt.exception.MissingNoArgConstructorException;
@@ -107,9 +107,9 @@ public class ExceptionTest {
     }
 
     private static class DuplicateLongNameConfig {
-        @GetOptNamed(flag = "value")
+        @GetOptProperty(flag = "value")
         private String firstValue;
-        @GetOptNamed(flag = "value")
+        @GetOptProperty(flag = "value")
         private String secondValue;
 
         public DuplicateLongNameConfig() {
@@ -135,9 +135,9 @@ public class ExceptionTest {
     }
 
     private static class DuplicateShortNameConfig {
-        @GetOptNamed(code = 'V')
+        @GetOptProperty(code = 'V')
         private String firstValue;
-        @GetOptNamed(code = 'V')
+        @GetOptProperty(code = 'V')
         private String secondValue;
 
         public DuplicateShortNameConfig() {

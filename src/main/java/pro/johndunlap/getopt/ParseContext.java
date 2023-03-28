@@ -43,9 +43,10 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import pro.johndunlap.getopt.annotation.GetOptHelp;
 import pro.johndunlap.getopt.annotation.GetOptIgnore;
-import pro.johndunlap.getopt.annotation.GetOptNamed;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
+import pro.johndunlap.getopt.annotation.GetOptProperty;
 import pro.johndunlap.getopt.exception.DuplicateOptionException;
 import pro.johndunlap.getopt.exception.InaccessibleFieldException;
 import pro.johndunlap.getopt.exception.MissingNoArgConstructorException;
@@ -64,22 +65,36 @@ public class ParseContext<T> {
     private final List<Field> requiredFields = new ArrayList<>();
     private final Stack<String> queue;
     private final T instance;
+    private final Map<Class<?>, TypeConverter<?>> typeConverters;
+    private final Set<String> helpTokens = new HashSet<>();
     private String currentName;
     private int currentOrderedIndex = 0;
-    private Map<Class<?>, ValueBinder<?>> valueParsers;
+    private boolean helpRequested = false;
 
     /**
      * Create a new ParseContext for the given class type and string arguments.
      *
      * @param classType The class type which will be instantiated and populated with the given arguments
      * @param args The string arguments to parse
-     * @param valueParsers The map of value parsers to use when parsing values
+     * @param typeConverters The map of value parsers to use when parsing values
      * @throws MissingNoArgConstructorException If the class type does not have a public default constructor
      */
-    public ParseContext(Class<T> classType, String[] args, Map<Class<?>, ValueBinder<?>> valueParsers)
+    public ParseContext(Class<T> classType, String[] args, Map<Class<?>, TypeConverter<?>> typeConverters)
             throws ParseException {
         this.queue = new Stack<>();
-        this.valueParsers = valueParsers;
+        this.typeConverters = typeConverters;
+
+        GetOptHelp helpAnnotation;
+
+        if (classType.getDeclaredAnnotation(GetOptHelp.class) != null) {
+            helpAnnotation = classType.getDeclaredAnnotation(GetOptHelp.class);
+        } else {
+            helpAnnotation = GetDefaults.class.getDeclaredAnnotation(GetOptHelp.class);
+        }
+
+        for (String token : helpAnnotation.helpTokens()) {
+            helpTokens.add(token);
+        }
 
         // Add the string args to the stack in reverse order
         for (int i = args.length - 1; i >= 0; i--) {
@@ -111,7 +126,7 @@ public class ParseContext<T> {
                     requiredFields.add(field);
                 }
             } else {
-                GetOptNamed namedOption = field.getAnnotation(GetOptNamed.class);
+                GetOptProperty namedOption = field.getAnnotation(GetOptProperty.class);
 
                 // Initialize boolean fields to false by default
                 if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
@@ -202,18 +217,18 @@ public class ParseContext<T> {
                 throw new NullPointerException(GetOptOrdered.class.getName() + " is missing. This should never happen");
             }
 
-            ValueBinder<?> valueBinder = null;
+            TypeConverter<?> typeConverter = null;
 
-            if (valueParsers.containsKey(field.getType())) {
-                valueBinder = valueParsers.get(field.getType());
-            } else if (!ordered.parser().equals(DefaultValueParser.class)) {
+            if (typeConverters.containsKey(field.getType())) {
+                typeConverter = typeConverters.get(field.getType());
+            } else if (!ordered.converter().equals(DefaultValueParser.class)) {
                 try {
-                    Class<? extends ValueBinder<?>> parserClass = ordered.parser();
-                    valueBinder = parserClass.getConstructor().newInstance();
+                    Class<? extends TypeConverter<?>> parserClass = ordered.converter();
+                    typeConverter = parserClass.getConstructor().newInstance();
                 } catch (Exception e) {
                     String message = format(
                             "Class %s must have a public no-arg constructor",
-                            ordered.parser().getCanonicalName()
+                            ordered.converter().getCanonicalName()
                     );
                     throw new RethrownException(message, e);
                 }
@@ -224,7 +239,7 @@ public class ParseContext<T> {
 
             // Are we dealing with a collection?
             if (Collection.class.isAssignableFrom(fieldType) || fieldType.isArray()) {
-                Object parsedValue = parse(stringValue, ordered.collectionType(), valueBinder);
+                Object parsedValue = parse(stringValue, ordered.collectionType(), typeConverter);
 
                 // Add a value to the collection
                 existingValue = addToCollection(field, existingValue, fieldType, ordered.collectionType(), parsedValue);
@@ -232,7 +247,7 @@ public class ParseContext<T> {
                 // Overwrite the collection in the instance
                 ReflectionUtil.setFieldValue(field, instance, existingValue);
             } else {
-                Object parsedValue = parse(stringValue, fieldType, valueBinder);
+                Object parsedValue = parse(stringValue, fieldType, typeConverter);
                 ReflectionUtil.setFieldValue(field, instance, parsedValue);
             }
         } catch (RuntimeException | IllegalAccessException e) {
@@ -303,14 +318,14 @@ public class ParseContext<T> {
             }
 
             // TODO: Is there a way to do this without querying the annotation again?
-            GetOptNamed named = field.getAnnotation(GetOptNamed.class);
+            GetOptProperty named = field.getAnnotation(GetOptProperty.class);
             Class<?> fieldType = field.getType();
-            ValueBinder<?> valueBinder = null;
+            TypeConverter<?> typeConverter = null;
 
-            if (valueParsers.containsKey(fieldType)) {
-                valueBinder = valueParsers.get(fieldType);
-            } else if (named != null && !named.parser().equals(DefaultValueParser.class)) {
-                valueBinder = ReflectionUtil.instantiate(named.parser());
+            if (typeConverters.containsKey(fieldType)) {
+                typeConverter = typeConverters.get(fieldType);
+            } else if (named != null && !named.converter().equals(DefaultValueParser.class)) {
+                typeConverter = ReflectionUtil.instantiate(named.converter());
             }
 
             Object existingValue = ReflectionUtil.getFieldValue(field, instance);
@@ -320,11 +335,11 @@ public class ParseContext<T> {
                 // It is not possible to add an element to a collection without this annotation because we need to know
                 // what type the collection contains
                 if (named == null) {
-                    String message = GetOptNamed.class.getName() + " is missing. This should never happen";
+                    String message = GetOptProperty.class.getName() + " is missing. This should never happen";
                     throw new NullPointerException(message);
                 }
 
-                Object parsedValue = parse(value, named.collectionType(), valueBinder);
+                Object parsedValue = parse(value, named.collectionType(), typeConverter);
 
                 // Add a value to the collection
                 existingValue = addToCollection(field, existingValue, fieldType, named.collectionType(), parsedValue);
@@ -332,7 +347,8 @@ public class ParseContext<T> {
                 // Overwrite the collection in the instance
                 ReflectionUtil.setFieldValue(field, instance, existingValue);
             } else {
-                ReflectionUtil.setFieldValue(field, instance, parse(value, field.getType(), valueBinder));
+                Object parsedValue = parse(value, field.getType(), typeConverter);
+                ReflectionUtil.setFieldValue(field, instance, parsedValue);
             }
         } catch (RuntimeException | IllegalAccessException e) {
             String message = format("Failed to set value %s for flag %s", value, currentName);
@@ -340,7 +356,7 @@ public class ParseContext<T> {
         }
     }
 
-    private Object parse(String value, Class<?> fieldType, ValueBinder<?> valueBinder)
+    private Object parse(String value, Class<?> fieldType, TypeConverter<?> typeConverter)
             throws ParseException {
         Object parsed = null;
 
@@ -378,9 +394,9 @@ public class ParseContext<T> {
                 } else {
                     return Boolean.parseBoolean(value);
                 }
-            } else if (valueBinder != null) {
+            } else if (typeConverter != null) {
                 try {
-                    parsed = valueBinder.read(value);
+                    parsed = typeConverter.read(value);
                 } catch (Exception e) {
                     throw new RethrownException(e);
                 }
@@ -421,5 +437,26 @@ public class ParseContext<T> {
 
     public List<Field> getRequiredFields() {
         return requiredFields;
+    }
+
+    public boolean isHelpRequested() {
+        return helpRequested;
+    }
+
+    public ParseContext<T> setHelpRequested(boolean helpRequested) {
+        this.helpRequested = helpRequested;
+        return this;
+    }
+
+    public boolean isHelpToken(String token) {
+        return helpTokens.contains(token);
+    }
+
+    /**
+     * This class is used to dynamically get the default values of GetOpt annotations.
+     */
+    @GetOptHelp
+    private static class GetDefaults {
+
     }
 }

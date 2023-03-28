@@ -26,18 +26,16 @@ package pro.johndunlap.getopt;
  * #L%
  */
 
-import pro.johndunlap.getopt.exception.ParseException;
-
 /**
- * Implementations of this interface are used to parse string values into object instances which are not
- * supported by default.
- *
- * @param <P> The type of object that string values should be parsed into
+ * This interface allows unit tests to override the exit mechanism.
  */
-public interface ValueBinder<P> {
-    Class<P> getType();
-
-    P read(String value) throws ParseException;
-
-    String write(P value) throws ParseException;
+public interface ExitMechanism {
+    /**
+     * Normally, this will call {@link System#exit(int)}. However, in unit tests this can
+     * be overridden to throw an exception so that the test can verify that the correct
+     * exit status was used.
+     *
+     * @param status The status to exit with
+     */
+    void exit(int status);
 }

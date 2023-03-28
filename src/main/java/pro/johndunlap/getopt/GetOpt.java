@@ -27,6 +27,7 @@ package pro.johndunlap.getopt;
  */
 
 import static pro.johndunlap.getopt.Parser.NEUTRAL;
+import static pro.johndunlap.getopt.Parser.camelCaseToHyphenCase;
 
 import java.io.PrintStream;
 import java.lang.reflect.Field;
@@ -48,22 +49,33 @@ import pro.johndunlap.getopt.exception.ParseException;
  */
 public class GetOpt {
 
+    /**
+     * This allows unit tests to override the exit mechanism.
+     */
+    private ExitMechanism exitMechanism = System::exit;
+
+    /**
+     * This allows unit tests to override the output stream.
+     */
     private PrintStream out = System.out;
 
+    /**
+     * This allows unit tests to override the error stream.
+     */
     private PrintStream err = System.err;
 
-    private final Map<Class<?>, ValueBinder<?>> valueParsers = new HashMap<>();
+    private final Map<Class<?>, TypeConverter<?>> typeConverters = new HashMap<>();
 
     public GetOpt() {
     }
 
-    public GetOpt register(Class<?> type, ValueBinder<?> valueBinder) {
-        valueParsers.put(type, valueBinder);
+    public GetOpt register(Class<?> type, TypeConverter<?> typeConverter) {
+        typeConverters.put(type, typeConverter);
         return this;
     }
 
-    public GetOpt register(Map<Class<?>, ValueBinder<?>> valueParsers) {
-        this.valueParsers.putAll(valueParsers);
+    public GetOpt register(Map<Class<?>, TypeConverter<?>> typeConverters) {
+        this.typeConverters.putAll(typeConverters);
         return this;
     }
 
@@ -77,7 +89,22 @@ public class GetOpt {
      * @throws ParseException If the arguments could not be bound to the class type
      */
     public <T> T read(Class<T> classType, String[] args) throws ParseException {
-        ParseContext<T> context = new ParseContext<>(classType, args, valueParsers);
+        return readContext(classType, args).getInstance();
+    }
+
+    /**
+     * Same as {@link #read(Class, String[])} except that it returns a {@link ParseContext} instead
+     * of the instance.
+     *
+     * @param classType The class type to bind the arguments to
+     * @param args The arguments to bind to the class type
+     * @param <T> The type of the class to bind the arguments to
+     *
+     * @return A {@link ParseContext} containing the instance of the class type with the arguments
+     * @throws ParseException If the arguments could not be bound to the class type
+     */
+    public <T> ParseContext<T> readContext(Class<T> classType, String[] args) throws ParseException {
+        ParseContext<T> context = new ParseContext<>(classType, args, typeConverters);
 
         Parser state = NEUTRAL;
 
@@ -88,25 +115,75 @@ public class GetOpt {
 
         T instance = context.getInstance();
 
-        // Verify that required fields are set
-        for (Field field : context.getRequiredFields()) {
-            try {
-                Object value = ReflectionUtil.getFieldValue(field, instance);
+        // Don't throw errors if the help message was requested
+        if (!context.isHelpRequested()) {
+            // Verify that required fields are set
+            for (Field field : context.getRequiredFields()) {
+                try {
+                    Object value = ReflectionUtil.getFieldValue(field, instance);
 
-                if (value == null) {
-                    throw new ParseException("Required field " + field.getName() + " is not set");
+                    if (value == null) {
+                        // TODO: This does not take annotations into account
+                        throw new ParseException("Required argument --"
+                                + camelCaseToHyphenCase(field.getName())
+                                + " is not set");
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new ParseException("Could not access field " + field.getName(), e);
                 }
-            } catch (IllegalAccessException e) {
-                throw new ParseException("Could not access field " + field.getName(), e);
             }
         }
 
-        // If the instance implements Runnable, run it after binding the arguments
-        if (instance instanceof Runnable) {
-            ((Runnable) instance).run();
-        }
+        return context;
+    }
 
-        return instance;
+    protected <T> void showHelp(Class<T> classType) {
+        // Print the help message to stdout
+        out.println(help(classType));
+
+        // Exit normally
+        exitMechanism.exit(0);
+    }
+
+    /**
+     * This method automates the mechanics behind binding, error handling, and displaying
+     * the help message. Incoming arguments are bound to the specified class type and the run method
+     * is invoked after binding has been completed. If binding fails, validation messages will be
+     * printed to stderr and an appropriate exit status will be set. If the help message is
+     * requested, it will be printed to stdout prior to exit.
+     *
+     * @param classType The class type to bind the arguments to
+     * @param args The arguments to bind to the class type
+     * @param <T> The type of the class to bind the arguments to
+     */
+    public <T> T run(Class<T> classType, String[] args) {
+        T instance = null;
+
+        try {
+            // Bind the arguments to the class type
+            ParseContext<T> context = readContext(classType, args);
+
+            if (context.isHelpRequested()) {
+                showHelp(classType);
+            } else {
+                // Get the instance from the parse context
+                instance = context.getInstance();
+            }
+
+            // We don't need to worry about setting the exit status to 0 because that is
+            // the default behavior for the JVM
+            return instance;
+        } catch (ParseException e) {
+            // Print the error message to stderr
+            getErr().println(e.getMessage());
+
+            // TODO: Set an appropriate exit status (possibly taken from an annotation)
+            exitMechanism.exit(1);
+
+            // This should only happen when the exit mechanism is overridden. Realistically, it probably won't execute
+            // even then because the tests will use the exit mechanism to throw an exception.
+            return instance;
+        }
     }
 
     /**
@@ -246,6 +323,11 @@ public class GetOpt {
 
     public GetOpt setErr(PrintStream err) {
         this.err = err;
+        return this;
+    }
+
+    public GetOpt setExitMechanism(ExitMechanism exitMechanism) {
+        this.exitMechanism = exitMechanism;
         return this;
     }
 
