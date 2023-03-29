@@ -13,4 +13,5 @@ java -jar target/hello.jar --first-name YOUR -l NAME
 java -jar target/hello.jar -f YOUR --last-name NAME
 java -jar target/hello.jar --first-name YOUR --last-name NAME
 java -jar target/hello.jar --help
+java -jar target/hello.jar -h
 ```
