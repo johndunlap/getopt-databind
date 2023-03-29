@@ -58,21 +58,10 @@ Hello, John Dunlap!
         <dependency>
             <groupId>com.github.johndunlap</groupId>
             <artifactId>getopt-databind</artifactId>
-            <version>0.2.0.RELEASE</version>
+            <version>0.3.0</version>
         </dependency>
     </dependencies>
 ```
-
-## Features
-* Automatically generated help messages
-* Named parameters
-   * Single-letter flag with a single hyphen
-   * Multi-letter flag with two hyphens.
-   * Multiple boolean single letter flags can be combined into a multi-letter flag with a single hyphen. The last letter in this kind of flag does not need to have a boolean type.
-   * Automatic conversion to camel-case from hyphen-case to support binding to Java fields which are not annotated
-* Required parameters
-* Automatic validation and type conversion for: int, long, short, byte, float, double, Integer, Long, Short, Byte, Float, Double, boolean, Boolean
-* Custom type conversion
 
 <br/>If I have helped you in some way, please consider supporting my work by buying me a coffee!<br/><br/>
 <a href="https://www.buymeacoffee.com/ixCgtN0uXb" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
