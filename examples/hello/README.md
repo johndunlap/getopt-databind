@@ -15,3 +15,8 @@ java -jar target/hello.jar --first-name YOUR --last-name NAME
 java -jar target/hello.jar --help
 java -jar target/hello.jar -h
 ```
+
+The output will look similar to this:
+```bash
+Hello, YOUR NAME!
+```
