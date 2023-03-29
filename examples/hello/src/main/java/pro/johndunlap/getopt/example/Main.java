@@ -1,4 +1,4 @@
-package pro.johndunlap.example;
+package pro.johndunlap.getopt.example;
 
 /*-
  * #%L
@@ -26,6 +26,7 @@ package pro.johndunlap.example;
  * #L%
  */
 
+import pro.johndunlap.getopt.GetOpt;
 import pro.johndunlap.getopt.annotation.GetOptHelp;
 import pro.johndunlap.getopt.annotation.GetOptProperty;
 
@@ -36,18 +37,15 @@ import pro.johndunlap.getopt.annotation.GetOptProperty;
         openingText = "This is the opening text",
         closingText = "This is the closing text."
 )
-public class Example {
+public class Main {
     @GetOptProperty(code = 'f', description = "Your first name")
     private String firstName;
 
     @GetOptProperty(code = 'l', description = "Your last name")
     private String lastName;
 
-    // TODO: @GetOptHelp should allow setting a non-zero exit status for the help message
-    // TODO: No error message for properties which do not exist
-    // TODO: The help message is not inferring flags from field names
     public static void main(String[] args) {
-        Example example = new GetOpt().run(Example.class, args);
+        Main example = new GetOpt().run(Main.class, args);
         System.out.printf("Hello, %s %s!\n", example.firstName, example.lastName);
     }
 }
