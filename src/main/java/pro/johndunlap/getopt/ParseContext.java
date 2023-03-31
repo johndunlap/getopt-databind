@@ -43,10 +43,10 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
-import pro.johndunlap.getopt.annotation.GetOptHelp;
-import pro.johndunlap.getopt.annotation.GetOptIgnore;
+import pro.johndunlap.getopt.annotation.Arg;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
-import pro.johndunlap.getopt.annotation.GetOptProperty;
+import pro.johndunlap.getopt.annotation.Help;
+import pro.johndunlap.getopt.annotation.Ignore;
 import pro.johndunlap.getopt.exception.DuplicateOptionException;
 import pro.johndunlap.getopt.exception.InaccessibleFieldException;
 import pro.johndunlap.getopt.exception.MissingNoArgConstructorException;
@@ -84,12 +84,12 @@ public class ParseContext<T> {
         this.queue = new Stack<>();
         this.typeConverters = typeConverters;
 
-        GetOptHelp helpAnnotation;
+        Help helpAnnotation;
 
-        if (classType.getDeclaredAnnotation(GetOptHelp.class) != null) {
-            helpAnnotation = classType.getDeclaredAnnotation(GetOptHelp.class);
+        if (classType.getDeclaredAnnotation(Help.class) != null) {
+            helpAnnotation = classType.getDeclaredAnnotation(Help.class);
         } else {
-            helpAnnotation = GetDefaults.class.getDeclaredAnnotation(GetOptHelp.class);
+            helpAnnotation = GetDefaults.class.getDeclaredAnnotation(Help.class);
         }
 
         for (String token : helpAnnotation.helpTokens()) {
@@ -112,7 +112,7 @@ public class ParseContext<T> {
         // Associate flag names with class fields
         for (Field field : classType.getDeclaredFields()) {
             // Ignore fields marked with the @GetOptIgnore annotation
-            if (field.getAnnotation(GetOptIgnore.class) != null) {
+            if (field.getAnnotation(Ignore.class) != null) {
                 continue;
             }
 
@@ -126,7 +126,7 @@ public class ParseContext<T> {
                     requiredFields.add(field);
                 }
             } else {
-                GetOptProperty namedOption = field.getAnnotation(GetOptProperty.class);
+                Arg namedOption = field.getAnnotation(Arg.class);
 
                 // Initialize boolean fields to false by default
                 if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
@@ -318,7 +318,7 @@ public class ParseContext<T> {
             }
 
             // TODO: Is there a way to do this without querying the annotation again?
-            GetOptProperty named = field.getAnnotation(GetOptProperty.class);
+            Arg named = field.getAnnotation(Arg.class);
             Class<?> fieldType = field.getType();
             TypeConverter<?> typeConverter = null;
 
@@ -335,7 +335,7 @@ public class ParseContext<T> {
                 // It is not possible to add an element to a collection without this annotation because we need to know
                 // what type the collection contains
                 if (named == null) {
-                    String message = GetOptProperty.class.getName() + " is missing. This should never happen";
+                    String message = Arg.class.getName() + " is missing. This should never happen";
                     throw new NullPointerException(message);
                 }
 
@@ -455,7 +455,7 @@ public class ParseContext<T> {
     /**
      * This class is used to dynamically get the default values of GetOpt annotations.
      */
-    @GetOptHelp
+    @Help
     private static class GetDefaults {
 
     }

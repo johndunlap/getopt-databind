@@ -34,17 +34,17 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import org.junit.Test;
-import pro.johndunlap.getopt.annotation.GetOptHelp;
-import pro.johndunlap.getopt.annotation.GetOptIgnore;
-import pro.johndunlap.getopt.annotation.GetOptProperty;
+import pro.johndunlap.getopt.annotation.Arg;
+import pro.johndunlap.getopt.annotation.Help;
+import pro.johndunlap.getopt.annotation.Ignore;
 import pro.johndunlap.getopt.exception.ParseException;
 
 /**
- * Tests for the {@link GetOptProperty} annotation.
+ * Tests for the {@link Arg} annotation.
  *
  * @author John Dunlap
  */
-public class GetOptPropertyTest {
+public class ArgTest {
     @Test
     public void testBindMethodWithNoArguments() throws ParseException {
         String[] args = {};
@@ -362,12 +362,12 @@ public class GetOptPropertyTest {
         assertEquals("three", config.getStringList().get(2));
     }
 
-    @GetOptHelp(
+    @Help(
             openingText = "This is the opening description",
             closingText = "This is the closing description"
     )
     private static class HelpConfig {
-        @GetOptProperty(
+        @Arg(
                 code = 'L',
                 flag = "long-value",
                 required = true,
@@ -375,7 +375,7 @@ public class GetOptPropertyTest {
                 category = "Type tests"
         )
         private Long longValue;
-        @GetOptProperty(
+        @Arg(
                 code = 'I',
                 flag = "integer-value",
                 required = true,
@@ -383,7 +383,7 @@ public class GetOptPropertyTest {
                 category = "Type tests"
         )
         private Integer integerValue;
-        @GetOptProperty(
+        @Arg(
                 code = 's',
                 flag = "short-value",
                 required = true,
@@ -391,7 +391,7 @@ public class GetOptPropertyTest {
                 category = "Type tests"
         )
         private Short shortValue;
-        @GetOptProperty(
+        @Arg(
                 code = 'b',
                 flag = "byte-value",
                 required = true,
@@ -399,48 +399,48 @@ public class GetOptPropertyTest {
                 category = "Type tests"
         )
         private Byte byteValue;
-        @GetOptProperty(
+        @Arg(
                 code = 'D',
                 flag = "double-value",
                 description = "A double value",
                 category = "Type tests"
         )
         private Double doubleValue;
-        @GetOptProperty(
+        @Arg(
                 code = 'F',
                 flag = "float-value",
                 description = "A float value",
                 category = "Type tests"
         )
         private Float floatValue;
-        @GetOptProperty(
+        @Arg(
                 code = 'S',
                 flag = "string-value",
                 description = "A string value",
                 category = "Type tests"
         )
         private String stringValue;
-        @GetOptProperty(
+        @Arg(
                 code = 'B',
                 flag = "boolean-value",
                 description = "A boolean value"
         )
         private boolean booleanValue = false;
-        @GetOptProperty(
+        @Arg(
                 code = 'C',
                 flag = "char-value",
                 description = "A single character"
         )
         private Character charValue;
 
-        @GetOptProperty(
+        @Arg(
                 flag = "help",
                 code = 'H',
                 description = "Displays this help message"
         )
         private Boolean help;
 
-        @GetOptProperty(
+        @Arg(
                 flag = "string-list",
                 code = 'l',
                 description = "A list of strings",
@@ -449,7 +449,7 @@ public class GetOptPropertyTest {
         )
         private List<String> stringList;
 
-        @GetOptIgnore
+        @Ignore
         private Boolean ignoredBoolean;
 
         public HelpConfig() {
@@ -581,7 +581,7 @@ public class GetOptPropertyTest {
     }
 
     private static class StringConfigNotRequired {
-        @GetOptProperty(code = 'S')
+        @Arg(code = 'S')
         private String stringValue;
 
         public StringConfigNotRequired() {
@@ -593,7 +593,7 @@ public class GetOptPropertyTest {
     }
 
     private static class IntegerConfigNotRequired {
-        @GetOptProperty(code = 'I')
+        @Arg(code = 'I')
         private Integer integerValue;
 
         public IntegerConfigNotRequired() {
@@ -605,7 +605,7 @@ public class GetOptPropertyTest {
     }
 
     private static class LongConfigNotRequired {
-        @GetOptProperty(code = 'L')
+        @Arg(code = 'L')
         private Long longValue;
 
         public LongConfigNotRequired() {
@@ -617,7 +617,7 @@ public class GetOptPropertyTest {
     }
 
     private static class ByteConfigNotRequired {
-        @GetOptProperty(code = 'b')
+        @Arg(code = 'b')
         private Byte byteValue;
 
         public ByteConfigNotRequired() {
@@ -630,7 +630,7 @@ public class GetOptPropertyTest {
 
     private static class CharacterConfigNotRequired {
 
-        @GetOptProperty(code = 'C')
+        @Arg(code = 'C')
         private Character characterValue;
 
         public CharacterConfigNotRequired() {
@@ -642,13 +642,13 @@ public class GetOptPropertyTest {
     }
 
     private static class BooleanConfigNotRequired {
-        @GetOptProperty(code = 'B')
+        @Arg(code = 'B')
         private Boolean booleanValue;
 
-        @GetOptProperty(code = 'H')
+        @Arg(code = 'H')
         private Boolean help;
 
-        @GetOptIgnore
+        @Ignore
         private Boolean ignoredBoolean;
 
         public BooleanConfigNotRequired() {
@@ -669,13 +669,13 @@ public class GetOptPropertyTest {
 
     private static class TwoBooleanAndDouble {
 
-        @GetOptProperty(code = 'D')
+        @Arg(code = 'D')
         private Double doubleValue;
 
-        @GetOptProperty(code = 'B')
+        @Arg(code = 'B')
         private Boolean booleanValue;
 
-        @GetOptProperty(code = 'H')
+        @Arg(code = 'H')
         private Boolean help;
 
         public TwoBooleanAndDouble() {
@@ -696,13 +696,13 @@ public class GetOptPropertyTest {
 
     private static class TwoBooleanAndShort {
 
-        @GetOptProperty(code = 's')
+        @Arg(code = 's')
         private Short shortValue;
 
-        @GetOptProperty(code = 'B')
+        @Arg(code = 'B')
         private Boolean booleanValue;
 
-        @GetOptProperty(code = 'H')
+        @Arg(code = 'H')
         private Boolean help;
 
         public TwoBooleanAndShort() {
@@ -723,7 +723,7 @@ public class GetOptPropertyTest {
 
     private static class FloatConfigNotRequired {
 
-        @GetOptProperty(code = 'F')
+        @Arg(code = 'F')
         private Float floatValue;
 
         public FloatConfigNotRequired() {
@@ -736,7 +736,7 @@ public class GetOptPropertyTest {
 
     private static class DoubleConfigNotRequired {
 
-        @GetOptProperty(code = 'D')
+        @Arg(code = 'D')
         private Double doubleValue;
 
         public DoubleConfigNotRequired() {
@@ -749,7 +749,7 @@ public class GetOptPropertyTest {
 
     private static class ShortConfigNotRequired {
 
-        @GetOptProperty(code = 's')
+        @Arg(code = 's')
         private Short shortValue;
 
         public ShortConfigNotRequired() {
@@ -761,7 +761,7 @@ public class GetOptPropertyTest {
     }
 
     private static class StringListNotRequired {
-        @GetOptProperty(code = 'l', collectionType = String.class)
+        @Arg(code = 'l', collectionType = String.class)
         private List<String> stringList;
 
         public StringListNotRequired() {

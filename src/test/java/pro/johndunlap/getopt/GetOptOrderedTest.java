@@ -30,8 +30,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import org.junit.Test;
-import pro.johndunlap.getopt.annotation.GetOptHelp;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
+import pro.johndunlap.getopt.annotation.Help;
 import pro.johndunlap.getopt.exception.ParseException;
 
 /**
@@ -57,7 +57,7 @@ public class GetOptOrderedTest {
         new GetOpt().read(OrderedConfig.class, args);
     }
 
-    @GetOptHelp(
+    @Help(
             openingText = "This is the opening description",
             closingText = "This is the closing description"
     )

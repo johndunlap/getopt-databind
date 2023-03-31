@@ -31,40 +31,40 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
-import pro.johndunlap.getopt.annotation.GetOptIgnore;
+import pro.johndunlap.getopt.annotation.Ignore;
 import pro.johndunlap.getopt.exception.ParseException;
 
 /**
- * These tests verify that fields annotated with {@link GetOptIgnore} are not
+ * These tests verify that fields annotated with {@link Ignore} are not
  * bound to command line arguments.
  *
  * @author John Dunlap
  */
-public class GetOptIgnoreTest {
+public class IgnoreTest {
 
     @Test
     public void testIgnoredField() throws ParseException {
         String[] args = new String[]{"--first", "abc123", "--second", "80"};
-        IgnoreTest config = new GetOpt().read(IgnoreTest.class, args);
+        IgnoreTestEntity config = new GetOpt().read(IgnoreTestEntity.class, args);
         assertNotNull(config);
         assertEquals("abc123", config.getFirst());
         assertNull(config.getSecond());
     }
 
-    private static class IgnoreTest {
+    private static class IgnoreTestEntity {
         private String first;
 
-        @GetOptIgnore
+        @Ignore
         private String second;
 
-        public IgnoreTest() {
+        public IgnoreTestEntity() {
         }
 
         public String getFirst() {
             return first;
         }
 
-        public IgnoreTest setFirst(String first) {
+        public IgnoreTestEntity setFirst(String first) {
             this.first = first;
             return this;
         }
@@ -73,7 +73,7 @@ public class GetOptIgnoreTest {
             return second;
         }
 
-        public IgnoreTest setSecond(String second) {
+        public IgnoreTestEntity setSecond(String second) {
             this.second = second;
             return this;
         }

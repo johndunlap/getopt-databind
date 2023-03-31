@@ -37,9 +37,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import pro.johndunlap.getopt.annotation.GetOptHelp;
-import pro.johndunlap.getopt.annotation.GetOptIgnore;
 import pro.johndunlap.getopt.annotation.GetOptOrdered;
+import pro.johndunlap.getopt.annotation.Help;
+import pro.johndunlap.getopt.annotation.Ignore;
 import pro.johndunlap.getopt.exception.ParseException;
 
 /**
@@ -194,7 +194,7 @@ public class GetOpt {
      * @return A help message for the given class type
      */
     public <T> String help(Class<T> classType) {
-        GetOptHelp help = classType.getAnnotation(GetOptHelp.class);
+        Help help = classType.getAnnotation(Help.class);
         StringBuilder sb = new StringBuilder();
         String before = "";
         String after = "";
@@ -305,7 +305,7 @@ public class GetOpt {
 
         for (Field field : fields) {
             // Skip ordered fields and fields which have been annotated with ignore
-            if (field.isAnnotationPresent(GetOptIgnore.class) || field.isAnnotationPresent(GetOptOrdered.class)) {
+            if (field.isAnnotationPresent(Ignore.class) || field.isAnnotationPresent(GetOptOrdered.class)) {
                 continue;
             }
 

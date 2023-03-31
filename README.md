@@ -10,32 +10,32 @@ This is a Java library which provides a flexible and customizable way to bind co
 ## Example
 
 ```java
-import pro.johndunlap.getopt.annotation.GetOptHelp;
-import pro.johndunlap.getopt.annotation.GetOptProperty;
+import pro.johndunlap.getopt.annotation.Help;
+import pro.johndunlap.getopt.annotation.Arg;
 
-@GetOptHelp(
-        openingText = "This is the opening text",
-        closingText = "This is the closing text."
+@Help(
+    openingText = "This is the opening text",
+    closingText = "This is the closing text."
 )
 public class Example {
-  @GetOptProperty(code = 'f', description = "Your first name")
-  private String firstName;
+    @Arg(code = 'f')
+    private String firstName;
 
-  @GetOptProperty(code = 'l', description = "Your last name")
-  private String lastName;
+    @Arg(code = 'l')
+    private String lastName;
 
-  public static void main(String[] args) {
-    Example example = new GetOpt().run(Example.class, args);
-    System.out.printf("Hello, %s %s!\n", example.firstName, example.lastName);
-  }
+    public static void main(String[] args) {
+        Example example = new GetOpt().run(Example.class, args);
+        System.out.printf("Hello, %s %s!\n", example.firstName, example.lastName);
+    }
 }
 ```
 
 The following is output when **--help** is passed into the above program:
 ```text
 This is the opening text
-  -f  --first-name  Your first name
-  -l  --last-name   Your last name
+  -f  --first-name  Accepts a string value
+  -l  --last-name   Accepts a string value
 This is the closing text.
 ```
 

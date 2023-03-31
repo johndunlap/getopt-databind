@@ -40,7 +40,7 @@ import pro.johndunlap.getopt.TypeConverter;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface GetOptProperty {
+public @interface Arg {
     /**
      * The single character code for the option. This is expected to be a single character. For example, 'o'.
      *

@@ -27,8 +27,8 @@ package pro.johndunlap.getopt;
  */
 
 import java.lang.reflect.Field;
-import pro.johndunlap.getopt.annotation.GetOptIgnore;
-import pro.johndunlap.getopt.annotation.GetOptProperty;
+import pro.johndunlap.getopt.annotation.Arg;
+import pro.johndunlap.getopt.annotation.Ignore;
 
 /**
  * A class which contains information about a single option.
@@ -48,11 +48,11 @@ public class OptionInfo {
      * @param field The field to create the OptionInfo object from.
      */
     public OptionInfo(Field field) {
-        if (field.isAnnotationPresent(GetOptIgnore.class)) {
+        if (field.isAnnotationPresent(Ignore.class)) {
             throw new RuntimeException("Cannot process ignored field");
         }
 
-        GetOptProperty property = field.getAnnotation(GetOptProperty.class);
+        Arg property = field.getAnnotation(Arg.class);
 
         flag = Parser.camelCaseToHyphenCase(field.getName());
 

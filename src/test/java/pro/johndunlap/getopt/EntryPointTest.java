@@ -32,7 +32,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.Test;
-import pro.johndunlap.getopt.annotation.GetOptProperty;
+import pro.johndunlap.getopt.annotation.Arg;
 
 /**
  * Tests for configuration classes which implement {@link Runnable}.
@@ -105,7 +105,7 @@ public class EntryPointTest {
     }
 
     private static class SimpleConfig implements Runnable {
-        @GetOptProperty(required = true)
+        @Arg(required = true)
         private String first;
         private int second;
 

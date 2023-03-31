@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
-import pro.johndunlap.getopt.annotation.GetOptProperty;
+import pro.johndunlap.getopt.annotation.Arg;
 import pro.johndunlap.getopt.exception.ParseException;
 import pro.johndunlap.getopt.exception.RethrownException;
 
@@ -92,7 +92,7 @@ public class DateParserTest {
     }
 
     private static class DateConfigWithAnnotatedValueParser {
-        @GetOptProperty(flag = "date-value", code = 'D', converter = DateValueParser.class)
+        @Arg(flag = "date-value", code = 'D', converter = DateValueParser.class)
         private Date dateValue;
 
         public DateConfigWithAnnotatedValueParser() {
@@ -109,7 +109,7 @@ public class DateParserTest {
     }
 
     private static class DateConfigWithoutAnnotatedValueParser {
-        @GetOptProperty(flag = "date-value", code = 'D')
+        @Arg(flag = "date-value", code = 'D')
         private Date dateValue;
 
         public DateConfigWithoutAnnotatedValueParser() {
