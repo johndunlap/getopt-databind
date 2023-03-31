@@ -124,7 +124,7 @@ public class GetOpt {
 
                     if (value == null) {
                         // TODO: This does not take annotations into account
-                        throw new ParseException("Required argument --"
+                        throw new ParseException(field, "Required argument --"
                                 + camelCaseToHyphenCase(field.getName())
                                 + " is not set");
                     }
@@ -177,8 +177,7 @@ public class GetOpt {
             // Print the error message to stderr
             getErr().println(e.getMessage());
 
-            // TODO: Set an appropriate exit status (possibly taken from an annotation)
-            exitMechanism.exit(1);
+            exitMechanism.exit(e.getExitStatus());
 
             // This should only happen when the exit mechanism is overridden. Realistically, it probably won't execute
             // even then because the tests will use the exit mechanism to throw an exception.

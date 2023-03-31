@@ -27,6 +27,7 @@ package pro.johndunlap.getopt.exception;
  */
 
 import java.lang.reflect.Field;
+import pro.johndunlap.getopt.annotation.Arg;
 
 /**
  * Thrown when a value cannot be parsed.
@@ -34,6 +35,8 @@ import java.lang.reflect.Field;
  * @author John Dunlap
  */
 public class ParseException extends Exception {
+    public static final int DEFAULT_ERROR_EXIT_STATUS = 1;
+
     private Field field;
     private String value;
 
@@ -50,9 +53,31 @@ public class ParseException extends Exception {
         this.value = value;
     }
 
+    /**
+     * Returns the exit status which should be passed back to the shell
+     * for this exception. Allowing this to be different on a field by
+     * field basis can allow shell programs to determine which fields
+     * were invalid.
+     *
+     * @return The exit status which should be passed back to the shell
+     */
+    public int getExitStatus() {
+        if (field != null && field.isAnnotationPresent(Arg.class)) {
+            Arg arg = field.getAnnotation(Arg.class);
+            return arg.exitStatus();
+        }
+
+        return DEFAULT_ERROR_EXIT_STATUS;
+    }
+
     public ParseException(String value, String message) {
         super(message);
         this.value = value;
+    }
+
+    public ParseException(Field field, String message) {
+        super(message);
+        this.field = field;
     }
 
     public ParseException(String message) {

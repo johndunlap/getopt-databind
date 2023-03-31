@@ -106,6 +106,15 @@ public class ExceptionTest {
         DuplicateShortNameConfig config = new GetOpt().read(DuplicateShortNameConfig.class, args);
     }
 
+    @Test
+    public void testCustomExitStatus() throws ParseException {
+        try {
+            new GetOpt().read(CustomExitStatus.class, new String[]{});
+        } catch (ParseException e) {
+            assertEquals(7, e.getExitStatus());
+        }
+    }
+
     private static class DuplicateLongNameConfig {
         @Arg(flag = "value")
         private String firstValue;
@@ -174,6 +183,34 @@ public class ExceptionTest {
 
         public static void setMessage(String message) {
             NamedConfig.message = message;
+        }
+    }
+
+    private static class CustomExitStatus {
+        private String first;
+
+        @Arg(exitStatus = 7)
+        private String second;
+
+        public CustomExitStatus() {
+        }
+
+        public String getFirst() {
+            return first;
+        }
+
+        public CustomExitStatus setFirst(String first) {
+            this.first = first;
+            return this;
+        }
+
+        public String getSecond() {
+            return second;
+        }
+
+        public CustomExitStatus setSecond(String second) {
+            this.second = second;
+            return this;
         }
     }
 }
