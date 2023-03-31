@@ -356,7 +356,7 @@ public class ParseContext<T> {
         }
     }
 
-    private Object parse(String value, Class<?> fieldType, TypeConverter<?> typeConverter)
+    protected Object parse(String value, Class<?> fieldType, TypeConverter<?> typeConverter)
             throws ParseException {
         Object parsed = null;
 
