@@ -76,4 +76,12 @@ public @interface Help {
      * @return The exit status which should be used when the help message is invoked.
      */
     int helpExitStatus() default 0;
+
+    // TODO: Implement this.
+    /**
+     * The name of the program. Defaults to the name of the class.
+     *
+     * @return The name of the program.
+     */
+    String name() default "";
 }
