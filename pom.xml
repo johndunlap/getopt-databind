@@ -227,6 +227,7 @@
                     <scmReleaseLabel>${project.version}</scmReleaseLabel>
                     <scmUsername>${github.username}</scmUsername>
                     <scmPassword>${github.password}</scmPassword>
+                    <serverId>github</serverId>
                 </configuration>
                 <dependencies>
                     <dependency>
