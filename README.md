@@ -7,7 +7,16 @@ This is a Java library which provides a flexible and customizable way to bind co
 * Permissive licensing
 * It's free
 
-## Example
+## Getting started
+### Maven
+```xml
+<dependency>
+    <groupId>pro.johndunlap</groupId>
+    <artifactId>getopt-databind</artifactId>
+    <version>0.5.6</version>
+</dependency>
+```
+### Example
 
 ```java
 import pro.johndunlap.getopt.annotation.Help;
@@ -43,16 +52,5 @@ The following is output when **--first-name John --last-name Dunlap** is passed 
 ```text
 Hello, John Dunlap!
 ```
-
-## Getting started
-### Maven
-```xml
-<dependency>
-    <groupId>pro.johndunlap</groupId>
-    <artifactId>getopt-databind</artifactId>
-    <version>0.5.6</version>
-</dependency>
-```
-
 <br/>If I have helped you in some way, please consider supporting my work by buying me a coffee!<br/><br/>
 <a href="https://www.buymeacoffee.com/ixCgtN0uXb" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
