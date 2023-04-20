@@ -26,22 +26,25 @@ package pro.johndunlap.getopt.exception;
  * #L%
  */
 
-import java.lang.reflect.Field;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
- * Thrown when a duplicate option is found.
- *
- * @author John Dunlap
+ * Tests for the {@link DuplicateOptionException} class.
  */
-public class DuplicateOptionException extends ParseException {
-    private final Field field;
-
-    public DuplicateOptionException(String message, Field field) {
-        super(message);
-        this.field = field;
+public class DuplicateOptionExceptionTest {
+    @Test
+    public void testGetFieldMethod() throws NoSuchFieldException {
+        String message = "This is a test";
+        DuplicateOptionException exception = new DuplicateOptionException(
+                message,
+                ConfigTest.class.getDeclaredField("one")
+        );
+        assertEquals("one", exception.getField().getName());
     }
 
-    public Field getField() {
-        return field;
+    private static class ConfigTest {
+        String one;
     }
 }

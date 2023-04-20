@@ -222,12 +222,8 @@ public class ReflectionUtil {
         return Collection.class.isAssignableFrom(clazz);
     }
 
-    public boolean isArray(Class<?> clazz) {
+    public static boolean isArray(Class<?> clazz) {
         return clazz.isArray();
-    }
-
-    public static Object instantiateCollection(Class<Collection<?>> collectionClass) {
-        throw new RuntimeException("IMPLEMENT ME");
     }
 
     /**

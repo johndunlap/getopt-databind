@@ -32,8 +32,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
 import org.junit.Test;
 import pro.johndunlap.getopt.annotation.Arg;
+import pro.johndunlap.getopt.exception.MissingNoArgConstructorException;
 import pro.johndunlap.getopt.exception.ParseException;
 import pro.johndunlap.getopt.exception.RethrownException;
 import pro.johndunlap.getopt.exception.UnsupportedTypeConversionException;
@@ -93,6 +95,15 @@ public class ParseContextTest {
         String[] args = new String[]{"--long-reference", "42"};
         SupportedTypes supportedTypes = new GetOpt().read(SupportedTypes.class, args);
         assertEquals(Long.valueOf(42), supportedTypes.getLongReference());
+    }
+
+    @Test(expected = MissingNoArgConstructorException.class)
+    public void testConstructorWithClassThatHasNoDefaultNoArgConstructor() throws ParseException {
+        try {
+            new ParseContext<>(NoDefaultConstructor.class, new String[0], new HashMap<>());
+        } catch (UnsupportedTypeConversionException e) {
+            assertTrue(e.getCause() instanceof NoSuchMethodException);
+        }
     }
 
     @Test
@@ -528,6 +539,11 @@ public class ParseContextTest {
         @Override
         public String write(Integer value) throws ParseException {
             throw new ParseException("error");
+        }
+    }
+
+    private static class NoDefaultConstructor {
+        private NoDefaultConstructor(String value) {
         }
     }
 }

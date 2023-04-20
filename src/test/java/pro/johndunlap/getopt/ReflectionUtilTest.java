@@ -43,7 +43,6 @@ import static pro.johndunlap.getopt.ReflectionUtil.parse;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -56,6 +55,98 @@ import pro.johndunlap.getopt.exception.ParseException;
  * @author John Dunlap
  */
 public class ReflectionUtilTest {
+
+    @Test
+    public void testParseMethodWithString() throws ParseException {
+        String value = "test";
+        assertEquals(value, parse(String.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithInteger() throws ParseException {
+        String value = "123";
+        assertEquals(Integer.valueOf(value), parse(Integer.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithShort() throws ParseException {
+        String value = "123";
+        assertEquals(Short.valueOf(value), parse(Short.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithLong() throws ParseException {
+        String value = "123";
+        assertEquals(Long.valueOf(value), parse(Long.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithFloat() throws ParseException {
+        String value = "123.45";
+        assertEquals(Float.valueOf(value), parse(Float.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithDouble() throws ParseException {
+        String value = "123.45";
+        assertEquals(Double.valueOf(value), parse(Double.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithByte() throws ParseException {
+        String value = "123";
+        assertEquals(Byte.valueOf(value), parse(Byte.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithBigInteger() throws ParseException {
+        String value = "123";
+        assertEquals(new java.math.BigInteger(value), parse(java.math.BigInteger.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithBigDecimal() throws ParseException {
+        String value = "123.45";
+        assertEquals(new java.math.BigDecimal(value), parse(java.math.BigDecimal.class, value));
+    }
+
+    @Test
+    public void testParseMethodWithCharacter() throws ParseException {
+        String value = "a";
+        assertEquals(Character.valueOf(value.charAt(0)), parse(Character.class, value));
+    }
+
+    @Test(expected = ParseException.class)
+    public void testParseMethodWithMultipleCharacters() throws ParseException {
+        parse(Character.class, "ab");
+    }
+
+    @Test(expected = ParseException.class)
+    public void testParseMethodWithNullCharacter() throws ParseException {
+        parse(Character.class, null);
+    }
+
+    @Test(expected = ParseException.class)
+    public void testParseMethodWithUnsupportedClass() throws ParseException {
+        parse(MissingNoArgConstructor.class, "");
+    }
+
+    @Test
+    public void testIsArrayMethod() {
+        Class<?> stringClass = String.class;
+        Class<?> stringArrayClass = String[].class;
+        assertFalse(ReflectionUtil.isArray(stringClass));
+        assertTrue(ReflectionUtil.isArray(stringArrayClass));
+    }
+
+    @Test(expected = InvocationTargetException.class)
+    public void testVerifyThatReflectionUtilCannotBeInstantiated()
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Class<ReflectionUtil> clazz = ReflectionUtil.class;
+        Constructor<ReflectionUtil> constructor = clazz.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        constructor.newInstance();
+    }
 
     @Test
     public void testGetNoArgConstructorMethodForListInterface() {

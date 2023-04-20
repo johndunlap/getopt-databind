@@ -1,4 +1,4 @@
-package pro.johndunlap.getopt.exception;
+package pro.johndunlap.getopt;
 
 /*-
  * #%L
@@ -26,22 +26,34 @@ package pro.johndunlap.getopt.exception;
  * #L%
  */
 
-import java.lang.reflect.Field;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+import org.junit.Test;
+import pro.johndunlap.getopt.exception.ParseException;
 
 /**
- * Thrown when a duplicate option is found.
- *
- * @author John Dunlap
+ * Tests for the {@link DefaultValueParser} class.
  */
-public class DuplicateOptionException extends ParseException {
-    private final Field field;
-
-    public DuplicateOptionException(String message, Field field) {
-        super(message);
-        this.field = field;
+public class DefaultValueParserTest {
+    @Test
+    public void testGetTypeMethod() {
+        assertEquals(String.class, new DefaultValueParser().getType());
     }
 
-    public Field getField() {
-        return field;
+    @Test
+    public void testReadMethod() throws ParseException {
+        String expected = "expected";
+        String actual = new DefaultValueParser().read(expected);
+        assertEquals(expected, actual);
+        assertSame(expected, actual);
+    }
+
+    @Test
+    public void testWriteMethod() throws ParseException {
+        String expected = "expected";
+        String actual = new DefaultValueParser().write(expected);
+        assertEquals(expected, actual);
+        assertSame(expected, actual);
     }
 }

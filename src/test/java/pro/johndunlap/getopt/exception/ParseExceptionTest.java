@@ -26,22 +26,34 @@ package pro.johndunlap.getopt.exception;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Field;
+import org.junit.Test;
+import pro.johndunlap.getopt.annotation.Arg;
 
 /**
- * Thrown when a duplicate option is found.
- *
- * @author John Dunlap
+ * Tests for the {@link ParseException} class.
  */
-public class DuplicateOptionException extends ParseException {
-    private final Field field;
-
-    public DuplicateOptionException(String message, Field field) {
-        super(message);
-        this.field = field;
+public class ParseExceptionTest {
+    @Test
+    public void testGetExitStatusMethodWithDefaultExitStatus() throws NoSuchFieldException {
+        Field field = ConfigTest.class.getDeclaredField("one");
+        ParseException exception = new ParseException(field, "a", "This didn't work as expected");
+        assertEquals(1, exception.getExitStatus());
     }
 
-    public Field getField() {
-        return field;
+    @Test
+    public void testGetExitStatusMethodWithConfiguredExitStatus() throws NoSuchFieldException {
+        Field field = ConfigTest.class.getDeclaredField("two");
+        ParseException exception = new ParseException(field, "a", "This didn't work as expected");
+        assertEquals(7, exception.getExitStatus());
+    }
+
+    private static class ConfigTest {
+        private String one;
+
+        @Arg(exitStatus = 7)
+        private String two;
     }
 }
