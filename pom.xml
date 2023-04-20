@@ -41,7 +41,7 @@
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
         <checkstyle.version>8.43</checkstyle.version>
     </properties>
 
@@ -225,8 +225,6 @@
                     <pushChanges>true</pushChanges>
                     <scmUseEditMode>true</scmUseEditMode>
                     <scmReleaseLabel>${project.version}</scmReleaseLabel>
-                    <scmUsername>${github.username}</scmUsername>
-                    <scmPassword>${github.password}</scmPassword>
                     <serverId>github</serverId>
                 </configuration>
                 <dependencies>
