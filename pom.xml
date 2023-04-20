@@ -7,6 +7,14 @@
     <packaging>jar</packaging>
     <name>getopt-databind</name>
 
+    <url>https://github.com/johndunlap/getopt-databind</url>
+    <developers>
+        <developer>
+            <name>John Dunlap</name>
+            <email>john.david.dunlap@gmail.com</email>
+        </developer>
+    </developers>
+
     <licenses>
         <license>
             <name>MIT License</name>
