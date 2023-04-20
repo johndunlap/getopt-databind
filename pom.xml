@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>pro.johndunlap</groupId>
     <artifactId>getopt-databind</artifactId>
-    <version>0.5.5</version>
+    <version>0.5.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>getopt-databind</name>
 
@@ -41,7 +41,7 @@
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-        <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+        <maven-release-plugin.version>3.0.0</maven-release-plugin.version>
         <checkstyle.version>8.43</checkstyle.version>
     </properties>
 
