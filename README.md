@@ -47,20 +47,11 @@ Hello, John Dunlap!
 ## Getting started
 ### Maven
 ```xml
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://www.jitpack.io</url>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.github.johndunlap</groupId>
-            <artifactId>getopt-databind</artifactId>
-            <version>0.3.0</version>
-        </dependency>
-    </dependencies>
+<dependency>
+    <groupId>pro.johndunlap</groupId>
+    <artifactId>getopt-databind</artifactId>
+    <version>0.5.6</version>
+</dependency>
 ```
 
 <br/>If I have helped you in some way, please consider supporting my work by buying me a coffee!<br/><br/>
